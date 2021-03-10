@@ -35,7 +35,8 @@ struct ScopeTable
     string id;
     int counter;
 
-    int N; /* initial number of assumed data */
+    ScopeTable* parentScope;
+
     int M; /* initial hast table size */
 
     int collisionCnt = 0 , probecnt = 0;
@@ -49,14 +50,12 @@ struct ScopeTable
     {
         id = "1";
         counter = 1;
+        parentScope = NULL;
 
-        N = 10000;
-//        M = 10007; /*prime*/
         M = table_size;
+        hashValue = func;
 
         ht = vector<SymbolInfo*>(M);
-
-        hashValue = func;
     }
 
     string get_id(){ return id; }
@@ -76,23 +75,28 @@ struct ScopeTable
         return ret;
     }
 
-    string search(string key)
+    SymbolInfo* search(string key)
     {
-        int idx = hash(key);
+        int bucket = hash(key);
 
-        SymbolInfo* now = ht[idx];
+        SymbolInfo* now = ht[bucket];
+
+        int bucket_pos = 0;
 
         while(now != NULL)
         {
-            probecnt++;
-
             if(now->key == key)
-                return now->val;
+            {
+                now->bucket = bucket;
+                now->bucket_pos = bucket_pos;
+                return now;
+            }
 
             now = now->nxt;
+            bucket_pos++;
         }
 
-        return "NOT_AVAILABLE"; /*not found*/
+        return NULL; /*not found*/
     }
 
     bool insert(SymbolInfo si)
@@ -100,11 +104,11 @@ struct ScopeTable
         string key = si.key;
         string val = si.val;
 
-        int idx = hash(key);
+        int bucket = hash(key);
 
-        assert(idx<M);
+        assert(bucket<M);
 
-        SymbolInfo* now = ht[idx];
+        SymbolInfo* now = ht[bucket];
 
         while(now != NULL)
         {
@@ -114,9 +118,7 @@ struct ScopeTable
             now = now->nxt;
         }
 
-        if(ht[idx] != NULL) collisionCnt++;
-
-        ht[idx] = new SymbolInfo(key,val,ht[idx]);
+        ht[bucket] = new SymbolInfo(key,val,ht[bucket]);
 
         return true;
     }

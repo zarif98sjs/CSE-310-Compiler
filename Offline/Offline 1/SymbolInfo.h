@@ -24,6 +24,9 @@ struct SymbolInfo
     string val;
     SymbolInfo* nxt;
 
+    int bucket;
+    int bucket_pos;
+
     SymbolInfo(){}
 
     SymbolInfo(string key,string val)
@@ -31,6 +34,9 @@ struct SymbolInfo
         this->key = key;
         this->val = val;
         this->nxt = NULL;
+
+        bucket = -1;
+        bucket_pos = -1;
     }
 
     SymbolInfo(string key,string val,SymbolInfo* nxt)
@@ -38,5 +44,7 @@ struct SymbolInfo
         this->key = key;
         this->val = val;
         this->nxt = nxt;
+        this->bucket = bucket;
+        this->bucket_pos = bucket_pos;
     }
 };
