@@ -1,0 +1,340 @@
+I a a
+
+Inserted in ScopeTable# 1 at position 6, 0
+
+S
+
+New ScopeTable with id 1.1 created
+
+I h h
+
+Inserted in ScopeTable# 1.1 at position 6, 0
+
+S
+
+New ScopeTable with id 1.1.1 created
+
+I o o
+
+Inserted in ScopeTable# 1.1.1 at position 6, 0
+
+P A
+
+
+ScopeTable # 1.1.1
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  
+5 -->  
+6 -->  < o : o>  
+
+
+ScopeTable # 1.1
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  
+5 -->  
+6 -->  < h : h>  
+
+
+ScopeTable # 1
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  
+5 -->  
+6 -->  < a : a>  
+
+L o
+
+Found in ScopeTable# 1.1.1 at position 6, 0
+
+L a
+
+Found in ScopeTable# 1 at position 6, 0
+
+E
+
+ScopeTable with id 1.1.1 removed
+
+S
+
+New ScopeTable with id 1.1.2 created
+
+I foo FUNCTION
+
+Inserted in ScopeTable# 1.1.2 at position 2, 0
+
+E
+
+ScopeTable with id 1.1.2 removed
+
+S
+
+New ScopeTable with id 1.1.3 created
+
+I i VAR
+
+Inserted in ScopeTable# 1.1.3 at position 0, 0
+
+P A
+
+
+ScopeTable # 1.1.3
+0 -->  < i : VAR>  
+1 -->  
+2 -->  
+3 -->  
+4 -->  
+5 -->  
+6 -->  
+
+
+ScopeTable # 1.1
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  
+5 -->  
+6 -->  < h : h>  
+
+
+ScopeTable # 1
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  
+5 -->  
+6 -->  < a : a>  
+
+L foo
+
+Not found
+
+L j
+
+Not found
+
+E
+
+ScopeTable with id 1.1.3 removed
+
+E
+
+ScopeTable with id 1.1 removed
+
+S
+
+New ScopeTable with id 1.2 created
+
+I 5 NUMBER
+
+Inserted in ScopeTable# 1.2 at position 4, 0
+
+P A
+
+
+ScopeTable # 1.2
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  < 5 : NUMBER>  
+5 -->  
+6 -->  
+
+
+ScopeTable # 1
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  
+5 -->  
+6 -->  < a : a>  
+
+D j
+
+Not found
+
+j not found
+
+D i
+
+Not found
+
+i not found
+
+P A
+
+
+ScopeTable # 1.2
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  < 5 : NUMBER>  
+5 -->  
+6 -->  
+
+
+ScopeTable # 1
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  
+5 -->  
+6 -->  < a : a>  
+
+S
+
+New ScopeTable with id 1.2.1 created
+
+E
+
+ScopeTable with id 1.2.1 removed
+
+S
+
+New ScopeTable with id 1.2.2 created
+
+I <= RELOP
+
+Inserted in ScopeTable# 1.2.2 at position 2, 0
+
+I == RELOP
+
+Inserted in ScopeTable# 1.2.2 at position 3, 0
+
+P A
+
+
+ScopeTable # 1.2.2
+0 -->  
+1 -->  
+2 -->  < <= : RELOP>  
+3 -->  < == : RELOP>  
+4 -->  
+5 -->  
+6 -->  
+
+
+ScopeTable # 1.2
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  < 5 : NUMBER>  
+5 -->  
+6 -->  
+
+
+ScopeTable # 1
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  
+5 -->  
+6 -->  < a : a>  
+
+I <= RELOP
+
+<<=,RELOP> already exists in current ScopeTable
+
+I foo FUNCTION
+
+Inserted in ScopeTable# 1.2.2 at position 2, 1
+
+D ==
+
+Found in ScopeTable# 1.2.2 at position 3, 0
+
+Deleted Entry 3, 0 from current ScopeTable
+
+P A
+
+
+ScopeTable # 1.2.2
+0 -->  
+1 -->  
+2 -->  < <= : RELOP>  < foo : FUNCTION>  
+3 -->  
+4 -->  
+5 -->  
+6 -->  
+
+
+ScopeTable # 1.2
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  < 5 : NUMBER>  
+5 -->  
+6 -->  
+
+
+ScopeTable # 1
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  
+5 -->  
+6 -->  < a : a>  
+
+E
+
+ScopeTable with id 1.2.2 removed
+
+I t t
+
+Inserted in ScopeTable# 1.2 at position 4, 1
+
+I k k
+
+Inserted in ScopeTable# 1.2 at position 2, 0
+
+P C
+
+
+ScopeTable # 1.2
+0 -->  
+1 -->  
+2 -->  < k : k>  
+3 -->  
+4 -->  < 5 : NUMBER>  < t : t>  
+5 -->  
+6 -->  
+
+P A
+
+
+ScopeTable # 1.2
+0 -->  
+1 -->  
+2 -->  < k : k>  
+3 -->  
+4 -->  < 5 : NUMBER>  < t : t>  
+5 -->  
+6 -->  
+
+
+ScopeTable # 1
+0 -->  
+1 -->  
+2 -->  
+3 -->  
+4 -->  
+5 -->  
+6 -->  < a : a>  
+

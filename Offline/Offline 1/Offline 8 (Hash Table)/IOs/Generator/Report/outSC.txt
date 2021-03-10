@@ -1,0 +1,25 @@
+N : 11000 , Hash Function 1 :: Number of collsion : 3679 , Average Probes : 1.53
+N : 11000 , Hash Function 2 :: Number of collsion : 3712 , Average Probes : 1.54
+Time elapsed: 0.051 s.
+
+
+N : 11000 , Hash Function 1 :: Number of collsion : 3632 , Average Probes : 1.54
+N : 11000 , Hash Function 2 :: Number of collsion : 3648 , Average Probes : 1.53
+Time elapsed: 0.079 s.
+
+
+N : 11000 , Hash Function 1 :: Number of collsion : 3725 , Average Probes : 1.52
+N : 11000 , Hash Function 2 :: Number of collsion : 3695 , Average Probes : 1.52
+Time elapsed: 0.05 s.
+
+
+N : 11000 , Hash Function 1 :: Number of collsion : 3719 , Average Probes : 1.5
+N : 11000 , Hash Function 2 :: Number of collsion : 3665 , Average Probes : 1.57
+Time elapsed: 0.049 s.
+
+
+N : 11000 , Hash Function 1 :: Number of collsion : 3673 , Average Probes : 1.55
+N : 11000 , Hash Function 2 :: Number of collsion : 3682 , Average Probes : 1.58
+Time elapsed: 0.049 s.
+
+

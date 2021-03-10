@@ -1,0 +1,45 @@
+Double Hashing
+N : 11000 , Hash Function 1 :: Number of collsion : 65651 , Average Probes : 6.21
+N : 11000 , Hash Function 2 :: Number of collsion : 63559 , Average Probes : 5.88
+Custom Probing
+N : 11000 , Hash Function 1 :: Number of collsion : 67233 , Average Probes : 6.84
+N : 11000 , Hash Function 2 :: Number of collsion : 62988 , Average Probes : 6.48
+Time elapsed: 0.172 s.
+
+
+Double Hashing
+N : 11000 , Hash Function 1 :: Number of collsion : 61747 , Average Probes : 7.33
+N : 11000 , Hash Function 2 :: Number of collsion : 59347 , Average Probes : 6.67
+Custom Probing
+N : 11000 , Hash Function 1 :: Number of collsion : 64335 , Average Probes : 5.66
+N : 11000 , Hash Function 2 :: Number of collsion : 61651 , Average Probes : 6.41
+Time elapsed: 0.185 s.
+
+
+Double Hashing
+N : 11000 , Hash Function 1 :: Number of collsion : 63718 , Average Probes : 5.61
+N : 11000 , Hash Function 2 :: Number of collsion : 57889 , Average Probes : 5.57
+Custom Probing
+N : 11000 , Hash Function 1 :: Number of collsion : 62598 , Average Probes : 6.71
+N : 11000 , Hash Function 2 :: Number of collsion : 62388 , Average Probes : 5.73
+Time elapsed: 0.169 s.
+
+
+Double Hashing
+N : 11000 , Hash Function 1 :: Number of collsion : 72041 , Average Probes : 12.6
+N : 11000 , Hash Function 2 :: Number of collsion : 64148 , Average Probes : 7.88
+Custom Probing
+N : 11000 , Hash Function 1 :: Number of collsion : 61758 , Average Probes : 6.16
+N : 11000 , Hash Function 2 :: Number of collsion : 67080 , Average Probes : 11.2
+Time elapsed: 0.2 s.
+
+
+Double Hashing
+N : 11000 , Hash Function 1 :: Number of collsion : 61587 , Average Probes : 5.54
+N : 11000 , Hash Function 2 :: Number of collsion : 58894 , Average Probes : 5.13
+Custom Probing
+N : 11000 , Hash Function 1 :: Number of collsion : 62711 , Average Probes : 5.6
+N : 11000 , Hash Function 2 :: Number of collsion : 58932 , Average Probes : 5.17
+Time elapsed: 0.169 s.
+
+
