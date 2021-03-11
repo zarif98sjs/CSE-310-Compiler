@@ -10,13 +10,6 @@ using namespace std;
 #define F first
 #define S second
 
-#ifndef ONLINE_JUDGE
-#define DBG(x)      cout << __LINE__ << " says: " << #x << " = " << (x) << endl
-#else
-#define DBG(x)
-#define endl "\n"
-#endif
-
 
 struct SymbolInfo
 {

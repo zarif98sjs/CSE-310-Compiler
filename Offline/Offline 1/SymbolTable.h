@@ -2,55 +2,155 @@
 /* Which of the favors of your Lord will you deny ? */
 
 #include<bits/stdc++.h>
-#include "SymbolInfo.h"
 #include "ScopeTable.h"
 using namespace std;
 
-#define LL long long
-#define PII pair<int,int>
-#define PLL pair<LL,LL>
-#define F first
-#define S second
+template <class T>
+string to_str(T x)
+{
+    stringstream ss;
+    ss<<x;
+    return ss.str();
+}
 
-#ifndef ONLINE_JUDGE
-#define DBG(x)      cout << __LINE__ << " says: " << #x << " = " << (x) << endl
-#else
-#define DBG(x)
-#define endl "\n"
-#endif
 
 class SymbolTable
 {
-    ScopeTable* ara;
-    int top;
-    int maxSize;
+    ScopeTable* cur;
+    int bucket_size;
+    function<int(string)> func;
 
 public:
 
-    SymbolTable();
+    template<typename T>
+    SymbolTable(int bucket_size,T func)
+    {
+        this->bucket_size = bucket_size;
+        this->func = func;
+
+        cur = new ScopeTable(bucket_size,func);
+    }
+
     SymbolTable(const SymbolTable &old);
     ~SymbolTable();
-    void push(ScopeTable num); /// enter scope : create and push a new ScopeTable
-    int pop(); /// exit scope : remove the current ScopeTable
+
+    void enter_scope() /// enter scope  = push : create and push a new ScopeTable
+    {
+        ScopeTable* st = new ScopeTable(bucket_size,func);
+
+        st->parentScope = cur;
+        cur = st;
+
+        if(st->parentScope != NULL)
+        {
+            st->set_id(st->parentScope->get_id()+"."+to_str(st->parentScope->get_counter()));
+        }
+
+        cout<<"New ScopeTable with id "<<st->get_id()<<" created"<<endl;
+    }
+
+    void exit_scope() /// exit scope  = pop : remove the current ScopeTable
+    {
+        if(cur != NULL)
+        {
+            cout<<"ScopeTable with id "<<getCurScopeTableId()<<" removed"<<endl;
+
+            ScopeTable* temp = cur;
+            cur = cur->parentScope;
+            cur->increase_counter();
+
+            delete temp;
+        }
+    }
+
+    bool insert_symbol(SymbolInfo si)
+    {
+        SymbolInfo* temp = cur->search(si.key);
+
+        if(temp != NULL) /// cant insert
+        {
+            cout<<"<"<<temp->key<<","<<temp->val<<">"<<" already exists in current ScopeTable"<<endl;
+            return false;
+        }
+
+        SymbolInfo* ret = cur->insert(si);
+
+        cout<<"Inserted in ScopeTable# "<<getCurScopeTableId()<<" at position "<<ret->bucket<<","<<ret->bucket_pos<<endl;
+
+        return ret!=NULL ;
+    }
+
+    bool remove_symbol(string key)
+    {
+        SymbolInfo* temp = cur->search(key);
+
+        if(temp != NULL) /// present , so can delete
+        {
+            cout<<"Found in ScopeTable# "<<getCurScopeTableId()<<" at position "<<temp->bucket<<","<<temp->bucket_pos<<endl;
+            cout<<"Deleted Entry "<<temp->bucket<<","<<temp->bucket_pos<<" from current ScopeTable"<<endl;
+            return cur->erase(key);
+        }
+        else
+        {
+            cout<<"Not found"<<endl;
+            cout<<key<<" not found"<<endl;
+            return false;
+        }
+    }
+
+    SymbolInfo* lookup(string key)
+    {
+        ScopeTable* now = cur;
+
+        while(now != NULL)
+        {
+            SymbolInfo* ret = now->search(key);
+
+            if(ret != NULL)
+            {
+                cout<<"Found in Scope Table "<<now->get_id()<<" at position "<<ret->bucket<<","<<ret->bucket_pos<<endl;
+
+                return ret;
+            }
+
+            now = now->parentScope;
+        }
+        return NULL; /// not found
+    }
+
+
+    void print_current_scope()
+    {
+        cur->print();
+    }
+
+    void print_all_scope()
+    {
+        ScopeTable* now = cur;
+
+        while(now != NULL)
+        {
+            now->print();
+            now = now->parentScope;
+        }
+
+        cout<<endl;
+    }
+
+    string getCurScopeTableId()
+    {
+        return cur->get_id();
+    }
 };
-
-SymbolTable::SymbolTable()
-{
-    maxSize=10;
-    ara=new ScopeTable[10];
-    top=0;
-
-    cout<<"Default Constructor used and A stack of size "<<maxSize<<" has been allocated memory"<<endl;
-}
 
 SymbolTable::SymbolTable(const SymbolTable &old)
 {
-    maxSize=old.maxSize;
-    ara=new ScopeTable[maxSize];
-    tos=old.top;
-
-    for(int i=0; i<maxSize; i++)
-        ara[i]=old.ara[i];
+//    maxSize=old.maxSize;
+//    ara=new ScopeTable[maxSize];
+//    tos=old.top;
+//
+//    for(int i=0; i<maxSize; i++)
+//        ara[i]=old.ara[i];
 
     cout<<"Copy Constructor has been used"<<endl;
 }
@@ -58,56 +158,15 @@ SymbolTable::SymbolTable(const SymbolTable &old)
 SymbolTable::~SymbolTable()
 {
     cout<<"MEMORY DEALOCATED"<<endl;
-    delete[] ara;
+//    delete[] ara;
 }
 
-void SymbolTable::push(int num)
+int hashF(string s)
 {
-    if(tos==maxSize)
+    int h = 0;
+    for(int i=0;i<(int)s.size();i++)
     {
-        //cout<<"Stack is full"<<endl;
-        Resize(1);
-        ara[tos++]=num;
-        //cout<<"maxSIZE --> "<<maxSize<<" tos--> "<<tos<<endl;
-
+        h = (h + s[i]);
     }
-    else
-        ara[tos++]=num;
+    return h;
 }
-
-
-void SymbolTable::push(SymbolTable s)
-{
-    if(tos+s.tos>maxSize)
-    {
-        Resize(s.tos);
-        //cout<<"maxSIZE --> "<<maxSize<<" tos--> "<<tos<<endl;
-    }
-
-    for(int i=tos,j=s.tos-1; i<tos+s.tos; i++,j--)
-        ara[i]=s.ara[j];
-
-    tos += s.tos;
-
-//    for(int i=0; i<tos; i++)
-//        cout<<ara[i]<<" - ";
-
-}
-
-int SymbolTable::pop()
-{
-    if(tos==0)
-    {
-        cout<<"Stack is empty"<<endl;
-        return -1;
-    }
-    else if(maxSize-tos>=10)
-    {
-        Resize(-1);
-        //cout<<"maxSIZE is "<<maxSize<<" tos--> "<<tos<<endl;
-        return ara[--tos];
-    }
-    else
-        return ara[--tos];
-}
-
