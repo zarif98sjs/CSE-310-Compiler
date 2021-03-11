@@ -4,13 +4,6 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define LL long long
-#define PII pair<int,int>
-#define PLL pair<LL,LL>
-#define F first
-#define S second
-
-
 struct SymbolInfo
 {
     string key;

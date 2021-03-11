@@ -23,7 +23,7 @@ class SymbolTable
 public:
 
     template<typename T>
-    SymbolTable(int bucket_size,T func)
+    SymbolTable(int bucket_size,T func) /// constructor
     {
         this->bucket_size = bucket_size;
         this->func = func;
@@ -31,8 +31,18 @@ public:
         cur = new ScopeTable(bucket_size,func);
     }
 
-    SymbolTable(const SymbolTable &old);
-    ~SymbolTable();
+    ~SymbolTable()
+    {
+        cout<<"SymbolTable memory deallocated"<<endl;
+        cout<<endl;
+
+        while(cur != NULL)
+        {
+            ScopeTable* tmp = cur->parentScope;
+            delete cur;
+            cur = tmp;
+        }
+    }
 
     void enter_scope() /// enter scope  = push : create and push a new ScopeTable
     {
@@ -47,6 +57,7 @@ public:
         }
 
         cout<<"New ScopeTable with id "<<st->get_id()<<" created"<<endl;
+        cout<<endl;
     }
 
     void exit_scope() /// exit scope  = pop : remove the current ScopeTable
@@ -54,6 +65,7 @@ public:
         if(cur != NULL)
         {
             cout<<"ScopeTable with id "<<getCurScopeTableId()<<" removed"<<endl;
+            cout<<endl;
 
             ScopeTable* temp = cur;
             cur = cur->parentScope;
@@ -70,13 +82,14 @@ public:
         if(temp != NULL) /// cant insert
         {
             cout<<"<"<<temp->key<<","<<temp->val<<">"<<" already exists in current ScopeTable"<<endl;
+            cout<<endl;
             return false;
         }
 
         SymbolInfo* ret = cur->insert(si);
 
         cout<<"Inserted in ScopeTable# "<<getCurScopeTableId()<<" at position "<<ret->bucket<<","<<ret->bucket_pos<<endl;
-
+        cout<<endl;
         return ret!=NULL ;
     }
 
@@ -88,12 +101,14 @@ public:
         {
             cout<<"Found in ScopeTable# "<<getCurScopeTableId()<<" at position "<<temp->bucket<<","<<temp->bucket_pos<<endl;
             cout<<"Deleted Entry "<<temp->bucket<<","<<temp->bucket_pos<<" from current ScopeTable"<<endl;
+            cout<<endl;
             return cur->erase(key);
         }
         else
         {
             cout<<"Not found"<<endl;
             cout<<key<<" not found"<<endl;
+            cout<<endl;
             return false;
         }
     }
@@ -109,7 +124,7 @@ public:
             if(ret != NULL)
             {
                 cout<<"Found in Scope Table "<<now->get_id()<<" at position "<<ret->bucket<<","<<ret->bucket_pos<<endl;
-
+                cout<<endl;
                 return ret;
             }
 
@@ -143,23 +158,6 @@ public:
     }
 };
 
-SymbolTable::SymbolTable(const SymbolTable &old)
-{
-//    maxSize=old.maxSize;
-//    ara=new ScopeTable[maxSize];
-//    tos=old.top;
-//
-//    for(int i=0; i<maxSize; i++)
-//        ara[i]=old.ara[i];
-
-    cout<<"Copy Constructor has been used"<<endl;
-}
-
-SymbolTable::~SymbolTable()
-{
-    cout<<"MEMORY DEALOCATED"<<endl;
-//    delete[] ara;
-}
 
 int hashF(string s)
 {

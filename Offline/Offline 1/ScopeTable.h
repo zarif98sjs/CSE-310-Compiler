@@ -16,19 +16,6 @@
 #include "SymbolInfo.h"
 using namespace std;
 
-#define LL long long
-#define PII pair<int,int>
-#define PLL pair<LL,LL>
-#define F first
-#define S second
-
-#ifndef ONLINE_JUDGE
-#define DBG(x)      cout << __LINE__ << " says: " << #x << " = " << (x) << endl
-#else
-#define DBG(x)
-#define endl "\n"
-#endif
-
 
 struct ScopeTable
 {
@@ -46,7 +33,7 @@ struct ScopeTable
     function<int(string)> hashValue;
 
     template<typename T>
-    ScopeTable(int table_size,T func)
+    ScopeTable(int table_size,T func) /// constructor
     {
         id = "1";
         counter = 1;
@@ -56,6 +43,23 @@ struct ScopeTable
         hashValue = func;
 
         ht = vector<SymbolInfo*>(M);
+    }
+
+    ~ScopeTable() /// destructor
+    {
+        cout<<"ScopeTable memory deallocated"<<endl;
+
+        for(int i=0;i<ht.size();i++)
+        {
+            SymbolInfo* now = ht[i];
+
+            while(now != NULL)
+            {
+                SymbolInfo* tmp = now->nxt;
+                delete now;
+                now = tmp;
+            }
+        }
     }
 
     string get_id(){ return id; }
@@ -138,8 +142,6 @@ struct ScopeTable
         {
             if(now->key == key)
             {
-//                string ret = now->val;
-
                 if(prv) prv->nxt = now->nxt;
                 else  ht[idx] = now->nxt;
 
@@ -170,6 +172,7 @@ struct ScopeTable
             }
             cout<<endl;
         }
+        cout<<endl;
     }
 
     void printChainLengths()

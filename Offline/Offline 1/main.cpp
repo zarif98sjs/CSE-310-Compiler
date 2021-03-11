@@ -5,6 +5,9 @@
 #include "SymbolTable.h"
 using namespace std;
 
+#define READ        freopen("in", "r", stdin)
+#define WRITE       freopen("vorta.txt", "w", stdout)
+
 #ifndef ONLINE_JUDGE
 #define DBG(x)      cout << __LINE__ << " says: " << #x << " = " << (x) << endl
 #else
@@ -15,9 +18,12 @@ using namespace std;
 int main()
 {
 
+    READ;
+    WRITE;
+
     int bucket_size = 2;
 
-//    cin>>bucket_size;
+    cin>>bucket_size;
 
     SymbolTable sym_tab(bucket_size,hashF);
 
