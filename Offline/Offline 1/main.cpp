@@ -29,22 +29,28 @@ string to_str(T x)
 
 class SymbolTable
 {
-//    vector<ScopeTable>v;
-
     ScopeTable* cur;
+    int bucket_size;
+    function<int(string)> func;
 
 public:
 
-    SymbolTable()
+    template<typename T>
+    SymbolTable(int bucket_size,T func)
     {
-        cur = NULL;
+        this->bucket_size = bucket_size;
+        this->func = func;
+
+        cur = new ScopeTable(bucket_size,func);
     }
 
     SymbolTable(const SymbolTable &old);
     ~SymbolTable();
 
-    void enter_scope(ScopeTable* st) /// enter scope  = push : create and push a new ScopeTable
+    void enter_scope() /// enter scope  = push : create and push a new ScopeTable
     {
+        ScopeTable* st = new ScopeTable(bucket_size,func);
+
         st->parentScope = cur;
         cur = st;
 
@@ -52,12 +58,16 @@ public:
         {
             st->set_id(st->parentScope->get_id()+"."+to_str(st->parentScope->get_counter()));
         }
+
+        cout<<"New ScopeTable with id "<<st->get_id()<<" created"<<endl;
     }
 
     void exit_scope() /// exit scope  = pop : remove the current ScopeTable
     {
         if(cur != NULL)
         {
+            cout<<"ScopeTable with id "<<getCurScopeTableId()<<" removed"<<endl;
+
             ScopeTable* temp = cur;
             cur = cur->parentScope;
             cur->increase_counter();
@@ -68,13 +78,37 @@ public:
 
     bool insert_symbol(SymbolInfo si)
     {
-        return cur->insert(si);
+        SymbolInfo* temp = cur->search(si.key);
+
+        if(temp != NULL) /// cant insert
+        {
+            cout<<"<"<<temp->key<<","<<temp->val<<">"<<" already exists in current ScopeTable"<<endl;
+            return false;
+        }
+
+        SymbolInfo* ret = cur->insert(si);
+
+        cout<<"Inserted in ScopeTable# "<<getCurScopeTableId()<<" at position "<<ret->bucket<<","<<ret->bucket_pos<<endl;
+
+        return ret!=NULL ;
     }
 
     bool remove_symbol(string key)
     {
-        if(cur->erase(key) != "NOT_AVAILABLE") return true;
-        return false;
+        SymbolInfo* temp = cur->search(key);
+
+        if(temp != NULL) /// present , so can delete
+        {
+            cout<<"Found in ScopeTable# "<<getCurScopeTableId()<<" at position "<<temp->bucket<<","<<temp->bucket_pos<<endl;
+            cout<<"Deleted Entry "<<temp->bucket<<","<<temp->bucket_pos<<" from current ScopeTable"<<endl;
+            return cur->erase(key);
+        }
+        else
+        {
+            cout<<"Not found"<<endl;
+            cout<<key<<" not found"<<endl;
+            return false;
+        }
     }
 
     SymbolInfo* lookup(string key)
@@ -93,9 +127,7 @@ public:
             }
 
             now = now->parentScope;
-
         }
-
         return NULL; /// not found
     }
 
@@ -116,6 +148,11 @@ public:
         }
 
         cout<<endl;
+    }
+
+    string getCurScopeTableId()
+    {
+        return cur->get_id();
     }
 };
 
@@ -153,63 +190,54 @@ int main()
 
     int bucket_size = 2;
 
-    ScopeTable* st1 = new ScopeTable(bucket_size,hashF);
-    ScopeTable* st2 = new ScopeTable(bucket_size,hashF);
-    ScopeTable* st3 = new ScopeTable(bucket_size,hashF);
-    ScopeTable* st4 = new ScopeTable(bucket_size,hashF);
-    ScopeTable* st5 = new ScopeTable(bucket_size,hashF);
-    ScopeTable* st6 = new ScopeTable(bucket_size,hashF);
+//    cin>>bucket_size;
 
-//    SymbolInfo si1("v1","VAR") , si2("n1","NUMBER");
-    st1->insert(SymbolInfo("v1","VAR"));
-    st1->insert(SymbolInfo("n1","NUMBER"));
+    SymbolTable sym_tab(bucket_size,hashF);
 
-    SymbolTable sym_tab;
+    string command;
 
-    sym_tab.enter_scope(st1);
-    sym_tab.enter_scope(st2);
-    sym_tab.enter_scope(st3);
+    while(cin>>command)
+    {
 
-    sym_tab.print_all_scope();
-    sym_tab.lookup("v1");
+        if(command=="I")
+        {
+            string name,sym_type;
+            cin>>name>>sym_type;
 
-    sym_tab.exit_scope();
+            sym_tab.insert_symbol(SymbolInfo(name,sym_type));
+        }
+        if(command=="L")
+        {
+            string name;
+            cin>>name;
 
-    sym_tab.enter_scope(st4);
-    sym_tab.print_all_scope();
+            if(sym_tab.lookup(name)==NULL) cout<<"Not Found"<<endl;
+        }
+        if(command=="D")
+        {
+            string name;
+            cin>>name;
 
-//    cout<<"INSERT SYMBOL"<<endl;
-//
-    cout<<sym_tab.insert_symbol(SymbolInfo("v1","VAR"))<<endl;
-    cout<<sym_tab.insert_symbol(SymbolInfo("v2","VAR"))<<endl;
-    cout<<sym_tab.insert_symbol(SymbolInfo("v3","VAR"))<<endl;
-    cout<<sym_tab.insert_symbol(SymbolInfo("v4","VAR"))<<endl;
-    cout<<sym_tab.insert_symbol(SymbolInfo("v5","VAR"))<<endl;
-    cout<<sym_tab.insert_symbol(SymbolInfo("v2","VAR"))<<endl;
+            sym_tab.remove_symbol(name);
+        }
+        if(command=="S")
+        {
+            sym_tab.enter_scope();
+        }
+        if(command=="E")
+        {
+            sym_tab.exit_scope();
+        }
+        if(command=="P")
+        {
+            string print_type;
+            cin>>print_type;
 
-    sym_tab.print_all_scope();
-    sym_tab.lookup("v1");
+            if(print_type == "C") sym_tab.print_current_scope();
+            else if(print_type == "A") sym_tab.print_all_scope();
+        }
 
-
-    cout<<"REMOVE SYMBOL"<<endl;
-
-    cout<<sym_tab.remove_symbol("v1")<<endl;
-    cout<<sym_tab.remove_symbol("v5")<<endl;
-
-    sym_tab.print_all_scope();
-
-    sym_tab.exit_scope();
-    sym_tab.print_all_scope();
-
-    sym_tab.enter_scope(st5);
-    sym_tab.print_all_scope();
-
-    sym_tab.enter_scope(st6);
-    sym_tab.print_all_scope();
-
-
-//    st1.print();
-
+    }
 
 
     return 0;

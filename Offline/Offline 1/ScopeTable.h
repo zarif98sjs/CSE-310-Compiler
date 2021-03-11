@@ -81,49 +81,53 @@ struct ScopeTable
 
         SymbolInfo* now = ht[bucket];
 
-        int bucket_pos = 0;
-
         while(now != NULL)
         {
-            if(now->key == key)
-            {
-                now->bucket = bucket;
-                now->bucket_pos = bucket_pos;
-                return now;
-            }
+            if(now->key == key) return now;
 
             now = now->nxt;
-            bucket_pos++;
         }
 
         return NULL; /*not found*/
     }
 
-    bool insert(SymbolInfo si)
+    SymbolInfo* insert(SymbolInfo si)
     {
         string key = si.key;
         string val = si.val;
 
         int bucket = hash(key);
 
+        SymbolInfo* to_insert = new SymbolInfo(key,val,NULL);
+        to_insert->bucket = bucket;
+
         assert(bucket<M);
 
-        SymbolInfo* now = ht[bucket];
-
-        while(now != NULL)
+        if(ht[bucket] == NULL) ht[bucket] = to_insert;
+        else
         {
-            if(now->key == key)
-                return false; /*already exists*/
+            SymbolInfo* now = ht[bucket];
+            if(now->key == key) return NULL; /*already exists*/
 
-            now = now->nxt;
+            int bucket_pos = 1;
+
+            while(now->nxt != NULL)
+            {
+                if(now->key == key)
+                    return NULL; /*already exists*/
+
+                now = now->nxt;
+                bucket_pos++;
+            }
+
+            to_insert->bucket_pos = bucket_pos;
+            now->nxt = to_insert;
         }
 
-        ht[bucket] = new SymbolInfo(key,val,ht[bucket]);
-
-        return true;
+        return to_insert;
     }
 
-    string erase(string key)
+    bool erase(string key)
     {
         int idx = hash(key);
 
@@ -134,32 +138,36 @@ struct ScopeTable
         {
             if(now->key == key)
             {
-                string ret = now->val;
+//                string ret = now->val;
 
                 if(prv) prv->nxt = now->nxt;
                 else  ht[idx] = now->nxt;
 
                 delete (now);
-                return ret;
+                return true;
             }
 
             prv = now;
             now = now->nxt;
         }
 
-        return "NOT_AVAILABLE";
+        return false;
     }
 
     void print()
     {
-        cout<<"Scope Table "<<id<<endl;
+        cout<<"ScopeTable # "<<id<<endl;
 
         for(int i=0;i<M;i++)
         {
             cout<<"Chain "<<i<<" : ";
 
             SymbolInfo* now = ht[i];
-            while(now != NULL) cout<< now->key<<" " , now = now->nxt;
+            while(now != NULL)
+            {
+                cout<<"< "<<now->key <<" : "<<now->val<<" > ";
+                now = now->nxt;
+            }
             cout<<endl;
         }
     }

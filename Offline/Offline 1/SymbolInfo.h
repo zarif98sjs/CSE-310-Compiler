@@ -36,7 +36,7 @@ struct SymbolInfo
         this->nxt = NULL;
 
         bucket = -1;
-        bucket_pos = -1;
+        bucket_pos = 0;
     }
 
     SymbolInfo(string key,string val,SymbolInfo* nxt)
