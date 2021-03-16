@@ -4,4 +4,4 @@
 
     **Symbol Table**
    - [Problem Statement](/Offline/Offline%201/Assignment1_Specification.pdf)
-   - [Solution](/Offline/Offline%201/1705010/1705010.cpp)
+   - [Solution](/Offline/Offline%201/1705010)
