@@ -1,0 +1,30 @@
+int main(){
+	int a,b,12abcd,abdc1,_12abcd;
+	`
+	ch='\t';
+	a = 5;
+	b = a * 3.5140;
+	b = 1.51.40;
+	b = 1E10.7;
+	a=a+1;
+	char ch ='a';
+	ch = 'ab';
+	ch = 'a;
+	char ch = "hello;
+	ch='\t';
+	char c[]="ab\td";
+	printf("abc\
+	def\
+	ghi");
+	// a comment
+
+
+	/** another
+	*** multi line 
+	//inserted
+	comment ***/
+
+
+	return 0;
+	/* unfinished
+	}

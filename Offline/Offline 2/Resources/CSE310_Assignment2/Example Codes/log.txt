@@ -1,0 +1,4 @@
+Line no 1: TOKEN <IF> Lexeme if found
+Line no 1: TOKEN <ELSE> Lexeme else found
+Line no 1: TOKEN <ADDOP> Lexeme + found
+Line no 1: TOKEN <CONST_INT> Lexeme 123 found

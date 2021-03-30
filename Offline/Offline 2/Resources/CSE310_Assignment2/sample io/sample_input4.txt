@@ -1,0 +1,8 @@
+int main(){
+	int a;
+	if(a == 2){
+		int b;
+		char b;
+	}
+	return 0;
+}

@@ -1,0 +1,43 @@
+STR_STATE started
+OK ESCAPE
+Found a string: He said, " I own a dog"    so I asked, "What is his name?"
+STR_STATE started
+Found a string: abc 
+ def\s
+STR_STATE started
+OK ESCAPE
+Found a string: erf def
+Line no 5: TOKEN <ID> Lexeme abc found
+Line no 5: TOKEN <ID> Lexeme def found
+STR_STATE started
+Not Finished ERROR
+STR_STATE started
+OK ESCAPE
+Found a string: abc defabc def
+STR_STATE started
+OK ESCAPE
+Not Finished ERROR
+Line no 8: TOKEN <ID> Lexeme adf found
+Line no 8: TOKEN <ID> Lexeme df found
+STR_STATE started
+Not Finished ERROR
+STR_STATE started
+Not Finished ERROR
+Line no 9: TOKEN <ID> Lexeme abc found
+Line no 9: TOKEN <ID> Lexeme def found
+STR_STATE started
+Not Finished ERROR
+STR_STATE started
+Not Finished ERROR
+STR_STATE started
+Found a string: abc 
+ def\s
+STR_STATE started
+Not Finished ERROR
+Line no 12: TOKEN <ID> Lexeme abc found
+Line no 12: TOKEN <ID> Lexeme def found
+STR_STATE started
+Not Finished ERROR
+STR_STATE started
+Found a string: abc 
+ def
