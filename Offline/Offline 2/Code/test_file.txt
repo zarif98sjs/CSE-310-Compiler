@@ -74,3 +74,35 @@ abc def"
 "abc \n def"
 	
 
+================================
+
+
++
+/
+"He said, \" I own a dog\"\
+    so I asked, \"What is his name?\""
+
+"abc \n def\s"
+
+"erf def\
+"abc def" 
+
+"abc def\
+abc def"
+
+"zxc cfe\
+afgsd fhgfh\h
+adf df"
+
+"ASDD DERF\ av
+abc def"
+
+"abc def
+
+"abc \n def\s"
+"abc def
+abc def"
+
+"abc \n def"
+	
+
