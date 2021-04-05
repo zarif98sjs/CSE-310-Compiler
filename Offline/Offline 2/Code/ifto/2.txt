@@ -1,0 +1,17 @@
+for(int i=0;i<10;i++)
+{
+	for(int j=0;j<1E5;j++)
+	{
+		for(int k=-0.005;k<=0.005;k+=1E-50)
+		{
+			if(i/k==j)
+				print(i+j*k);
+			//Comment\\\\\//\\\\ /* \
+			/*
+				qwdq
+			
+			*/
+			
+		}
+	}
+}	

@@ -458,8 +458,8 @@ int main(int argc,char *argv[]){
 		return 0;
 	}
 
-	tokenout.open("token.txt");
-	logout.open("log.txt");
+	tokenout.open("1705010_token.txt");
+	logout.open("1705010_log.txt");
 
 	yyin= fin;
 	yylex();

@@ -1,0 +1,6 @@
+heyyeyey /* boucinodnn ***/*/
+owinfon
+126 int=32;
+atmega32 bhallagena (){
+	door = true;
+}

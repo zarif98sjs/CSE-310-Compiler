@@ -1,0 +1,11 @@
+int main(){
+	float f = 12.;
+	float f2 = 12e-7;
+	float f3 = 12E-7;
+	char c1 = '\'';
+	char c2 = '\"';
+	char str[50] = "A double quote is this : \" and a single quote is this : \'";
+	char str[40] = "This is a case of non escapable character \d but \n is escapable";
+	
+	return 0;
+}	

@@ -1,0 +1,26 @@
+{switch if { /* } */ }
+100*200=300
+100+200=300
++++++a+++++
+double __variable;
+int f=1;
+!f
+'x'
+'\\''\' \\commented
+'multi'
+"multi_string?MULTIstring"
+//
+/*correctcomment/* */
+
+int array[100];
+{{ 1.1E1.1 }}
+"string;\
+continuing\\\
+still it does\"
+
+/* 
+s
+t
+opped  \t
+*/
+

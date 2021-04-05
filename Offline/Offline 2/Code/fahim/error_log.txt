@@ -1,0 +1,118 @@
+
+Line no 1: Token <COMMENT> Lexeme /* too many decimal points */ found
+
+Error at line no 2: Too many decimal points 1.2.3.4.5.6
+
+Line no 3: Token <COMMENT> Lexeme // to me the following is a float found
+
+Line no 4: Token <CONST_FLOAT> Lexeme 7. found
+
+ScopeTable # 1
+ 3 --> < 7. : CONST_FLOAT>
+
+
+Line no 6: Token <COMMENT> Lexeme /* ill formed number */ found
+
+Error at line no 7: Ill formed number 3.14E1.001
+
+Error at line no 8: Too many decimal points 2.54.54
+
+Line no 8: Token <ID> Lexeme E4 found
+
+ScopeTable # 1
+ 2 --> < E4 : ID>
+ 3 --> < 7. : CONST_FLOAT>
+
+
+Line no 8: Token <CONST_FLOAT> Lexeme .01 found
+
+ScopeTable # 1
+ 2 --> < E4 : ID>
+ 3 --> < 7. : CONST_FLOAT> < .01 : CONST_FLOAT>
+
+
+Line no 10: Token <COMMENT> Lexeme /* invalid suffix on num const */ found
+
+Error at line no 11: Invalid prefix on ID or invalid suffix on Number 5_
+
+Error at line no 12: Invalid prefix on ID or invalid suffix on Number 4__________
+
+Error at line no 13: Invalid prefix on ID or invalid suffix on Number 7ewrvgtrb
+
+Line no 14: Token <ID> Lexeme _____12 found
+
+ScopeTable # 1
+ 0 --> < _____12 : ID>
+ 2 --> < E4 : ID>
+ 3 --> < 7. : CONST_FLOAT> < .01 : CONST_FLOAT>
+
+
+Line no 14: Token <COMMENT> Lexeme // valid found
+
+Line no 16: Token <COMMENT> Lexeme /* multichar const error */ found
+
+Error at line no 17: Multi character constant error 'efewrfg'
+
+Error at line no 18: Multi character constant error 'ewfw\'
+
+Line no 18: Token <ID> Lexeme wefrg found
+
+ScopeTable # 1
+ 0 --> < _____12 : ID> < wefrg : ID>
+ 2 --> < E4 : ID>
+ 3 --> < 7. : CONST_FLOAT> < .01 : CONST_FLOAT>
+
+
+Error at line no 18: Unterminated character '
+
+Error at line no 19: Multi character constant error 'e\'
+
+Line no 21: Token <COMMENT> Lexeme /* unfinished char const error */ found
+
+Error at line no 22: Unterminated character 'reg
+
+Error at line no 23: Unterminated character '
+
+Error at line no 24: Unterminated character 'erfeg997578
+
+Error at line no 25: Unterminated character '\
+
+Error at line no 26: Unterminated character '\'
+
+Error at line no 27: Unterminated character '\a
+
+Line no 29: Token <COMMENT> Lexeme /* empty char const error */ found
+
+Error at line no 30: Empty character constant error ''
+
+Line no 32: Token <COMMENT> Lexeme /* unfinished string */ found
+
+Error at line no 33: Unterminated String "Hello 
+
+Error at line no 34: Unterminated String "This is second unfinished \
+string\
+
+
+Line no 38: Token <STRING> Lexeme "A valid\
+string"found --> <STRING, "A validstring"> 
+
+Error at line no 40: Unterminated String "Invalid\" 
+
+Line no 42: Token <COMMENT> Lexeme /* Unrecognized char */ found
+
+Error at line no 43: Unrecognized character ^
+
+Error at line no 43: Unrecognized character ~
+
+Error at line no 45: Unterminated Comment /* This comment is not terminated 
+
+
+
+ScopeTable # 1
+ 0 --> < _____12 : ID> < wefrg : ID>
+ 2 --> < E4 : ID>
+ 3 --> < 7. : CONST_FLOAT> < .01 : CONST_FLOAT>
+
+
+Total lines: 48
+Total errors: 23

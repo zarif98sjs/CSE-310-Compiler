@@ -1,0 +1,231 @@
+
+Line no 1: Token <INT> Lexeme int found
+
+Line no 1: Token <ID> Lexeme main found
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 1: Token <LPAREN> Lexeme ( found
+
+Line no 1: Token <RPAREN> Lexeme ) found
+
+Line no 1: Token <LCURL> Lexeme { found
+
+Line no 2: Token <FLOAT> Lexeme float found
+
+Line no 2: Token <ID> Lexeme f found
+
+ScopeTable # 1.1
+ 4 --> < f : ID> 
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 2: Token <ASSIGNOP> Lexeme = found
+
+Error at line no 2: Ill formed number 12.
+
+Line no 2: Token <SEMICOLON> Lexeme ; found
+
+Line no 3: Token <FLOAT> Lexeme float found
+
+Line no 3: Token <ID> Lexeme f2 found
+
+ScopeTable # 1.1
+ 4 --> < f : ID> 
+ 5 --> < f2 : ID> 
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 3: Token <ASSIGNOP> Lexeme = found
+
+Line no 3: Token <CONST_FLOAT> Lexeme 12e-7 found
+
+ScopeTable # 1.1
+ 4 --> < f : ID> 
+ 5 --> < f2 : ID> 
+ 6 --> < 12e-7 : CONST_FLOAT> 
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 3: Token <SEMICOLON> Lexeme ; found
+
+Line no 4: Token <FLOAT> Lexeme float found
+
+Line no 4: Token <ID> Lexeme f3 found
+
+ScopeTable # 1.1
+ 4 --> < f : ID> 
+ 5 --> < f2 : ID> 
+ 6 --> < 12e-7 : CONST_FLOAT> < f3 : ID> 
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 4: Token <ASSIGNOP> Lexeme = found
+
+Line no 4: Token <CONST_FLOAT> Lexeme 12E-7 found
+
+ScopeTable # 1.1
+ 2 --> < 12E-7 : CONST_FLOAT> 
+ 4 --> < f : ID> 
+ 5 --> < f2 : ID> 
+ 6 --> < 12e-7 : CONST_FLOAT> < f3 : ID> 
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 4: Token <SEMICOLON> Lexeme ; found
+
+Line no 5: Token <CHAR> Lexeme char found
+
+Line no 5: Token <ID> Lexeme c1 found
+
+ScopeTable # 1.1
+ 1 --> < c1 : ID> 
+ 2 --> < 12E-7 : CONST_FLOAT> 
+ 4 --> < f : ID> 
+ 5 --> < f2 : ID> 
+ 6 --> < 12e-7 : CONST_FLOAT> < f3 : ID> 
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 5: Token <ASSIGNOP> Lexeme = found
+
+Line no 5: Token <CONST_CHAR> Lexeme '\''found --><CHAR_CONST, '> 
+
+ScopeTable # 1.1
+ 1 --> < c1 : ID> 
+ 2 --> < 12E-7 : CONST_FLOAT> 
+ 4 --> < f : ID> 
+ 5 --> < f2 : ID> 
+ 6 --> < 12e-7 : CONST_FLOAT> < f3 : ID> < '\'' : CONST_CHAR> 
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 5: Token <SEMICOLON> Lexeme ; found
+
+Line no 6: Token <CHAR> Lexeme char found
+
+Line no 6: Token <ID> Lexeme c2 found
+
+ScopeTable # 1.1
+ 1 --> < c1 : ID> 
+ 2 --> < 12E-7 : CONST_FLOAT> < c2 : ID> 
+ 4 --> < f : ID> 
+ 5 --> < f2 : ID> 
+ 6 --> < 12e-7 : CONST_FLOAT> < f3 : ID> < '\'' : CONST_CHAR> 
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 6: Token <ASSIGNOP> Lexeme = found
+
+Line no 6: Token <CONST_CHAR> Lexeme '\"'found --><CHAR_CONST, "> 
+
+ScopeTable # 1.1
+ 1 --> < c1 : ID> < '\"' : CONST_CHAR> 
+ 2 --> < 12E-7 : CONST_FLOAT> < c2 : ID> 
+ 4 --> < f : ID> 
+ 5 --> < f2 : ID> 
+ 6 --> < 12e-7 : CONST_FLOAT> < f3 : ID> < '\'' : CONST_CHAR> 
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 6: Token <SEMICOLON> Lexeme ; found
+
+Line no 7: Token <CHAR> Lexeme char found
+
+Line no 7: Token <ID> Lexeme str found
+
+ScopeTable # 1.1
+ 1 --> < c1 : ID> < '\"' : CONST_CHAR> 
+ 2 --> < 12E-7 : CONST_FLOAT> < c2 : ID> < str : ID> 
+ 4 --> < f : ID> 
+ 5 --> < f2 : ID> 
+ 6 --> < 12e-7 : CONST_FLOAT> < f3 : ID> < '\'' : CONST_CHAR> 
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 7: Token <LTHIRD> Lexeme [ found
+
+Line no 7: Token <CONST_INT> Lexeme 50 found
+
+ScopeTable # 1.1
+ 1 --> < c1 : ID> < '\"' : CONST_CHAR> 
+ 2 --> < 12E-7 : CONST_FLOAT> < c2 : ID> < str : ID> 
+ 3 --> < 50 : CONST_INT> 
+ 4 --> < f : ID> 
+ 5 --> < f2 : ID> 
+ 6 --> < 12e-7 : CONST_FLOAT> < f3 : ID> < '\'' : CONST_CHAR> 
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 7: Token <RTHIRD> Lexeme ] found
+
+Line no 7: Token <ASSIGNOP> Lexeme = found
+
+Line no 7: Token <STRING> Lexeme "A double quote is this : \" and a single quote is this : \'" found --> <STRING, "A double quote is this : " and a single quote is this : '"> 
+
+Line no 7: Token <SEMICOLON> Lexeme ; found
+
+Line no 8: Token <CHAR> Lexeme char found
+
+Line no 8: Token <ID> Lexeme str found
+
+Line no 8: Token <LTHIRD> Lexeme [ found
+
+Line no 8: Token <CONST_INT> Lexeme 40 found
+
+ScopeTable # 1.1
+ 1 --> < c1 : ID> < '\"' : CONST_CHAR> 
+ 2 --> < 12E-7 : CONST_FLOAT> < c2 : ID> < str : ID> < 40 : CONST_INT> 
+ 3 --> < 50 : CONST_INT> 
+ 4 --> < f : ID> 
+ 5 --> < f2 : ID> 
+ 6 --> < 12e-7 : CONST_FLOAT> < f3 : ID> < '\'' : CONST_CHAR> 
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 8: Token <RTHIRD> Lexeme ] found
+
+Line no 8: Token <ASSIGNOP> Lexeme = found
+
+Line no 8: Token <STRING> Lexeme "This is a case of non escapable character \d but \n is escapable" found --> <STRING, "This is a case of non escapable character \d but 
+ is escapable"> 
+
+Line no 8: Token <SEMICOLON> Lexeme ; found
+
+Line no 10: Token <RETURN> Lexeme return found
+
+Line no 10: Token <CONST_INT> Lexeme 0 found
+
+ScopeTable # 1.1
+ 1 --> < c1 : ID> < '\"' : CONST_CHAR> 
+ 2 --> < 12E-7 : CONST_FLOAT> < c2 : ID> < str : ID> < 40 : CONST_INT> 
+ 3 --> < 50 : CONST_INT> 
+ 4 --> < f : ID> 
+ 5 --> < f2 : ID> 
+ 6 --> < 12e-7 : CONST_FLOAT> < f3 : ID> < '\'' : CONST_CHAR> < 0 : CONST_INT> 
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Line no 10: Token <SEMICOLON> Lexeme ; found
+
+Line no 11: Token <RCURL> Lexeme } found
+
+ScopeTable # 1
+ 1 --> < main : ID> 
+
+Total lines: 12
+Total errors: 1

@@ -1,0 +1,1 @@
+<CONST_FLOAT, 7.> <ID, E4> <CONST_FLOAT, .01> <ID, _____12> <ID, wefrg> <STRING, "A validstring"> 
