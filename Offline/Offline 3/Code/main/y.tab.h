@@ -39,6 +39,12 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 1 "demo.y" /* yacc.c:1909  */
+
+    #include <bits/stdc++.h>
+
+#line 48 "y.tab.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -51,36 +57,36 @@ extern int yydebug;
     WHILE = 261,
     DO = 262,
     BREAK = 263,
-    INT = 264,
-    CHAR = 265,
-    FLOAT = 266,
-    DOUBLE = 267,
-    VOID = 268,
-    RETURN = 269,
-    SWITCH = 270,
-    CASE = 271,
-    DEFAULT = 272,
-    CONTINUE = 273,
-    PRINTLN = 274,
-    CONST_INT = 275,
-    CONST_FLOAT = 276,
-    ID = 277,
-    ADDOP = 278,
-    MULOP = 279,
-    INCOP = 280,
-    DECOP = 281,
-    RELOP = 282,
-    ASSIGNOP = 283,
-    LOGICOP = 284,
-    NOT = 285,
-    LPAREN = 286,
-    RPAREN = 287,
-    LCURL = 288,
-    RCURL = 289,
-    LTHIRD = 290,
-    RTHIRD = 291,
-    COMMA = 292,
-    SEMICOLON = 293
+    CHAR = 264,
+    DOUBLE = 265,
+    RETURN = 266,
+    SWITCH = 267,
+    CASE = 268,
+    DEFAULT = 269,
+    CONTINUE = 270,
+    PRINTLN = 271,
+    INCOP = 272,
+    DECOP = 273,
+    RELOP = 274,
+    ASSIGNOP = 275,
+    LOGICOP = 276,
+    NOT = 277,
+    LPAREN = 278,
+    RPAREN = 279,
+    LCURL = 280,
+    RCURL = 281,
+    LTHIRD = 282,
+    RTHIRD = 283,
+    COMMA = 284,
+    SEMICOLON = 285,
+    ID = 286,
+    INT = 287,
+    FLOAT = 288,
+    VOID = 289,
+    ADDOP = 290,
+    MULOP = 291,
+    CONST_INT = 292,
+    CONST_FLOAT = 293
   };
 #endif
 /* Tokens.  */
@@ -90,40 +96,55 @@ extern int yydebug;
 #define WHILE 261
 #define DO 262
 #define BREAK 263
-#define INT 264
-#define CHAR 265
-#define FLOAT 266
-#define DOUBLE 267
-#define VOID 268
-#define RETURN 269
-#define SWITCH 270
-#define CASE 271
-#define DEFAULT 272
-#define CONTINUE 273
-#define PRINTLN 274
-#define CONST_INT 275
-#define CONST_FLOAT 276
-#define ID 277
-#define ADDOP 278
-#define MULOP 279
-#define INCOP 280
-#define DECOP 281
-#define RELOP 282
-#define ASSIGNOP 283
-#define LOGICOP 284
-#define NOT 285
-#define LPAREN 286
-#define RPAREN 287
-#define LCURL 288
-#define RCURL 289
-#define LTHIRD 290
-#define RTHIRD 291
-#define COMMA 292
-#define SEMICOLON 293
+#define CHAR 264
+#define DOUBLE 265
+#define RETURN 266
+#define SWITCH 267
+#define CASE 268
+#define DEFAULT 269
+#define CONTINUE 270
+#define PRINTLN 271
+#define INCOP 272
+#define DECOP 273
+#define RELOP 274
+#define ASSIGNOP 275
+#define LOGICOP 276
+#define NOT 277
+#define LPAREN 278
+#define RPAREN 279
+#define LCURL 280
+#define RCURL 281
+#define LTHIRD 282
+#define RTHIRD 283
+#define COMMA 284
+#define SEMICOLON 285
+#define ID 286
+#define INT 287
+#define FLOAT 288
+#define VOID 289
+#define ADDOP 290
+#define MULOP 291
+#define CONST_INT 292
+#define CONST_FLOAT 293
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+
+union YYSTYPE
+{
+#line 44 "demo.y" /* yacc.c:1909  */
+
+    SymbolInfo* symbol_info;
+    SymbolInfo* symbol_info_vec[100];
+    string* symbol_info_str;
+    string* temp_str;
+    int ival;
+    double dval;
+
+#line 145 "y.tab.h" /* yacc.c:1909  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

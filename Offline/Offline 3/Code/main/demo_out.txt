@@ -1,0 +1,166 @@
+At line no: 1 type_specifier : INT
+
+int
+
+At line no: 1 declaration_list : ID
+
+x
+
+At line no: 1 declaration_list COMMA ID
+
+x,y
+
+At line no: 1 declaration_list COMMA ID
+
+x,y,z
+
+At line no: 1 var_declaration --> type_specifier declaration_list SEMICOLON
+
+int x,y,z;
+
+At line no: 1 unit : var_declaration
+
+int x,y,z;
+
+At line no: 1 program : unit
+
+int x,y,z;
+
+At line no: 1 type_specifier : FLOAT
+
+float
+
+At line no: 1 declaration_list : ID
+
+a
+
+At line no: 1 var_declaration --> type_specifier declaration_list SEMICOLON
+
+float a;
+
+At line no: 1 unit : var_declaration
+
+float a;
+
+At line no: 1 program : program unit
+
+int x,y,z;
+float a;
+
+At line no: 3 type_specifier : VOID
+
+void
+
+At line no: 3 func_declaration : type_specifier ID LPAREN RPAREN SEMICOLON
+
+void foo();
+
+At line no: 3 unit : func_declaration
+
+void foo();
+
+At line no: 3 program : program unit
+
+int x,y,z;
+float a;
+void foo();
+
+At line no: 5 type_specifier : INT
+
+int
+
+At line no: 5 type_specifier : INT
+
+int
+
+At line no: 5 parameter_list : type_specifier ID
+
+int a
+
+At line no: 5 type_specifier : INT
+
+int
+
+At line no: 5 parameter_list : parameter_list COMMA type_specifier ID
+
+int a,int b
+
+At line no: 6 variable : ID
+
+a
+
+At line no: 6 factor : variable
+
+a
+
+At line no: 6 unary_expression : factor
+
+a
+
+At line no: 6 term : unary_expression
+
+a
+
+At line no: 6 simple_expression : term
+
+a
+
+At line no: 6 variable : ID
+
+b
+
+At line no: 6 factor : variable
+
+b
+
+At line no: 6 unary_expression : factor
+
+b
+
+At line no: 6 term : unary_expression
+
+b
+
+At line no: 6 simple_expression : simple_expression ADDOP term
+
+a+b
+
+At line no: 6 rel_expression : simple_expression
+
+a+b
+
+At line no: 6 statement : RETURN expression SEMICOLON
+
+return a+b;
+
+At line no: 6 statements : statement
+
+return a+b;
+
+At line no: 7 compound_statement : LCURL statements RCUR
+
+{
+return a+b;
+}
+
+At line no: 7 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
+
+int var(int a,int b){
+return a+b;
+}
+
+At line no: 7 unit : func_definition
+
+int var(int a,int b){
+return a+b;
+}
+
+At line no: 7 program : program unit
+
+int x,y,z;
+float a;
+void foo();
+int var(int a,int b){
+return a+b;
+}
+

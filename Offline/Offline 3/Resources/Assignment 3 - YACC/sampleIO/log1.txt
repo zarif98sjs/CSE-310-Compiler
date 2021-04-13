@@ -18,7 +18,6 @@ At line no: 1 var_declaration : type_specifier declaration_list SEMICOLON
 
 int  x,y,z;
 
-
 At line no: 1 unit : var_declaration
 
 int  x,y,z;

@@ -13,4 +13,4 @@ g++ SymbolInfo.cpp ScopeTable.cpp SymbolTable.cpp -c
 echo 'Generated the symbol table object files'
 g++ SymbolInfo.o ScopeTable.o SymbolTable.o y.o l.o -lfl
 echo 'All ready, running'
-./a.out demo.txt
+./a.out demo.txt > demo_out.txt

@@ -7,7 +7,7 @@
 #include "SymbolInfo.h"
 #include "ScopeTable.h"
 
-#define YYSTYPE SymbolInfo*
+// #define YYSTYPE SymbolInfo*
 
 #include "y.tab.h"
 
@@ -41,11 +41,11 @@ ALL_EXCEPT_BACKSLASH [^\\]
 "while" {return WHILE;}
 "do" {return DO;}
 "break" {return BREAK;}
-"int" {return INT;}
+"int" { SymbolInfo *s= new  SymbolInfo(yytext, "INT"); yylval.symbol_info = s; return INT;}
 "char" {return CHAR;}
-"float" {return FLOAT;}
+"float" { SymbolInfo *s= new  SymbolInfo(yytext, "FLOAT"); yylval.symbol_info = s; return FLOAT;} 
 "double" {return DOUBLE;}
-"void" {return VOID;}
+"void" { SymbolInfo *s= new  SymbolInfo(yytext, "VOID"); yylval.symbol_info = s; return VOID;}
 "return" {return RETURN;}
 "switch" {return SWITCH;}
 "case" {return CASE;}
@@ -54,14 +54,12 @@ ALL_EXCEPT_BACKSLASH [^\\]
 "println"	{return PRINTLN;}
 
 {DIGIT}+	{
-				SymbolInfo *s= new  SymbolInfo(yytext, "CONST_INT");
-				yylval = (YYSTYPE)s;
+				yylval.ival = atoi(yytext);
 				return CONST_INT;
 			}
 
 {DIGIT}+(\.{DIGIT}+)?([Ee][+-]?{DIGIT}+)?	{
-				SymbolInfo *s= new  SymbolInfo(yytext, "CONST_FLOAT");
-				yylval = (YYSTYPE)s;
+				yylval.dval = atof(yytext);
 				return CONST_FLOAT;
 			}
 
@@ -77,7 +75,7 @@ ALL_EXCEPT_BACKSLASH [^\\]
 
 {LETTER}{ALNUM}*	{
 		SymbolInfo *s= new  SymbolInfo(yytext, "ID");
-		yylval = (YYSTYPE)s;
+		yylval.symbol_info = s;
 		return ID;
 }
 
@@ -86,7 +84,7 @@ ALL_EXCEPT_BACKSLASH [^\\]
 	cout<<"Error at line no "<< line_count <<": Invalid prefix on ID or invalid suffix on Number "<<yytext<<"\n"<<endl;
 }
 
-"+"|"-"	{return ADDOP;}
+"+"|"-" { SymbolInfo *s= new  SymbolInfo(yytext, "ADDOP"); yylval.symbol_info = s; return ADDOP;}
 "*"|"/"|"%"	{return MULOP;}
 "++"	{return INCOP;}
 "--"	{return DECOP;}
