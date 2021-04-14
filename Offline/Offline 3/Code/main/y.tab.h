@@ -67,24 +67,24 @@ extern int yydebug;
     PRINTLN = 271,
     INCOP = 272,
     DECOP = 273,
-    RELOP = 274,
-    ASSIGNOP = 275,
-    LOGICOP = 276,
-    NOT = 277,
-    LPAREN = 278,
-    RPAREN = 279,
-    LCURL = 280,
-    RCURL = 281,
-    LTHIRD = 282,
-    RTHIRD = 283,
-    COMMA = 284,
-    SEMICOLON = 285,
-    ID = 286,
-    INT = 287,
-    FLOAT = 288,
-    VOID = 289,
-    ADDOP = 290,
-    MULOP = 291,
+    ASSIGNOP = 274,
+    NOT = 275,
+    LPAREN = 276,
+    RPAREN = 277,
+    LCURL = 278,
+    RCURL = 279,
+    LTHIRD = 280,
+    RTHIRD = 281,
+    COMMA = 282,
+    SEMICOLON = 283,
+    ID = 284,
+    INT = 285,
+    FLOAT = 286,
+    VOID = 287,
+    ADDOP = 288,
+    MULOP = 289,
+    RELOP = 290,
+    LOGICOP = 291,
     CONST_INT = 292,
     CONST_FLOAT = 293
   };
@@ -106,24 +106,24 @@ extern int yydebug;
 #define PRINTLN 271
 #define INCOP 272
 #define DECOP 273
-#define RELOP 274
-#define ASSIGNOP 275
-#define LOGICOP 276
-#define NOT 277
-#define LPAREN 278
-#define RPAREN 279
-#define LCURL 280
-#define RCURL 281
-#define LTHIRD 282
-#define RTHIRD 283
-#define COMMA 284
-#define SEMICOLON 285
-#define ID 286
-#define INT 287
-#define FLOAT 288
-#define VOID 289
-#define ADDOP 290
-#define MULOP 291
+#define ASSIGNOP 274
+#define NOT 275
+#define LPAREN 276
+#define RPAREN 277
+#define LCURL 278
+#define RCURL 279
+#define LTHIRD 280
+#define RTHIRD 281
+#define COMMA 282
+#define SEMICOLON 283
+#define ID 284
+#define INT 285
+#define FLOAT 286
+#define VOID 287
+#define ADDOP 288
+#define MULOP 289
+#define RELOP 290
+#define LOGICOP 291
 #define CONST_INT 292
 #define CONST_FLOAT 293
 
@@ -138,8 +138,8 @@ union YYSTYPE
     SymbolInfo* symbol_info_vec[100];
     string* symbol_info_str;
     string* temp_str;
-    int ival;
-    double dval;
+    // int ival;
+    // double dval;
 
 #line 145 "y.tab.h" /* yacc.c:1909  */
 };

@@ -46,18 +46,19 @@ SymbolTable *table = new SymbolTable(bucket_size,hashF);;
     SymbolInfo* symbol_info_vec[100];
     string* symbol_info_str;
     string* temp_str;
-    int ival;
-    double dval;
+    // int ival;
+    // double dval;
 }
 
-%token <ival> IF ELSE FOR WHILE DO BREAK CHAR DOUBLE RETURN SWITCH CASE DEFAULT CONTINUE PRINTLN INCOP DECOP RELOP ASSIGNOP LOGICOP NOT LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON
-%token <symbol_info> ID INT FLOAT VOID ADDOP MULOP
-%token <ival> CONST_INT
-%token <dval> CONST_FLOAT
+%token <ival> IF ELSE FOR WHILE DO BREAK CHAR DOUBLE RETURN SWITCH CASE DEFAULT CONTINUE PRINTLN INCOP DECOP ASSIGNOP NOT LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON
+%token <symbol_info> ID INT FLOAT VOID ADDOP MULOP RELOP LOGICOP CONST_INT CONST_FLOAT
+// %token <ival> CONST_INT
+// %token <dval> CONST_FLOAT
 
 %type < temp_str > start program unit variable var_declaration type_specifier func_declaration func_definition parameter_list
 // %type < temp_str > expression logic_expression rel_expression simple_expression term  factor argument_list arguments
-%type < temp_str > expression factor unary_expression term simple_expression rel_expression statement statements compound_statement
+%type < temp_str > expression factor unary_expression term simple_expression rel_expression statement statements compound_statement logic_expression expression_statement
+%type < temp_str > arguments argument_list
 %type < symbol_info_str > declaration_list
 
 
@@ -72,6 +73,7 @@ start: program
 program: program unit  {
             cout<<"At line no: "<<line_count<<" program : program unit\n"<<endl; 
             
+            $$ = new string();
             *$$ = *$1;
             *$$ += "\n";
             *$$ += *$2;
@@ -101,10 +103,11 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
 
                 // cout<<*$$<<"\n"<<endl;
     
-    }
+            }
 		| type_specifier ID LPAREN RPAREN SEMICOLON { 
                 cout<<"At line no: "<<line_count<<" func_declaration : type_specifier ID LPAREN RPAREN SEMICOLON\n"<<endl; 
                 
+                $$ = new string();
                 *$$ = *$1;
                 *$$ += " ";
                 *$$ += $2->key;
@@ -119,7 +122,8 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
 		 
 func_definition: type_specifier ID LPAREN parameter_list RPAREN compound_statement { 
                 cout<<"At line no: "<<line_count<<" func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement\n"<<endl;  
-            
+                
+                $$ = new string();
                 *$$ = *$1;
                 *$$ += " ";
                 *$$ += $2->key;
@@ -133,6 +137,17 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN compound_stateme
             }
 		| type_specifier ID LPAREN RPAREN compound_statement { 
                 cout<<"At line no: "<<line_count<<" func_definition : type_specifier ID LPAREN RPAREN compound_statement\n"<<endl;  
+
+                $$ = new string();
+                *$$ = *$1;
+                *$$ += " ";
+                *$$ += $2->key;
+                *$$ += "(";
+                *$$ += ")";
+                *$$ += *$5;
+
+                cout<<*$$<<"\n"<<endl;
+            
             }
  		;				
 
@@ -141,6 +156,7 @@ parameter_list: parameter_list COMMA type_specifier ID {
 
                 cout<<"At line no: "<<line_count<<" parameter_list : parameter_list COMMA type_specifier ID\n"<<endl;  
 
+                $$ = new string();
                 *$$ = *$1;
                 *$$ += ",";
                 *$$ += *$3;
@@ -153,6 +169,8 @@ parameter_list: parameter_list COMMA type_specifier ID {
 		| parameter_list COMMA type_specifier
  		| type_specifier ID  { 
                 cout<<"At line no: "<<line_count<<" parameter_list : type_specifier ID\n"<<endl;  
+                
+                $$ = new string();
                 *$$ = *$1;
                 *$$ += " ";
                 *$$ += $2->key;
@@ -166,22 +184,28 @@ parameter_list: parameter_list COMMA type_specifier ID {
 compound_statement: LCURL statements RCURL {
                 cout<<"At line no: "<<line_count<<" compound_statement : LCURL statements RCUR\n"<<endl;
                 
-                string temp = *$2;
-
+                // string temp = *$2;
+                $$ = new string();
                 *$$ = "{\n"; 
-                *$$ += temp; 
+                *$$ += *$2; 
                 *$$ += "\n}"; 
                 cout<<*$$<<"\n"<<endl;
              }
  		    | LCURL RCURL {
                 cout<<"At line no: "<<line_count<<" LCURL RCURL\n"<<endl; 
+
+                $$ = new string();
+                *$$ = "{\n";  
+                *$$ += "\n}"; 
+                cout<<*$$<<"\n"<<endl;
              }
  		    ;
  		    
 var_declaration: type_specifier declaration_list SEMICOLON { 
 
-            cout<<"At line no: "<<line_count<<" var_declaration --> type_specifier declaration_list SEMICOLON\n"<<endl; 
-
+            cout<<"At line no: "<<line_count<<" var_declaration : type_specifier declaration_list SEMICOLON\n"<<endl; 
+            
+            $$ = new string();
             *$$ = *$1;
             *$$ += " ";
             *$$ += *$2;
@@ -199,38 +223,39 @@ type_specifier: INT  { cout<<"At line no: "<<line_count<<" type_specifier : INT\
 declaration_list: declaration_list COMMA ID { 
                     cout<<"At line no: "<<line_count<<" declaration_list COMMA ID\n"<<endl; 
                     
-                    *$1 += ",";
-                    *$1 += $3->key;
-
-                    cout<< *$1 <<"\n"<<endl;
-
-                    $$ = $1;
+                    $$ = new string();
+                    *$$ = *$1;
+                    *$$ += ",";
+                    *$$ += $3->key;
+                    cout<< *$$ <<"\n"<<endl;
                 }
  		  | declaration_list COMMA ID LTHIRD CONST_INT RTHIRD {
                cout<<"At line no: "<<line_count<<" declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n"<<endl; 
            
-                *$1 += ",";
-                *$1 += $3->key;
-                *$1 += "[";
-                *$1 += to_string($5);
-                *$1 += "]";
+                $$ = new string();
+                *$$ = *$1;
+                *$$ += ",";
+                *$$ += $3->key;
+                *$$ += "[";
+                *$$ += $5->key;
+                *$$ += "]";
 
-                cout<< *$1 <<"\n"<<endl;
-
-                $$ = $1;
+                cout<< *$$ <<"\n"<<endl;
            
            }
  		  | ID { 
                cout<<"At line no: "<<line_count<<" declaration_list : ID\n"<<endl; cout<<$1->key<<"\n"<<endl;
+                $$ = new string();
                 *$$ = $1->key;
                }
  		  | ID LTHIRD CONST_INT RTHIRD
            {
                cout<<"At line no: "<<line_count<<" declaration_list : ID LTHIRD CONST_INT RTHIRD\n"<<endl;
            
+                $$ = new string();
                 *$$ = $1->key;
                 *$$ += "[";
-                *$$ += to_string($3);
+                *$$ += $3->key;
                 *$$ += "]";
 
                 cout<< *$$ <<"\n"<<endl;
@@ -239,19 +264,35 @@ declaration_list: declaration_list COMMA ID {
  		  
 statements: statement {
             cout<<"At line no: "<<line_count<<" statements : statement\n"<<endl;
+            
+            $$ = new string();
             *$$ = *$1;
             cout<<*$$<<"\n"<<endl; 
         }
 	   | statements statement {
             cout<<"At line no: "<<line_count<<" statements : statements statement\n"<<endl; 
+        
+            $$ = new string();
+            *$$ = *$1;
+            *$$ += "\n";
+            *$$ += *$2;
+
+            cout<<*$$<<"\n"<<endl; 
         }
 	   ;
 	   
 statement: var_declaration {
             cout<<"At line no: "<<line_count<<" statement : var_declaration\n"<<endl; 
+    
+            $$ = new string();
+            *$$ = *$1;
+            cout<<*$$<<"\n"<<endl;
         }
 	  | expression_statement {
             cout<<"At line no: "<<line_count<<" statement : expression_statement\n"<<endl; 
+            $$ = new string();
+            *$$ = *$1;
+            cout<<*$$<<"\n"<<endl;
         }
 	  | compound_statement {
             cout<<"At line no: "<<line_count<<" statement : compound_statement\n"<<endl; 
@@ -261,6 +302,7 @@ statement: var_declaration {
         }
 	  | IF LPAREN expression RPAREN statement {
             cout<<"At line no: "<<line_count<<" statement : IF LPAREN expression RPAREN statement\n"<<endl; 
+        
         }
 	  | IF LPAREN expression RPAREN statement ELSE statement {
             cout<<"At line no: "<<line_count<<" statement : IF LPAREN expression RPAREN statement ELSE statemen\n"<<endl; 
@@ -273,7 +315,8 @@ statement: var_declaration {
         }
 	  | RETURN expression SEMICOLON {
             cout<<"At line no: "<<line_count<<" statement : RETURN expression SEMICOLON\n"<<endl; 
-        
+
+            $$ = new string();
             *$$ = "return";
             *$$ += " ";
             *$$ += *$2;
@@ -283,53 +326,97 @@ statement: var_declaration {
         }
 	  ;
 	  
-expression_statement: SEMICOLON			
-			| expression SEMICOLON 
+expression_statement: SEMICOLON	{
+                    cout<<"At line no: "<<line_count<<" expression_statement : SEMICOLON\n"<<endl; 
+                }		
+			| expression SEMICOLON {
+                    cout<<"At line no: "<<line_count<<" expression_statement : expression SEMICOLON\n"<<endl; 
+                    $$ = new string();
+                    *$$ = *$1;
+                    *$$ += ";";
+
+                    cout<<*$$<<"\n"<<endl;
+                }
 			;
 	  
 variable: ID { 
             cout<<"At line no: "<<line_count<<" variable : ID\n"<<endl; 
+            $$ = new string();
             *$$ = $1->key;
-
             cout<<*$$<<"\n"<<endl;
         }		
 	 | ID LTHIRD expression RTHIRD {
             cout<<"At line no: "<<line_count<<" variable : ID LTHIRD expression RTHIRD\n"<<endl; 
-            cout<<"HEREEEE"<<endl;
-            // *$$ = $1->key;
-            // *$$ += "[";
-            // *$$ += *$3;
-            // *$$ += "]";
+            
+            $$ = new string();
+            *$$ = $1->key;
+            *$$ += "[";
+            *$$ += *$3;
+            *$$ += "]";
 
-            // cout<<*$$<<"\n"<<endl;
+            cout<<*$$<<"\n"<<endl;
          }
 	 ;
 	 
- expression: logic_expression	
-	   | variable ASSIGNOP logic_expression 	
+ expression: logic_expression	{
+                cout<<"At line no: "<<line_count<<" expression : logic_expression\n"<<endl; 
+                $$ = new string();
+                *$$ = *$1;
+                cout<<*$$<<"\n"<<endl;
+            }
+	   | variable ASSIGNOP logic_expression {
+                cout<<"At line no: "<<line_count<<" expression : variable ASSIGNOP logic_expression\n"<<endl;
+                $$ = new string();
+                *$$ = *$1;
+                *$$ += "=";
+                *$$ += *$3;
+                cout<<*$$<<"\n"<<endl;
+            }	
 	   ;
 
 
 			 
-logic_expression: rel_expression 	
-		 | rel_expression LOGICOP rel_expression 	
+logic_expression: rel_expression {
+                cout<<"At line no: "<<line_count<<" logic_expression : rel_expression\n"<<endl;
+                $$ = new string();
+                *$$ = *$1;
+                cout<<*$$<<"\n"<<endl;
+            }	
+		 | rel_expression LOGICOP rel_expression {
+                cout<<"At line no: "<<line_count<<" logic_expression : rel_expression LOGICOP rel_expression\n"<<endl;
+                $$ = new string();
+                *$$ = *$1;
+                *$$ += $2->key;
+                *$$ += *$3;
+                cout<<*$$<<"\n"<<endl;
+            }	
 		 ;
 			
 rel_expression: simple_expression {
                 cout<<"At line no: "<<line_count<<" rel_expression : simple_expression\n"<<endl;
+                $$ = new string();
                 *$$ = *$1;
                  cout<<*$$<<"\n"<<endl;
             }
-		| simple_expression RELOP simple_expression	
+		| simple_expression RELOP simple_expression	{
+                cout<<"At line no: "<<line_count<<" rel_expression : simple_expression RELOP simple_expression\n"<<endl;
+                $$ = new string();
+                *$$ = *$1;
+                *$$ += $2->key;
+                *$$ += *$3;
+                cout<<*$$<<"\n"<<endl;
+            }
 		;
 				
 simple_expression: term {
                 cout<<"At line no: "<<line_count<<" simple_expression : term\n"<<endl;
+                $$ = new string();
                 *$$ = *$1;
                 cout<<*$$<<"\n"<<endl;
             }
 		  | simple_expression ADDOP term {
                 cout<<"At line no: "<<line_count<<" simple_expression : simple_expression ADDOP term\n"<<endl;
+               $$ = new string();
                *$$ = *$1;
                *$$ += $2->key;
                *$$ += *$3;
@@ -340,19 +427,35 @@ simple_expression: term {
 					
 term:	unary_expression {
             cout<<"At line no: "<<line_count<<" term : unary_expression\n"<<endl;
+            $$ = new string();
             *$$ = *$1;
             cout<<*$$<<"\n"<<endl;
         }
     |  term MULOP unary_expression {
             cout<<"At line no: "<<line_count<<" term : term MULOP unary_expressio\n"<<endl;
-            // cout<<*$$<<"\n"<<endl;
+            $$ = new string();
+            *$$ = *$1;
+            *$$ += $2->key;
+            *$$ += *$3;
+            cout<<*$$<<"\n"<<endl;
         }
     ;
 
-unary_expression: ADDOP unary_expression  
-		 | NOT unary_expression 
+unary_expression: ADDOP unary_expression  {
+                
+                cout<<"At line no: "<<line_count<<" simple_expression : simple_expression ADDOP term\n"<<endl;
+                $$ = new string();
+                *$$ = $1->key;
+                *$$ += *$2;
+                cout<<*$$<<"\n"<<endl;
+            }
+		 | NOT unary_expression {
+                $$ = new string();
+                *$$ = *$2;
+            }
 		 | factor  { 
                 cout<<"At line no: "<<line_count<<" unary_expression : factor\n"<<endl;
+                $$ = new string();
                 *$$ = *$1;
                 cout<<*$$<<"\n"<<endl;
              }
@@ -360,21 +463,43 @@ unary_expression: ADDOP unary_expression
 	
 factor: variable {
             cout<<"At line no: "<<line_count<<" factor : variable\n"<<endl;
+            $$ = new string();
             *$$ = *$1;
             cout<<*$$<<"\n"<<endl;
 
         }
 	| ID LPAREN argument_list RPAREN {
             cout<<"At line no: "<<line_count<<" factor : ID LPAREN argument_list RPAREN\n"<<endl; 
+
+            $$ = new string();
+            *$$ = $1->key;
+            *$$ += "( ";
+            *$$ += *$3;
+            *$$ += " )";
+            cout<<*$$<<"\n"<<endl;
+
         }
 	| LPAREN expression RPAREN {
             cout<<"At line no: "<<line_count<<" factor : LPAREN expression RPAREN\n"<<endl; 
+
+            $$ = new string();
+            *$$ = "(";
+            *$$ += *$2;
+            *$$ += ")";
+            cout<<*$$<<"\n"<<endl;
+        
         }
 	| CONST_INT  { 
             cout<<"At line no: "<<line_count<<" factor : CONST_INT\n"<<endl; 
+            $$ = new string();
+            *$$ = $1->key;
+            cout<<*$$<<"\n"<<endl;
         }
 	| CONST_FLOAT  { 
-            cout<<"At line no: "<<line_count<<" factor : CONST_FLOAT\n"<<endl; 
+            cout<<"At line no: "<<line_count<<" factor : CONST_FLOAT\n"<<endl;
+            $$ = new string();
+            *$$ = $1->key; 
+            cout<<*$$<<"\n"<<endl;
         }
 	| variable INCOP {
             cout<<"At line no: "<<line_count<<" factor : variable INCOP\n"<<endl; 
@@ -384,12 +509,34 @@ factor: variable {
         }
 	;
 	
-argument_list: arguments
-			|
+argument_list: arguments {
+                    cout<<"At line no: "<<line_count<<" arguments : arguments\n"<<endl;
+
+                    $$ = new string();
+                    *$$ = *$1; 
+                    cout<<*$$<<"\n"<<endl;
+                }
+			| {
+                cout<<"WHAT IS THIS"<<endl;
+            }   
 			;
 	
-arguments: arguments COMMA logic_expression
-	    | logic_expression
+arguments: arguments COMMA logic_expression {
+                cout<<"At line no: "<<line_count<<" arguments : arguments COMMA logic_expression\n"<<endl;
+                $$ = new string();
+                *$$ = *$1; 
+                *$$ += " , "; 
+                *$$ += *$3; 
+                cout<<*$$<<"\n"<<endl;
+            }
+	    | logic_expression {
+                cout<<"At line no: "<<line_count<<" arguments : logic_expression\n"<<endl;
+
+                $$ = new string();
+                *$$ = *$1; 
+                cout<<*$$<<"\n"<<endl;
+            
+            }
 	    ;
 
 %%

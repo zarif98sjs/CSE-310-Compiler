@@ -962,21 +962,23 @@ case 20:
 YY_RULE_SETUP
 #line 56 "demo.l"
 {
-				yylval.ival = atoi(yytext);
+				SymbolInfo *s= new  SymbolInfo(yytext, "CONST_INT");
+				yylval.symbol_info = s;
 				return CONST_INT;
 			}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 61 "demo.l"
+#line 62 "demo.l"
 {
-				yylval.dval = atof(yytext);
+				SymbolInfo *s= new  SymbolInfo(yytext, "CONST_FLOAT");
+				yylval.symbol_info = s;
 				return CONST_FLOAT;
 			}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 66 "demo.l"
+#line 68 "demo.l"
 {
 	error_count++;
 	cout<<"Error at line no "<< line_count <<": Too many decimal points "<<yytext<<"\n"<<endl;
@@ -984,7 +986,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 71 "demo.l"
+#line 73 "demo.l"
 {
 	error_count++;
 	cout<<"Error at line no "<< line_count <<": Ill formed number "<<yytext<<"\n"<<endl;
@@ -992,16 +994,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 76 "demo.l"
+#line 78 "demo.l"
 {
 		SymbolInfo *s= new  SymbolInfo(yytext, "ID");
 		yylval.symbol_info = s;
+		// cout<<"ID -------------------------->"<<yytext<<endl;
 		return ID;
 }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 82 "demo.l"
+#line 85 "demo.l"
 {
 	error_count++;
 	cout<<"Error at line no "<< line_count <<": Invalid prefix on ID or invalid suffix on Number "<<yytext<<"\n"<<endl;
@@ -1009,90 +1012,90 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 87 "demo.l"
+#line 90 "demo.l"
 { SymbolInfo *s= new  SymbolInfo(yytext, "ADDOP"); yylval.symbol_info = s; return ADDOP;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 88 "demo.l"
-{return MULOP;}
+#line 91 "demo.l"
+{ SymbolInfo *s= new  SymbolInfo(yytext, "MULOP"); yylval.symbol_info = s; return MULOP;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 89 "demo.l"
+#line 92 "demo.l"
 {return INCOP;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 90 "demo.l"
+#line 93 "demo.l"
 {return DECOP;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 92 "demo.l"
-{return RELOP;}
+#line 95 "demo.l"
+{ SymbolInfo *s= new  SymbolInfo(yytext, "RELOP"); yylval.symbol_info = s; return RELOP;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 93 "demo.l"
+#line 96 "demo.l"
 {return ASSIGNOP;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 94 "demo.l"
-{return LOGICOP;}
+#line 97 "demo.l"
+{ SymbolInfo *s= new  SymbolInfo(yytext, "LOGICOP"); yylval.symbol_info = s; return LOGICOP;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 95 "demo.l"
+#line 98 "demo.l"
 {return NOT;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 97 "demo.l"
+#line 100 "demo.l"
 {return LPAREN;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 98 "demo.l"
+#line 101 "demo.l"
 {return RPAREN;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 99 "demo.l"
+#line 102 "demo.l"
 {return LCURL;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 100 "demo.l"
+#line 103 "demo.l"
 {return RCURL;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 101 "demo.l"
+#line 104 "demo.l"
 {return LTHIRD;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 102 "demo.l"
+#line 105 "demo.l"
 {return RTHIRD;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 104 "demo.l"
+#line 107 "demo.l"
 {return COMMA;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 105 "demo.l"
+#line 108 "demo.l"
 {return SEMICOLON;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 107 "demo.l"
+#line 110 "demo.l"
 ECHO;
 	YY_BREAK
-#line 1096 "lex.yy.c"
+#line 1099 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2097,5 +2100,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 107 "demo.l"
+#line 110 "demo.l"
 

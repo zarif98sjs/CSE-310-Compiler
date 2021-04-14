@@ -54,12 +54,14 @@ ALL_EXCEPT_BACKSLASH [^\\]
 "println"	{return PRINTLN;}
 
 {DIGIT}+	{
-				yylval.ival = atoi(yytext);
+				SymbolInfo *s= new  SymbolInfo(yytext, "CONST_INT");
+				yylval.symbol_info = s;
 				return CONST_INT;
 			}
 
 {DIGIT}+(\.{DIGIT}+)?([Ee][+-]?{DIGIT}+)?	{
-				yylval.dval = atof(yytext);
+				SymbolInfo *s= new  SymbolInfo(yytext, "CONST_FLOAT");
+				yylval.symbol_info = s;
 				return CONST_FLOAT;
 			}
 
@@ -76,6 +78,7 @@ ALL_EXCEPT_BACKSLASH [^\\]
 {LETTER}{ALNUM}*	{
 		SymbolInfo *s= new  SymbolInfo(yytext, "ID");
 		yylval.symbol_info = s;
+		// cout<<"ID -------------------------->"<<yytext<<endl;
 		return ID;
 }
 
@@ -85,13 +88,13 @@ ALL_EXCEPT_BACKSLASH [^\\]
 }
 
 "+"|"-" { SymbolInfo *s= new  SymbolInfo(yytext, "ADDOP"); yylval.symbol_info = s; return ADDOP;}
-"*"|"/"|"%"	{return MULOP;}
+"*"|"/"|"%"	{ SymbolInfo *s= new  SymbolInfo(yytext, "MULOP"); yylval.symbol_info = s; return MULOP;}
 "++"	{return INCOP;}
 "--"	{return DECOP;}
 
-"<"|"<="|">"|">="|"=="|"!="	{return RELOP;}
+"<"|"<="|">"|">="|"=="|"!="	{ SymbolInfo *s= new  SymbolInfo(yytext, "RELOP"); yylval.symbol_info = s; return RELOP;}
 "="	{return ASSIGNOP;}
-"&&"|"||"	{return LOGICOP;}
+"&&"|"||"	{ SymbolInfo *s= new  SymbolInfo(yytext, "LOGICOP"); yylval.symbol_info = s; return LOGICOP;}
 "!"	{return NOT;}
 
 "("	{return LPAREN;}

@@ -157,24 +157,24 @@ extern int yydebug;
     PRINTLN = 271,
     INCOP = 272,
     DECOP = 273,
-    RELOP = 274,
-    ASSIGNOP = 275,
-    LOGICOP = 276,
-    NOT = 277,
-    LPAREN = 278,
-    RPAREN = 279,
-    LCURL = 280,
-    RCURL = 281,
-    LTHIRD = 282,
-    RTHIRD = 283,
-    COMMA = 284,
-    SEMICOLON = 285,
-    ID = 286,
-    INT = 287,
-    FLOAT = 288,
-    VOID = 289,
-    ADDOP = 290,
-    MULOP = 291,
+    ASSIGNOP = 274,
+    NOT = 275,
+    LPAREN = 276,
+    RPAREN = 277,
+    LCURL = 278,
+    RCURL = 279,
+    LTHIRD = 280,
+    RTHIRD = 281,
+    COMMA = 282,
+    SEMICOLON = 283,
+    ID = 284,
+    INT = 285,
+    FLOAT = 286,
+    VOID = 287,
+    ADDOP = 288,
+    MULOP = 289,
+    RELOP = 290,
+    LOGICOP = 291,
     CONST_INT = 292,
     CONST_FLOAT = 293
   };
@@ -196,24 +196,24 @@ extern int yydebug;
 #define PRINTLN 271
 #define INCOP 272
 #define DECOP 273
-#define RELOP 274
-#define ASSIGNOP 275
-#define LOGICOP 276
-#define NOT 277
-#define LPAREN 278
-#define RPAREN 279
-#define LCURL 280
-#define RCURL 281
-#define LTHIRD 282
-#define RTHIRD 283
-#define COMMA 284
-#define SEMICOLON 285
-#define ID 286
-#define INT 287
-#define FLOAT 288
-#define VOID 289
-#define ADDOP 290
-#define MULOP 291
+#define ASSIGNOP 274
+#define NOT 275
+#define LPAREN 276
+#define RPAREN 277
+#define LCURL 278
+#define RCURL 279
+#define LTHIRD 280
+#define RTHIRD 281
+#define COMMA 282
+#define SEMICOLON 283
+#define ID 284
+#define INT 285
+#define FLOAT 286
+#define VOID 287
+#define ADDOP 288
+#define MULOP 289
+#define RELOP 290
+#define LOGICOP 291
 #define CONST_INT 292
 #define CONST_FLOAT 293
 
@@ -228,8 +228,8 @@ union YYSTYPE
     SymbolInfo* symbol_info_vec[100];
     string* symbol_info_str;
     string* temp_str;
-    int ival;
-    double dval;
+    // int ival;
+    // double dval;
 
 #line 235 "y.tab.c" /* yacc.c:355  */
 };
@@ -490,7 +490,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  11
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   184
+#define YYLAST   170
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  39
@@ -549,13 +549,13 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    66,    66,    72,    80,    86,    87,    88,    91,   105,
-     120,   134,   140,   153,   154,   162,   166,   176,   181,   194,
-     195,   196,   199,   209,   223,   227,   240,   245,   250,   253,
-     256,   259,   262,   265,   268,   271,   274,   286,   287,   290,
-     296,   308,   309,   314,   315,   318,   323,   326,   331,   341,
-     346,   352,   353,   354,   361,   367,   370,   373,   376,   379,
-     382,   387,   388,   391,   392
+       0,    67,    67,    73,    82,    88,    89,    90,    93,   107,
+     123,   138,   155,   169,   170,   180,   184,   194,   204,   218,
+     219,   220,   223,   232,   246,   251,   265,   272,   284,   291,
+     297,   300,   303,   307,   310,   313,   316,   329,   332,   342,
+     348,   361,   367,   379,   385,   395,   401,   411,   417,   428,
+     434,   444,   452,   456,   464,   471,   482,   492,   498,   504,
+     507,   512,   519,   524,   532
 };
 #endif
 
@@ -566,15 +566,16 @@ static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "IF", "ELSE", "FOR", "WHILE", "DO",
   "BREAK", "CHAR", "DOUBLE", "RETURN", "SWITCH", "CASE", "DEFAULT",
-  "CONTINUE", "PRINTLN", "INCOP", "DECOP", "RELOP", "ASSIGNOP", "LOGICOP",
-  "NOT", "LPAREN", "RPAREN", "LCURL", "RCURL", "LTHIRD", "RTHIRD", "COMMA",
-  "SEMICOLON", "ID", "INT", "FLOAT", "VOID", "ADDOP", "MULOP", "CONST_INT",
-  "CONST_FLOAT", "$accept", "start", "program", "unit", "func_declaration",
-  "func_definition", "parameter_list", "compound_statement",
-  "var_declaration", "type_specifier", "declaration_list", "statements",
-  "statement", "expression_statement", "variable", "expression",
-  "logic_expression", "rel_expression", "simple_expression", "term",
-  "unary_expression", "factor", "argument_list", "arguments", YY_NULLPTR
+  "CONTINUE", "PRINTLN", "INCOP", "DECOP", "ASSIGNOP", "NOT", "LPAREN",
+  "RPAREN", "LCURL", "RCURL", "LTHIRD", "RTHIRD", "COMMA", "SEMICOLON",
+  "ID", "INT", "FLOAT", "VOID", "ADDOP", "MULOP", "RELOP", "LOGICOP",
+  "CONST_INT", "CONST_FLOAT", "$accept", "start", "program", "unit",
+  "func_declaration", "func_definition", "parameter_list",
+  "compound_statement", "var_declaration", "type_specifier",
+  "declaration_list", "statements", "statement", "expression_statement",
+  "variable", "expression", "logic_expression", "rel_expression",
+  "simple_expression", "term", "unary_expression", "factor",
+  "argument_list", "arguments", YY_NULLPTR
 };
 #endif
 
@@ -604,18 +605,18 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      32,   -69,   -69,   -69,    15,    32,   -69,   -69,   -69,   -69,
-      12,   -69,   -69,    14,    50,   -12,    17,    28,   -69,   -11,
-       1,    30,    39,    29,    52,   -69,   -69,     2,    32,   -69,
-     -69,    34,     5,    53,    58,   146,    65,   146,   146,   -69,
-     -69,    25,   146,   -69,   -69,   -69,   -69,    61,    88,   -69,
-     -69,    33,    66,   -69,    74,    -9,    62,   -69,   -69,   -69,
-     -69,    69,    73,   146,   141,   146,    67,    71,     0,   -69,
-      79,   146,   146,   -69,    78,   -69,   -69,   -69,   -69,   146,
-     -69,   146,   146,   146,   146,   -69,   -69,    82,   141,    83,
-     -69,    84,   -69,   -69,    85,    86,    89,   -69,   -69,    77,
-      62,   -69,   124,   146,   124,    94,   -69,   146,   -69,   112,
-     104,   -69,   -69,   -69,   124,   124,   -69,   -69
+      20,   -69,   -69,   -69,    15,    20,   -69,   -69,   -69,   -69,
+      -3,   -69,   -69,     3,    40,   -12,    -2,    11,   -69,   -11,
+      -6,    14,    22,    32,    60,   -69,   -69,     2,    20,   -69,
+     -69,    24,    38,    43,    56,   121,    58,   121,   121,   -69,
+     -69,    16,   121,   -69,   -69,   -69,   -69,    49,    96,   -69,
+     -69,    36,    54,   -69,    50,    23,    51,   -69,   -69,   -69,
+     -69,    65,    61,   121,    85,   121,    67,    71,    57,   -69,
+      74,   121,   121,   -69,    78,   -69,   -69,   -69,   -69,   121,
+     -69,   121,   121,   121,   121,   -69,   -69,    82,    85,    86,
+     -69,    87,   -69,   -69,    88,    84,    89,   -69,   -69,    51,
+      97,   -69,   132,   121,   132,    93,   -69,   121,   -69,   127,
+     110,   -69,   -69,   -69,   132,   132,   -69,   -69
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -632,16 +633,16 @@ static const yytype_uint8 yydefact[] =
       10,    13,     0,     0,     0,     0,     0,     0,    54,    52,
        0,    62,     0,    51,    24,    16,    27,    59,    60,     0,
       38,     0,     0,     0,     0,    12,    23,     0,     0,     0,
-      36,     0,    56,    64,     0,    61,     0,    42,    44,    46,
-      48,    50,     0,     0,     0,     0,    55,     0,    40,    32,
+      36,     0,    56,    64,     0,    61,     0,    42,    44,    48,
+      46,    50,     0,     0,     0,     0,    55,     0,    40,    32,
        0,    34,    35,    63,     0,     0,    33,    31
 };
 
   /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int8 yypgoto[] =
+static const yytype_int16 yypgoto[] =
 {
-     -69,   -69,   -69,   126,   -69,   -69,   -69,    -3,    35,     8,
-     -69,   -69,   -42,   -55,   -37,   -34,   -68,    51,    54,    55,
+     -69,   -69,   -69,   131,   -69,   -69,   -69,    -5,    27,     8,
+     -69,   -69,   -42,   -55,   -37,   -34,   -68,    59,    62,    64,
      -35,   -69,   -69,   -69
 };
 
@@ -659,65 +660,63 @@ static const yytype_int8 yydefgoto[] =
 static const yytype_uint8 yytable[] =
 {
       68,    66,    69,    93,    70,    68,    76,    73,    10,    88,
-      82,    97,    19,    10,    24,    11,    26,    77,    78,    25,
-       1,     2,     3,    21,    60,    27,    83,    24,    63,    87,
-      28,    89,    59,   103,    68,     9,    61,    15,    96,   113,
-       9,    16,    68,    13,    68,    68,    68,    68,    71,   101,
-      77,    78,    72,    79,    22,    32,    31,    33,    34,    23,
-     109,    29,   111,    35,     1,     2,     3,    30,    36,   110,
-      68,    62,   116,   117,    37,    38,    64,    24,    39,    17,
-      18,    65,    40,    41,     1,     2,     3,    42,    67,    43,
-      44,    32,    74,    33,    34,    81,    80,    90,    84,    35,
-      85,    86,    91,    92,    36,    16,   102,   104,   105,   106,
-      37,    38,    83,    24,    75,   107,   114,   108,    40,    41,
-       1,     2,     3,    42,   112,    43,    44,    32,   115,    33,
-      34,    12,    98,     0,     0,    35,    99,     0,   100,     0,
-      36,     0,     0,     0,     0,     0,    37,    38,     0,    24,
-       0,     0,     0,     0,    40,    41,     1,     2,     3,    42,
-       0,    43,    44,    37,    38,     0,     0,     0,    37,    38,
-       0,    40,    41,     0,     0,     0,    42,    41,    43,    44,
-       0,    42,     0,    43,    44
+      19,    97,    24,    10,    26,    11,    27,    25,     1,     2,
+       3,    28,    60,    21,    15,    24,    13,     9,    16,    87,
+      59,    89,     9,   103,    68,    22,    61,    71,    96,   113,
+      23,    72,    68,    29,    68,    68,    68,    68,    30,   101,
+       1,     2,     3,    77,    78,    79,    82,    31,    83,    63,
+     109,    62,   111,    32,    64,    33,    34,    17,    18,   110,
+      68,    35,   116,   117,    77,    78,    36,    65,    74,    67,
+      37,    38,    80,    24,    39,    84,    81,    86,    40,    41,
+       1,     2,     3,    42,    85,    90,    92,    43,    44,    32,
+      91,    33,    34,    16,   102,    37,    38,    35,   104,   105,
+     106,   107,    36,    40,    41,   108,    37,    38,    42,    24,
+      75,   112,    43,    44,    40,    41,     1,     2,     3,    42,
+      82,   114,   115,    43,    44,    32,    12,    33,    34,     0,
+      98,    37,    38,    35,     0,   100,    99,     0,    36,     0,
+      41,     0,    37,    38,    42,    24,     0,     0,    43,    44,
+      40,    41,     1,     2,     3,    42,     0,     0,     0,    43,
+      44
 };
 
 static const yytype_int8 yycheck[] =
 {
       37,    35,    37,    71,    38,    42,    48,    42,     0,    64,
-      19,    79,    24,     5,    25,     0,    19,    17,    18,    30,
-      32,    33,    34,    15,    27,    24,    35,    25,    23,    63,
-      29,    65,    30,    88,    71,     0,    28,    23,    72,   107,
-       5,    27,    79,    31,    81,    82,    83,    84,    23,    84,
-      17,    18,    27,    20,    37,     3,    27,     5,     6,    31,
-     102,    31,   104,    11,    32,    33,    34,    28,    16,   103,
-     107,    37,   114,   115,    22,    23,    23,    25,    26,    29,
-      30,    23,    30,    31,    32,    33,    34,    35,    23,    37,
-      38,     3,    31,     5,     6,    21,    30,    30,    36,    11,
-      31,    28,    31,    24,    16,    27,    24,    24,    24,    24,
-      22,    23,    35,    25,    26,    29,     4,    28,    30,    31,
-      32,    33,    34,    35,    30,    37,    38,     3,    24,     5,
-       6,     5,    81,    -1,    -1,    11,    82,    -1,    83,    -1,
-      16,    -1,    -1,    -1,    -1,    -1,    22,    23,    -1,    25,
-      -1,    -1,    -1,    -1,    30,    31,    32,    33,    34,    35,
-      -1,    37,    38,    22,    23,    -1,    -1,    -1,    22,    23,
-      -1,    30,    31,    -1,    -1,    -1,    35,    31,    37,    38,
-      -1,    35,    -1,    37,    38
+      22,    79,    23,     5,    19,     0,    22,    28,    30,    31,
+      32,    27,    27,    15,    21,    23,    29,     0,    25,    63,
+      28,    65,     5,    88,    71,    37,    28,    21,    72,   107,
+      29,    25,    79,    29,    81,    82,    83,    84,    26,    84,
+      30,    31,    32,    17,    18,    19,    33,    25,    35,    21,
+     102,    37,   104,     3,    21,     5,     6,    27,    28,   103,
+     107,    11,   114,   115,    17,    18,    16,    21,    29,    21,
+      20,    21,    28,    23,    24,    34,    36,    26,    28,    29,
+      30,    31,    32,    33,    29,    28,    22,    37,    38,     3,
+      29,     5,     6,    25,    22,    20,    21,    11,    22,    22,
+      22,    27,    16,    28,    29,    26,    20,    21,    33,    23,
+      24,    28,    37,    38,    28,    29,    30,    31,    32,    33,
+      33,     4,    22,    37,    38,     3,     5,     5,     6,    -1,
+      81,    20,    21,    11,    -1,    83,    82,    -1,    16,    -1,
+      29,    -1,    20,    21,    33,    23,    -1,    -1,    37,    38,
+      28,    29,    30,    31,    32,    33,    -1,    -1,    -1,    37,
+      38
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    32,    33,    34,    40,    41,    42,    43,    44,    47,
-      48,     0,    42,    31,    49,    23,    27,    29,    30,    24,
-      45,    48,    37,    31,    25,    30,    46,    24,    29,    31,
-      28,    27,     3,     5,     6,    11,    16,    22,    23,    26,
-      30,    31,    35,    37,    38,    46,    47,    48,    50,    51,
-      52,    53,    54,    55,    56,    57,    58,    59,    60,    30,
-      46,    48,    37,    23,    23,    23,    54,    23,    53,    59,
-      54,    23,    27,    59,    31,    26,    51,    17,    18,    20,
-      30,    21,    19,    35,    36,    31,    28,    54,    52,    54,
-      30,    31,    24,    55,    61,    62,    54,    55,    56,    57,
-      58,    59,    24,    52,    24,    24,    24,    29,    28,    51,
-      54,    51,    30,    55,     4,    24,    51,    51
+       0,    30,    31,    32,    40,    41,    42,    43,    44,    47,
+      48,     0,    42,    29,    49,    21,    25,    27,    28,    22,
+      45,    48,    37,    29,    23,    28,    46,    22,    27,    29,
+      26,    25,     3,     5,     6,    11,    16,    20,    21,    24,
+      28,    29,    33,    37,    38,    46,    47,    48,    50,    51,
+      52,    53,    54,    55,    56,    57,    58,    59,    60,    28,
+      46,    48,    37,    21,    21,    21,    54,    21,    53,    59,
+      54,    21,    25,    59,    29,    24,    51,    17,    18,    19,
+      28,    36,    33,    35,    34,    29,    26,    54,    52,    54,
+      28,    29,    22,    55,    61,    62,    54,    55,    56,    58,
+      57,    59,    22,    52,    22,    22,    22,    27,    26,    51,
+      54,    51,    28,    55,     4,    22,    51,    51
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -1418,18 +1417,19 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 67 "demo.y" /* yacc.c:1646  */
+#line 68 "demo.y" /* yacc.c:1646  */
     {
 		//write your code in this block in all the similar blocks below
 	}
-#line 1426 "y.tab.c" /* yacc.c:1646  */
+#line 1425 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 72 "demo.y" /* yacc.c:1646  */
+#line 73 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" program : program unit\n"<<endl; 
             
+            (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[-1]. temp_str );
             *(yyval. temp_str ) += "\n";
             *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
@@ -1439,7 +1439,7 @@ yyreduce:
     break;
 
   case 4:
-#line 80 "demo.y" /* yacc.c:1646  */
+#line 82 "demo.y" /* yacc.c:1646  */
     { 
             cout<<"At line no: "<<line_count<<" program : unit\n"<<endl; 
             cout<<*(yyvsp[0]. temp_str )<<"\n"<<endl; 
@@ -1448,25 +1448,25 @@ yyreduce:
     break;
 
   case 5:
-#line 86 "demo.y" /* yacc.c:1646  */
+#line 88 "demo.y" /* yacc.c:1646  */
     { cout<<"At line no: "<<line_count<<" unit : var_declaration\n"<<endl; cout<<*(yyvsp[0]. temp_str )<<"\n"<<endl; }
 #line 1454 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 87 "demo.y" /* yacc.c:1646  */
+#line 89 "demo.y" /* yacc.c:1646  */
     { cout<<"At line no: "<<line_count<<" unit : func_declaration\n"<<endl; cout<<*(yyvsp[0]. temp_str )<<"\n"<<endl; }
 #line 1460 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 88 "demo.y" /* yacc.c:1646  */
+#line 90 "demo.y" /* yacc.c:1646  */
     { cout<<"At line no: "<<line_count<<" unit : func_definition\n"<<endl; cout<<*(yyvsp[0]. temp_str )<<"\n"<<endl; }
 #line 1466 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 91 "demo.y" /* yacc.c:1646  */
+#line 93 "demo.y" /* yacc.c:1646  */
     { 
                 
                 cout<<"At line no: "<<line_count<<" func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON\n"<<endl; 
@@ -1480,15 +1480,16 @@ yyreduce:
 
                 // cout<<*$$<<"\n"<<endl;
     
-    }
+            }
 #line 1485 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 105 "demo.y" /* yacc.c:1646  */
+#line 107 "demo.y" /* yacc.c:1646  */
     { 
                 cout<<"At line no: "<<line_count<<" func_declaration : type_specifier ID LPAREN RPAREN SEMICOLON\n"<<endl; 
                 
+                (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[-4]. temp_str );
                 *(yyval. temp_str ) += " ";
                 *(yyval. temp_str ) += (yyvsp[-3].symbol_info)->key;
@@ -1499,14 +1500,15 @@ yyreduce:
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
 
             }
-#line 1503 "y.tab.c" /* yacc.c:1646  */
+#line 1504 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 120 "demo.y" /* yacc.c:1646  */
+#line 123 "demo.y" /* yacc.c:1646  */
     { 
                 cout<<"At line no: "<<line_count<<" func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement\n"<<endl;  
-            
+                
+                (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[-5]. temp_str );
                 *(yyval. temp_str ) += " ";
                 *(yyval. temp_str ) += (yyvsp[-4].symbol_info)->key;
@@ -1518,23 +1520,35 @@ yyreduce:
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
 
             }
-#line 1522 "y.tab.c" /* yacc.c:1646  */
+#line 1524 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 134 "demo.y" /* yacc.c:1646  */
+#line 138 "demo.y" /* yacc.c:1646  */
     { 
                 cout<<"At line no: "<<line_count<<" func_definition : type_specifier ID LPAREN RPAREN compound_statement\n"<<endl;  
+
+                (yyval. temp_str ) = new string();
+                *(yyval. temp_str ) = *(yyvsp[-4]. temp_str );
+                *(yyval. temp_str ) += " ";
+                *(yyval. temp_str ) += (yyvsp[-3].symbol_info)->key;
+                *(yyval. temp_str ) += "(";
+                *(yyval. temp_str ) += ")";
+                *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
+
+                cout<<*(yyval. temp_str )<<"\n"<<endl;
+            
             }
-#line 1530 "y.tab.c" /* yacc.c:1646  */
+#line 1543 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 140 "demo.y" /* yacc.c:1646  */
+#line 155 "demo.y" /* yacc.c:1646  */
     {
 
                 cout<<"At line no: "<<line_count<<" parameter_list : parameter_list COMMA type_specifier ID\n"<<endl;  
 
+                (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[-3]. temp_str );
                 *(yyval. temp_str ) += ",";
                 *(yyval. temp_str ) += *(yyvsp[-1]. temp_str );
@@ -1544,51 +1558,59 @@ yyreduce:
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
 
             }
-#line 1548 "y.tab.c" /* yacc.c:1646  */
+#line 1562 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 154 "demo.y" /* yacc.c:1646  */
+#line 170 "demo.y" /* yacc.c:1646  */
     { 
                 cout<<"At line no: "<<line_count<<" parameter_list : type_specifier ID\n"<<endl;  
+                
+                (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[-1]. temp_str );
                 *(yyval. temp_str ) += " ";
                 *(yyval. temp_str ) += (yyvsp[0].symbol_info)->key;
 
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
              }
-#line 1561 "y.tab.c" /* yacc.c:1646  */
+#line 1577 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 166 "demo.y" /* yacc.c:1646  */
+#line 184 "demo.y" /* yacc.c:1646  */
     {
                 cout<<"At line no: "<<line_count<<" compound_statement : LCURL statements RCUR\n"<<endl;
                 
-                string temp = *(yyvsp[-1]. temp_str );
-
+                // string temp = *$2;
+                (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = "{\n"; 
-                *(yyval. temp_str ) += temp; 
+                *(yyval. temp_str ) += *(yyvsp[-1]. temp_str ); 
                 *(yyval. temp_str ) += "\n}"; 
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
              }
-#line 1576 "y.tab.c" /* yacc.c:1646  */
+#line 1592 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 176 "demo.y" /* yacc.c:1646  */
+#line 194 "demo.y" /* yacc.c:1646  */
     {
                 cout<<"At line no: "<<line_count<<" LCURL RCURL\n"<<endl; 
+
+                (yyval. temp_str ) = new string();
+                *(yyval. temp_str ) = "{\n";  
+                *(yyval. temp_str ) += "\n}"; 
+                cout<<*(yyval. temp_str )<<"\n"<<endl;
              }
-#line 1584 "y.tab.c" /* yacc.c:1646  */
+#line 1605 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 181 "demo.y" /* yacc.c:1646  */
+#line 204 "demo.y" /* yacc.c:1646  */
     { 
 
-            cout<<"At line no: "<<line_count<<" var_declaration --> type_specifier declaration_list SEMICOLON\n"<<endl; 
-
+            cout<<"At line no: "<<line_count<<" var_declaration : type_specifier declaration_list SEMICOLON\n"<<endl; 
+            
+            (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[-2]. temp_str );
             *(yyval. temp_str ) += " ";
             *(yyval. temp_str ) += *(yyvsp[-1]. symbol_info_str );
@@ -1596,172 +1618,191 @@ yyreduce:
 
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 1600 "y.tab.c" /* yacc.c:1646  */
+#line 1622 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 194 "demo.y" /* yacc.c:1646  */
+#line 218 "demo.y" /* yacc.c:1646  */
     { cout<<"At line no: "<<line_count<<" type_specifier : INT\n"<<endl; cout<<(yyvsp[0].symbol_info)->key<<"\n"<<endl; *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key; }
-#line 1606 "y.tab.c" /* yacc.c:1646  */
+#line 1628 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 195 "demo.y" /* yacc.c:1646  */
+#line 219 "demo.y" /* yacc.c:1646  */
     { cout<<"At line no: "<<line_count<<" type_specifier : FLOAT\n"<<endl; cout<<(yyvsp[0].symbol_info)->key<<"\n"<<endl; *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key;}
-#line 1612 "y.tab.c" /* yacc.c:1646  */
+#line 1634 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 196 "demo.y" /* yacc.c:1646  */
+#line 220 "demo.y" /* yacc.c:1646  */
     { cout<<"At line no: "<<line_count<<" type_specifier : VOID\n"<<endl; cout<<(yyvsp[0].symbol_info)->key<<"\n"<<endl; *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key;}
-#line 1618 "y.tab.c" /* yacc.c:1646  */
+#line 1640 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 199 "demo.y" /* yacc.c:1646  */
+#line 223 "demo.y" /* yacc.c:1646  */
     { 
                     cout<<"At line no: "<<line_count<<" declaration_list COMMA ID\n"<<endl; 
                     
-                    *(yyvsp[-2]. symbol_info_str ) += ",";
-                    *(yyvsp[-2]. symbol_info_str ) += (yyvsp[0].symbol_info)->key;
-
-                    cout<< *(yyvsp[-2]. symbol_info_str ) <<"\n"<<endl;
-
-                    (yyval. symbol_info_str ) = (yyvsp[-2]. symbol_info_str );
+                    (yyval. symbol_info_str ) = new string();
+                    *(yyval. symbol_info_str ) = *(yyvsp[-2]. symbol_info_str );
+                    *(yyval. symbol_info_str ) += ",";
+                    *(yyval. symbol_info_str ) += (yyvsp[0].symbol_info)->key;
+                    cout<< *(yyval. symbol_info_str ) <<"\n"<<endl;
                 }
-#line 1633 "y.tab.c" /* yacc.c:1646  */
+#line 1654 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 209 "demo.y" /* yacc.c:1646  */
+#line 232 "demo.y" /* yacc.c:1646  */
     {
                cout<<"At line no: "<<line_count<<" declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n"<<endl; 
            
-                *(yyvsp[-5]. symbol_info_str ) += ",";
-                *(yyvsp[-5]. symbol_info_str ) += (yyvsp[-3].symbol_info)->key;
-                *(yyvsp[-5]. symbol_info_str ) += "[";
-                *(yyvsp[-5]. symbol_info_str ) += to_string((yyvsp[-1].ival));
-                *(yyvsp[-5]. symbol_info_str ) += "]";
+                (yyval. symbol_info_str ) = new string();
+                *(yyval. symbol_info_str ) = *(yyvsp[-5]. symbol_info_str );
+                *(yyval. symbol_info_str ) += ",";
+                *(yyval. symbol_info_str ) += (yyvsp[-3].symbol_info)->key;
+                *(yyval. symbol_info_str ) += "[";
+                *(yyval. symbol_info_str ) += (yyvsp[-1].symbol_info)->key;
+                *(yyval. symbol_info_str ) += "]";
 
-                cout<< *(yyvsp[-5]. symbol_info_str ) <<"\n"<<endl;
-
-                (yyval. symbol_info_str ) = (yyvsp[-5]. symbol_info_str );
+                cout<< *(yyval. symbol_info_str ) <<"\n"<<endl;
            
            }
-#line 1652 "y.tab.c" /* yacc.c:1646  */
+#line 1673 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 223 "demo.y" /* yacc.c:1646  */
+#line 246 "demo.y" /* yacc.c:1646  */
     { 
                cout<<"At line no: "<<line_count<<" declaration_list : ID\n"<<endl; cout<<(yyvsp[0].symbol_info)->key<<"\n"<<endl;
+                (yyval. symbol_info_str ) = new string();
                 *(yyval. symbol_info_str ) = (yyvsp[0].symbol_info)->key;
                }
-#line 1661 "y.tab.c" /* yacc.c:1646  */
+#line 1683 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 228 "demo.y" /* yacc.c:1646  */
+#line 252 "demo.y" /* yacc.c:1646  */
     {
                cout<<"At line no: "<<line_count<<" declaration_list : ID LTHIRD CONST_INT RTHIRD\n"<<endl;
            
+                (yyval. symbol_info_str ) = new string();
                 *(yyval. symbol_info_str ) = (yyvsp[-3].symbol_info)->key;
                 *(yyval. symbol_info_str ) += "[";
-                *(yyval. symbol_info_str ) += to_string((yyvsp[-1].ival));
+                *(yyval. symbol_info_str ) += (yyvsp[-1].symbol_info)->key;
                 *(yyval. symbol_info_str ) += "]";
 
                 cout<< *(yyval. symbol_info_str ) <<"\n"<<endl;
            }
-#line 1676 "y.tab.c" /* yacc.c:1646  */
+#line 1699 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 240 "demo.y" /* yacc.c:1646  */
+#line 265 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" statements : statement\n"<<endl;
+            
+            (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
             cout<<*(yyval. temp_str )<<"\n"<<endl; 
         }
-#line 1686 "y.tab.c" /* yacc.c:1646  */
+#line 1711 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 245 "demo.y" /* yacc.c:1646  */
+#line 272 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" statements : statements statement\n"<<endl; 
-        }
-#line 1694 "y.tab.c" /* yacc.c:1646  */
-    break;
+        
+            (yyval. temp_str ) = new string();
+            *(yyval. temp_str ) = *(yyvsp[-1]. temp_str );
+            *(yyval. temp_str ) += "\n";
+            *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
 
-  case 28:
-#line 250 "demo.y" /* yacc.c:1646  */
-    {
-            cout<<"At line no: "<<line_count<<" statement : var_declaration\n"<<endl; 
-        }
-#line 1702 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 29:
-#line 253 "demo.y" /* yacc.c:1646  */
-    {
-            cout<<"At line no: "<<line_count<<" statement : expression_statement\n"<<endl; 
-        }
-#line 1710 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 30:
-#line 256 "demo.y" /* yacc.c:1646  */
-    {
-            cout<<"At line no: "<<line_count<<" statement : compound_statement\n"<<endl; 
-        }
-#line 1718 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 31:
-#line 259 "demo.y" /* yacc.c:1646  */
-    {
-            cout<<"At line no: "<<line_count<<" statement : FOR LPAREN expression_statement expression_statement expression RPAREN statement\n"<<endl; 
+            cout<<*(yyval. temp_str )<<"\n"<<endl; 
         }
 #line 1726 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 28:
+#line 284 "demo.y" /* yacc.c:1646  */
+    {
+            cout<<"At line no: "<<line_count<<" statement : var_declaration\n"<<endl; 
+    
+            (yyval. temp_str ) = new string();
+            *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
+            cout<<*(yyval. temp_str )<<"\n"<<endl;
+        }
+#line 1738 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 29:
+#line 291 "demo.y" /* yacc.c:1646  */
+    {
+            cout<<"At line no: "<<line_count<<" statement : expression_statement\n"<<endl; 
+            (yyval. temp_str ) = new string();
+            *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
+            cout<<*(yyval. temp_str )<<"\n"<<endl;
+        }
+#line 1749 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 30:
+#line 297 "demo.y" /* yacc.c:1646  */
+    {
+            cout<<"At line no: "<<line_count<<" statement : compound_statement\n"<<endl; 
+        }
+#line 1757 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 31:
+#line 300 "demo.y" /* yacc.c:1646  */
+    {
+            cout<<"At line no: "<<line_count<<" statement : FOR LPAREN expression_statement expression_statement expression RPAREN statement\n"<<endl; 
+        }
+#line 1765 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 32:
-#line 262 "demo.y" /* yacc.c:1646  */
+#line 303 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" statement : IF LPAREN expression RPAREN statement\n"<<endl; 
+        
         }
-#line 1734 "y.tab.c" /* yacc.c:1646  */
+#line 1774 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 265 "demo.y" /* yacc.c:1646  */
+#line 307 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" statement : IF LPAREN expression RPAREN statement ELSE statemen\n"<<endl; 
         }
-#line 1742 "y.tab.c" /* yacc.c:1646  */
+#line 1782 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 268 "demo.y" /* yacc.c:1646  */
+#line 310 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" statement : WHILE LPAREN expression RPAREN statement\n"<<endl; 
         }
-#line 1750 "y.tab.c" /* yacc.c:1646  */
+#line 1790 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 271 "demo.y" /* yacc.c:1646  */
+#line 313 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" statement : PRINTLN LPAREN ID RPAREN SEMICOLON\n"<<endl; 
         }
-#line 1758 "y.tab.c" /* yacc.c:1646  */
+#line 1798 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 274 "demo.y" /* yacc.c:1646  */
+#line 316 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" statement : RETURN expression SEMICOLON\n"<<endl; 
-        
+
+            (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = "return";
             *(yyval. temp_str ) += " ";
             *(yyval. temp_str ) += *(yyvsp[-1]. temp_str );
@@ -1769,158 +1810,340 @@ yyreduce:
 
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 1773 "y.tab.c" /* yacc.c:1646  */
+#line 1814 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 37:
+#line 329 "demo.y" /* yacc.c:1646  */
+    {
+                    cout<<"At line no: "<<line_count<<" expression_statement : SEMICOLON\n"<<endl; 
+                }
+#line 1822 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 38:
+#line 332 "demo.y" /* yacc.c:1646  */
+    {
+                    cout<<"At line no: "<<line_count<<" expression_statement : expression SEMICOLON\n"<<endl; 
+                    (yyval. temp_str ) = new string();
+                    *(yyval. temp_str ) = *(yyvsp[-1]. temp_str );
+                    *(yyval. temp_str ) += ";";
+
+                    cout<<*(yyval. temp_str )<<"\n"<<endl;
+                }
+#line 1835 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 290 "demo.y" /* yacc.c:1646  */
+#line 342 "demo.y" /* yacc.c:1646  */
     { 
             cout<<"At line no: "<<line_count<<" variable : ID\n"<<endl; 
+            (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key;
-
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 1784 "y.tab.c" /* yacc.c:1646  */
+#line 1846 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 296 "demo.y" /* yacc.c:1646  */
+#line 348 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" variable : ID LTHIRD expression RTHIRD\n"<<endl; 
-            cout<<"HEREEEE"<<endl;
-            // *$$ = $1->key;
-            // *$$ += "[";
-            // *$$ += *$3;
-            // *$$ += "]";
+            
+            (yyval. temp_str ) = new string();
+            *(yyval. temp_str ) = (yyvsp[-3].symbol_info)->key;
+            *(yyval. temp_str ) += "[";
+            *(yyval. temp_str ) += *(yyvsp[-1]. temp_str );
+            *(yyval. temp_str ) += "]";
 
-            // cout<<*$$<<"\n"<<endl;
+            cout<<*(yyval. temp_str )<<"\n"<<endl;
          }
-#line 1799 "y.tab.c" /* yacc.c:1646  */
+#line 1862 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 45:
-#line 318 "demo.y" /* yacc.c:1646  */
+  case 41:
+#line 361 "demo.y" /* yacc.c:1646  */
     {
-                cout<<"At line no: "<<line_count<<" rel_expression : simple_expression\n"<<endl;
-                *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
-                 cout<<*(yyval. temp_str )<<"\n"<<endl;
-            }
-#line 1809 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 47:
-#line 326 "demo.y" /* yacc.c:1646  */
-    {
-                cout<<"At line no: "<<line_count<<" simple_expression : term\n"<<endl;
+                cout<<"At line no: "<<line_count<<" expression : logic_expression\n"<<endl; 
+                (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
             }
-#line 1819 "y.tab.c" /* yacc.c:1646  */
+#line 1873 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 42:
+#line 367 "demo.y" /* yacc.c:1646  */
+    {
+                cout<<"At line no: "<<line_count<<" expression : variable ASSIGNOP logic_expression\n"<<endl;
+                (yyval. temp_str ) = new string();
+                *(yyval. temp_str ) = *(yyvsp[-2]. temp_str );
+                *(yyval. temp_str ) += "=";
+                *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
+                cout<<*(yyval. temp_str )<<"\n"<<endl;
+            }
+#line 1886 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 43:
+#line 379 "demo.y" /* yacc.c:1646  */
+    {
+                cout<<"At line no: "<<line_count<<" logic_expression : rel_expression\n"<<endl;
+                (yyval. temp_str ) = new string();
+                *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
+                cout<<*(yyval. temp_str )<<"\n"<<endl;
+            }
+#line 1897 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 44:
+#line 385 "demo.y" /* yacc.c:1646  */
+    {
+                cout<<"At line no: "<<line_count<<" logic_expression : rel_expression LOGICOP rel_expression\n"<<endl;
+                (yyval. temp_str ) = new string();
+                *(yyval. temp_str ) = *(yyvsp[-2]. temp_str );
+                *(yyval. temp_str ) += (yyvsp[-1].symbol_info)->key;
+                *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
+                cout<<*(yyval. temp_str )<<"\n"<<endl;
+            }
+#line 1910 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 45:
+#line 395 "demo.y" /* yacc.c:1646  */
+    {
+                cout<<"At line no: "<<line_count<<" rel_expression : simple_expression\n"<<endl;
+                (yyval. temp_str ) = new string();
+                *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
+                 cout<<*(yyval. temp_str )<<"\n"<<endl;
+            }
+#line 1921 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 46:
+#line 401 "demo.y" /* yacc.c:1646  */
+    {
+                cout<<"At line no: "<<line_count<<" rel_expression : simple_expression RELOP simple_expression\n"<<endl;
+                (yyval. temp_str ) = new string();
+                *(yyval. temp_str ) = *(yyvsp[-2]. temp_str );
+                *(yyval. temp_str ) += (yyvsp[-1].symbol_info)->key;
+                *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
+                cout<<*(yyval. temp_str )<<"\n"<<endl;
+            }
+#line 1934 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 47:
+#line 411 "demo.y" /* yacc.c:1646  */
+    {
+                cout<<"At line no: "<<line_count<<" simple_expression : term\n"<<endl;
+                (yyval. temp_str ) = new string();
+                *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
+                cout<<*(yyval. temp_str )<<"\n"<<endl;
+            }
+#line 1945 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 331 "demo.y" /* yacc.c:1646  */
+#line 417 "demo.y" /* yacc.c:1646  */
     {
                 cout<<"At line no: "<<line_count<<" simple_expression : simple_expression ADDOP term\n"<<endl;
+               (yyval. temp_str ) = new string();
                *(yyval. temp_str ) = *(yyvsp[-2]. temp_str );
                *(yyval. temp_str ) += (yyvsp[-1].symbol_info)->key;
                *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
 
                cout<<*(yyval. temp_str )<<"\n"<<endl;
             }
-#line 1832 "y.tab.c" /* yacc.c:1646  */
+#line 1959 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 341 "demo.y" /* yacc.c:1646  */
+#line 428 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" term : unary_expression\n"<<endl;
+            (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 1842 "y.tab.c" /* yacc.c:1646  */
+#line 1970 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 346 "demo.y" /* yacc.c:1646  */
+#line 434 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" term : term MULOP unary_expressio\n"<<endl;
-            // cout<<*$$<<"\n"<<endl;
+            (yyval. temp_str ) = new string();
+            *(yyval. temp_str ) = *(yyvsp[-2]. temp_str );
+            *(yyval. temp_str ) += (yyvsp[-1].symbol_info)->key;
+            *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
+            cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 1851 "y.tab.c" /* yacc.c:1646  */
+#line 1983 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 51:
+#line 444 "demo.y" /* yacc.c:1646  */
+    {
+                
+                cout<<"At line no: "<<line_count<<" simple_expression : simple_expression ADDOP term\n"<<endl;
+                (yyval. temp_str ) = new string();
+                *(yyval. temp_str ) = (yyvsp[-1].symbol_info)->key;
+                *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
+                cout<<*(yyval. temp_str )<<"\n"<<endl;
+            }
+#line 1996 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 52:
+#line 452 "demo.y" /* yacc.c:1646  */
+    {
+                (yyval. temp_str ) = new string();
+                *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
+            }
+#line 2005 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 354 "demo.y" /* yacc.c:1646  */
+#line 456 "demo.y" /* yacc.c:1646  */
     { 
                 cout<<"At line no: "<<line_count<<" unary_expression : factor\n"<<endl;
+                (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
              }
-#line 1861 "y.tab.c" /* yacc.c:1646  */
+#line 2016 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 361 "demo.y" /* yacc.c:1646  */
+#line 464 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" factor : variable\n"<<endl;
+            (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
             cout<<*(yyval. temp_str )<<"\n"<<endl;
 
         }
-#line 1872 "y.tab.c" /* yacc.c:1646  */
+#line 2028 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 367 "demo.y" /* yacc.c:1646  */
+#line 471 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" factor : ID LPAREN argument_list RPAREN\n"<<endl; 
+
+            (yyval. temp_str ) = new string();
+            *(yyval. temp_str ) = (yyvsp[-3].symbol_info)->key;
+            *(yyval. temp_str ) += "( ";
+            *(yyval. temp_str ) += *(yyvsp[-1]. temp_str );
+            *(yyval. temp_str ) += " )";
+            cout<<*(yyval. temp_str )<<"\n"<<endl;
+
         }
-#line 1880 "y.tab.c" /* yacc.c:1646  */
+#line 2044 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 370 "demo.y" /* yacc.c:1646  */
+#line 482 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" factor : LPAREN expression RPAREN\n"<<endl; 
+
+            (yyval. temp_str ) = new string();
+            *(yyval. temp_str ) = "(";
+            *(yyval. temp_str ) += *(yyvsp[-1]. temp_str );
+            *(yyval. temp_str ) += ")";
+            cout<<*(yyval. temp_str )<<"\n"<<endl;
+        
         }
-#line 1888 "y.tab.c" /* yacc.c:1646  */
+#line 2059 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 373 "demo.y" /* yacc.c:1646  */
+#line 492 "demo.y" /* yacc.c:1646  */
     { 
             cout<<"At line no: "<<line_count<<" factor : CONST_INT\n"<<endl; 
+            (yyval. temp_str ) = new string();
+            *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key;
+            cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 1896 "y.tab.c" /* yacc.c:1646  */
+#line 2070 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 376 "demo.y" /* yacc.c:1646  */
+#line 498 "demo.y" /* yacc.c:1646  */
     { 
-            cout<<"At line no: "<<line_count<<" factor : CONST_FLOAT\n"<<endl; 
+            cout<<"At line no: "<<line_count<<" factor : CONST_FLOAT\n"<<endl;
+            (yyval. temp_str ) = new string();
+            *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key; 
+            cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 1904 "y.tab.c" /* yacc.c:1646  */
+#line 2081 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 379 "demo.y" /* yacc.c:1646  */
+#line 504 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" factor : variable INCOP\n"<<endl; 
         }
-#line 1912 "y.tab.c" /* yacc.c:1646  */
+#line 2089 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 382 "demo.y" /* yacc.c:1646  */
+#line 507 "demo.y" /* yacc.c:1646  */
     {
             cout<<"At line no: "<<line_count<<" factor : variable DECOP\n"<<endl; 
         }
-#line 1920 "y.tab.c" /* yacc.c:1646  */
+#line 2097 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 61:
+#line 512 "demo.y" /* yacc.c:1646  */
+    {
+                    cout<<"At line no: "<<line_count<<" arguments : arguments\n"<<endl;
+
+                    (yyval. temp_str ) = new string();
+                    *(yyval. temp_str ) = *(yyvsp[0]. temp_str ); 
+                    cout<<*(yyval. temp_str )<<"\n"<<endl;
+                }
+#line 2109 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 62:
+#line 519 "demo.y" /* yacc.c:1646  */
+    {
+                cout<<"WHAT IS THIS"<<endl;
+            }
+#line 2117 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 63:
+#line 524 "demo.y" /* yacc.c:1646  */
+    {
+                cout<<"At line no: "<<line_count<<" arguments : arguments COMMA logic_expression\n"<<endl;
+                (yyval. temp_str ) = new string();
+                *(yyval. temp_str ) = *(yyvsp[-2]. temp_str ); 
+                *(yyval. temp_str ) += " , "; 
+                *(yyval. temp_str ) += *(yyvsp[0]. temp_str ); 
+                cout<<*(yyval. temp_str )<<"\n"<<endl;
+            }
+#line 2130 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 64:
+#line 532 "demo.y" /* yacc.c:1646  */
+    {
+                cout<<"At line no: "<<line_count<<" arguments : logic_expression\n"<<endl;
+
+                (yyval. temp_str ) = new string();
+                *(yyval. temp_str ) = *(yyvsp[0]. temp_str ); 
+                cout<<*(yyval. temp_str )<<"\n"<<endl;
+            
+            }
+#line 2143 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1924 "y.tab.c" /* yacc.c:1646  */
+#line 2147 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2148,7 +2371,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 395 "demo.y" /* yacc.c:1906  */
+#line 542 "demo.y" /* yacc.c:1906  */
 
 
 main(int argc,char *argv[])
