@@ -50,7 +50,7 @@ SymbolTable *table = new SymbolTable(bucket_size,hashF);;
     // double dval;
 }
 
-%token <ival> IF ELSE FOR WHILE DO BREAK CHAR DOUBLE RETURN SWITCH CASE DEFAULT CONTINUE PRINTLN INCOP DECOP ASSIGNOP NOT LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON
+%token <ival> IF ELSE LOWER_THAN_ELSE FOR WHILE DO BREAK CHAR DOUBLE RETURN SWITCH CASE DEFAULT CONTINUE PRINTLN INCOP DECOP ASSIGNOP NOT LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON
 %token <symbol_info> ID INT FLOAT VOID ADDOP MULOP RELOP LOGICOP CONST_INT CONST_FLOAT
 // %token <ival> CONST_INT
 // %token <dval> CONST_FLOAT
@@ -61,6 +61,8 @@ SymbolTable *table = new SymbolTable(bucket_size,hashF);;
 %type < temp_str > arguments argument_list
 %type < symbol_info_str > declaration_list
 
+%nonassoc LOWER_THAN_ELSE
+%nonassoc ELSE
 
 %%
 
@@ -300,12 +302,33 @@ statement: var_declaration {
 	  | FOR LPAREN expression_statement expression_statement expression RPAREN statement {
             cout<<"At line no: "<<line_count<<" statement : FOR LPAREN expression_statement expression_statement expression RPAREN statement\n"<<endl; 
         }
-	  | IF LPAREN expression RPAREN statement {
+	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE {
             cout<<"At line no: "<<line_count<<" statement : IF LPAREN expression RPAREN statement\n"<<endl; 
-        
+            
+            $$ = new string();
+            *$$ = "if";
+            *$$ += "(";
+            *$$ += *$3;
+            *$$ += ")";
+            *$$ += *$5;
+
+            cout<<*$$<<"\n"<<endl;
+
         }
 	  | IF LPAREN expression RPAREN statement ELSE statement {
             cout<<"At line no: "<<line_count<<" statement : IF LPAREN expression RPAREN statement ELSE statemen\n"<<endl; 
+        
+            $$ = new string();
+            *$$ = "if";
+            *$$ += "(";
+            *$$ += *$3;
+            *$$ += ")";
+            *$$ += *$5;
+            *$$ += "else ";
+            *$$ += *$7;
+
+            cout<<*$$<<"\n"<<endl;
+        
         }
 	  | WHILE LPAREN expression RPAREN statement {
             cout<<"At line no: "<<line_count<<" statement : WHILE LPAREN expression RPAREN statement\n"<<endl; 

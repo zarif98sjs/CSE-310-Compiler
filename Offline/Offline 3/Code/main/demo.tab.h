@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_Y_TAB_H_INCLUDED
-# define YY_YY_Y_TAB_H_INCLUDED
+#ifndef YY_YY_DEMO_TAB_H_INCLUDED
+# define YY_YY_DEMO_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -44,7 +44,7 @@ extern int yydebug;
 
     #include <bits/stdc++.h>
 
-#line 48 "y.tab.h" /* yacc.c:1909  */
+#line 48 "demo.tab.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -53,81 +53,42 @@ extern int yydebug;
   {
     IF = 258,
     ELSE = 259,
-    LOWER_THAN_ELSE = 260,
-    FOR = 261,
-    WHILE = 262,
-    DO = 263,
-    BREAK = 264,
-    CHAR = 265,
-    DOUBLE = 266,
-    RETURN = 267,
-    SWITCH = 268,
-    CASE = 269,
-    DEFAULT = 270,
-    CONTINUE = 271,
-    PRINTLN = 272,
-    INCOP = 273,
-    DECOP = 274,
-    ASSIGNOP = 275,
-    NOT = 276,
-    LPAREN = 277,
-    RPAREN = 278,
-    LCURL = 279,
-    RCURL = 280,
-    LTHIRD = 281,
-    RTHIRD = 282,
-    COMMA = 283,
-    SEMICOLON = 284,
-    ID = 285,
-    INT = 286,
-    FLOAT = 287,
-    VOID = 288,
-    ADDOP = 289,
-    MULOP = 290,
-    RELOP = 291,
-    LOGICOP = 292,
-    CONST_INT = 293,
-    CONST_FLOAT = 294
+    FOR = 260,
+    WHILE = 261,
+    DO = 262,
+    BREAK = 263,
+    CHAR = 264,
+    DOUBLE = 265,
+    RETURN = 266,
+    SWITCH = 267,
+    CASE = 268,
+    DEFAULT = 269,
+    CONTINUE = 270,
+    PRINTLN = 271,
+    INCOP = 272,
+    DECOP = 273,
+    ASSIGNOP = 274,
+    NOT = 275,
+    LPAREN = 276,
+    RPAREN = 277,
+    LCURL = 278,
+    RCURL = 279,
+    LTHIRD = 280,
+    RTHIRD = 281,
+    COMMA = 282,
+    SEMICOLON = 283,
+    ID = 284,
+    INT = 285,
+    FLOAT = 286,
+    VOID = 287,
+    ADDOP = 288,
+    MULOP = 289,
+    RELOP = 290,
+    LOGICOP = 291,
+    CONST_INT = 292,
+    CONST_FLOAT = 293
   };
 #endif
-/* Tokens.  */
-#define IF 258
-#define ELSE 259
-#define LOWER_THAN_ELSE 260
-#define FOR 261
-#define WHILE 262
-#define DO 263
-#define BREAK 264
-#define CHAR 265
-#define DOUBLE 266
-#define RETURN 267
-#define SWITCH 268
-#define CASE 269
-#define DEFAULT 270
-#define CONTINUE 271
-#define PRINTLN 272
-#define INCOP 273
-#define DECOP 274
-#define ASSIGNOP 275
-#define NOT 276
-#define LPAREN 277
-#define RPAREN 278
-#define LCURL 279
-#define RCURL 280
-#define LTHIRD 281
-#define RTHIRD 282
-#define COMMA 283
-#define SEMICOLON 284
-#define ID 285
-#define INT 286
-#define FLOAT 287
-#define VOID 288
-#define ADDOP 289
-#define MULOP 290
-#define RELOP 291
-#define LOGICOP 292
-#define CONST_INT 293
-#define CONST_FLOAT 294
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -143,7 +104,7 @@ union YYSTYPE
     // int ival;
     // double dval;
 
-#line 147 "y.tab.h" /* yacc.c:1909  */
+#line 108 "demo.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -156,4 +117,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
+#endif /* !YY_YY_DEMO_TAB_H_INCLUDED  */
