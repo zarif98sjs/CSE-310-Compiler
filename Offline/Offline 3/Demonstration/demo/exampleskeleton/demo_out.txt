@@ -1,0 +1,15 @@
+type_specifier: INT
+
+declaration_list : ID
+
+x
+
+var_declaration: type_specifier declaration_list SEMICOLON
+
+1
+x
+
+unit: var_declaration
+
+program: unit
+

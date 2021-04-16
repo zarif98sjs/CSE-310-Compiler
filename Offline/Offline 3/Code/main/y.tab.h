@@ -134,10 +134,10 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 44 "demo.y" /* yacc.c:1909  */
+#line 49 "demo.y" /* yacc.c:1909  */
 
     SymbolInfo* symbol_info;
-    SymbolInfo* symbol_info_vec[100];
+    // SymbolInfo* symbol_info_vec[100];
     string* symbol_info_str;
     string* temp_str;
     // int ival;

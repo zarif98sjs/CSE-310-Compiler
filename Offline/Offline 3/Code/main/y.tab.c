@@ -96,11 +96,16 @@ int hashF(string s)
     return h;
 }
 
-int bucket_size = 7;
-SymbolTable *table = new SymbolTable(bucket_size,hashF);;
+int bucket_size = 30;
+SymbolTable *sym_tab = new SymbolTable(bucket_size,hashF);
+
+void print_grammar_rule(string left_part,string right_part)
+{
+    cout<<"At line no: "<<line_count<<" "<<left_part<<" : "<<right_part<<"\n"<<endl; 
+}
 
 
-#line 104 "y.tab.c" /* yacc.c:339  */
+#line 109 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -134,7 +139,7 @@ extern int yydebug;
 
     #include <bits/stdc++.h>
 
-#line 138 "y.tab.c" /* yacc.c:355  */
+#line 143 "y.tab.c" /* yacc.c:355  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -224,16 +229,16 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 44 "demo.y" /* yacc.c:355  */
+#line 49 "demo.y" /* yacc.c:355  */
 
     SymbolInfo* symbol_info;
-    SymbolInfo* symbol_info_vec[100];
+    // SymbolInfo* symbol_info_vec[100];
     string* symbol_info_str;
     string* temp_str;
     // int ival;
     // double dval;
 
-#line 237 "y.tab.c" /* yacc.c:355  */
+#line 242 "y.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -250,7 +255,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 254 "y.tab.c" /* yacc.c:358  */
+#line 259 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -551,13 +556,13 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    69,    69,    75,    84,    90,    91,    92,    95,   109,
-     125,   140,   157,   171,   172,   182,   186,   196,   206,   220,
-     221,   222,   225,   234,   248,   253,   267,   274,   286,   293,
-     299,   302,   305,   318,   333,   336,   339,   352,   355,   365,
-     371,   384,   390,   402,   408,   418,   424,   434,   440,   451,
-     457,   467,   475,   479,   487,   494,   505,   515,   521,   527,
-     530,   535,   542,   547,   555
+       0,    74,    74,    80,    88,    94,    95,    96,    99,   113,
+     129,   144,   161,   175,   178,   188,   194,   208,   221,   235,
+     236,   237,   240,   249,   263,   269,   283,   290,   302,   309,
+     315,   318,   321,   334,   349,   352,   355,   368,   371,   381,
+     387,   400,   406,   418,   424,   434,   440,   450,   456,   467,
+     473,   483,   491,   497,   506,   514,   525,   536,   542,   548,
+     551,   556,   564,   569,   579
 };
 #endif
 
@@ -1419,59 +1424,58 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 70 "demo.y" /* yacc.c:1646  */
+#line 75 "demo.y" /* yacc.c:1646  */
     {
 		//write your code in this block in all the similar blocks below
 	}
-#line 1427 "y.tab.c" /* yacc.c:1646  */
+#line 1432 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 75 "demo.y" /* yacc.c:1646  */
+#line 80 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" program : program unit\n"<<endl; 
-            
+            print_grammar_rule("program","program unit");
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[-1]. temp_str );
             *(yyval. temp_str ) += "\n";
             *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
             cout<<*(yyval. temp_str )<<"\n"<<endl; 
         }
-#line 1441 "y.tab.c" /* yacc.c:1646  */
+#line 1445 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 84 "demo.y" /* yacc.c:1646  */
+#line 88 "demo.y" /* yacc.c:1646  */
     { 
-            cout<<"At line no: "<<line_count<<" program : unit\n"<<endl; 
+            print_grammar_rule("program","unit");
             cout<<*(yyvsp[0]. temp_str )<<"\n"<<endl; 
         }
-#line 1450 "y.tab.c" /* yacc.c:1646  */
+#line 1454 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 90 "demo.y" /* yacc.c:1646  */
-    { cout<<"At line no: "<<line_count<<" unit : var_declaration\n"<<endl; cout<<*(yyvsp[0]. temp_str )<<"\n"<<endl; }
-#line 1456 "y.tab.c" /* yacc.c:1646  */
+#line 94 "demo.y" /* yacc.c:1646  */
+    { print_grammar_rule("unit","var_declaration"); cout<<*(yyvsp[0]. temp_str )<<"\n"<<endl; }
+#line 1460 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 91 "demo.y" /* yacc.c:1646  */
-    { cout<<"At line no: "<<line_count<<" unit : func_declaration\n"<<endl; cout<<*(yyvsp[0]. temp_str )<<"\n"<<endl; }
-#line 1462 "y.tab.c" /* yacc.c:1646  */
+#line 95 "demo.y" /* yacc.c:1646  */
+    { print_grammar_rule("unit","func_declaration"); cout<<*(yyvsp[0]. temp_str )<<"\n"<<endl; }
+#line 1466 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 92 "demo.y" /* yacc.c:1646  */
-    { cout<<"At line no: "<<line_count<<" unit : func_definition\n"<<endl; cout<<*(yyvsp[0]. temp_str )<<"\n"<<endl; }
-#line 1468 "y.tab.c" /* yacc.c:1646  */
+#line 96 "demo.y" /* yacc.c:1646  */
+    { print_grammar_rule("unit","func_definition"); cout<<*(yyvsp[0]. temp_str )<<"\n"<<endl; }
+#line 1472 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 95 "demo.y" /* yacc.c:1646  */
+#line 99 "demo.y" /* yacc.c:1646  */
     { 
                 
-                cout<<"At line no: "<<line_count<<" func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON\n"<<endl; 
+                print_grammar_rule("func_declaration","type_specifier ID LPAREN parameter_list RPAREN SEMICOLON");
                 
                 // *$$ = *$1;
                 // *$$ += " ";
@@ -1483,13 +1487,13 @@ yyreduce:
                 // cout<<*$$<<"\n"<<endl;
     
             }
-#line 1487 "y.tab.c" /* yacc.c:1646  */
+#line 1491 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 109 "demo.y" /* yacc.c:1646  */
+#line 113 "demo.y" /* yacc.c:1646  */
     { 
-                cout<<"At line no: "<<line_count<<" func_declaration : type_specifier ID LPAREN RPAREN SEMICOLON\n"<<endl; 
+                print_grammar_rule("func_declaration","type_specifier ID LPAREN RPAREN SEMICOLON");
                 
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[-4]. temp_str );
@@ -1502,13 +1506,13 @@ yyreduce:
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
 
             }
-#line 1506 "y.tab.c" /* yacc.c:1646  */
+#line 1510 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 125 "demo.y" /* yacc.c:1646  */
+#line 129 "demo.y" /* yacc.c:1646  */
     { 
-                cout<<"At line no: "<<line_count<<" func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement\n"<<endl;  
+                print_grammar_rule("func_definition","type_specifier ID LPAREN parameter_list RPAREN compound_statement");
                 
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[-5]. temp_str );
@@ -1522,13 +1526,13 @@ yyreduce:
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
 
             }
-#line 1526 "y.tab.c" /* yacc.c:1646  */
+#line 1530 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 140 "demo.y" /* yacc.c:1646  */
+#line 144 "demo.y" /* yacc.c:1646  */
     { 
-                cout<<"At line no: "<<line_count<<" func_definition : type_specifier ID LPAREN RPAREN compound_statement\n"<<endl;  
+                print_grammar_rule("func_definition","type_specifier ID LPAREN RPAREN compound_statement");
 
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[-4]. temp_str );
@@ -1541,14 +1545,14 @@ yyreduce:
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
             
             }
-#line 1545 "y.tab.c" /* yacc.c:1646  */
+#line 1549 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 157 "demo.y" /* yacc.c:1646  */
+#line 161 "demo.y" /* yacc.c:1646  */
     {
 
-                cout<<"At line no: "<<line_count<<" parameter_list : parameter_list COMMA type_specifier ID\n"<<endl;  
+               print_grammar_rule("parameter_list","parameter_list COMMA type_specifier ID");
 
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[-3]. temp_str );
@@ -1560,13 +1564,21 @@ yyreduce:
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
 
             }
-#line 1564 "y.tab.c" /* yacc.c:1646  */
+#line 1568 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 13:
+#line 175 "demo.y" /* yacc.c:1646  */
+    {
+             print_grammar_rule("parameter_list","parameter_list COMMA type_specifier");
+        }
+#line 1576 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 172 "demo.y" /* yacc.c:1646  */
+#line 178 "demo.y" /* yacc.c:1646  */
     { 
-                cout<<"At line no: "<<line_count<<" parameter_list : type_specifier ID\n"<<endl;  
+                print_grammar_rule("parameter_list","type_specifier ID");
                 
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[-1]. temp_str );
@@ -1575,13 +1587,21 @@ yyreduce:
 
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
              }
-#line 1579 "y.tab.c" /* yacc.c:1646  */
+#line 1591 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 15:
+#line 188 "demo.y" /* yacc.c:1646  */
+    {
+            print_grammar_rule("parameter_list","type_specifier");
+        }
+#line 1599 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 186 "demo.y" /* yacc.c:1646  */
+#line 194 "demo.y" /* yacc.c:1646  */
     {
-                cout<<"At line no: "<<line_count<<" compound_statement : LCURL statements RCUR\n"<<endl;
+                print_grammar_rule("compound_statement","LCURL statements RCURL");
                 
                 // string temp = *$2;
                 (yyval. temp_str ) = new string();
@@ -1589,28 +1609,35 @@ yyreduce:
                 *(yyval. temp_str ) += *(yyvsp[-1]. temp_str ); 
                 *(yyval. temp_str ) += "\n}"; 
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
+
+                sym_tab->print_all_scope();
+                sym_tab->exit_scope();
+
              }
-#line 1594 "y.tab.c" /* yacc.c:1646  */
+#line 1618 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 196 "demo.y" /* yacc.c:1646  */
+#line 208 "demo.y" /* yacc.c:1646  */
     {
-                cout<<"At line no: "<<line_count<<" LCURL RCURL\n"<<endl; 
+                print_grammar_rule("compound_statement","LCURL statements RCURL");
 
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = "{\n";  
                 *(yyval. temp_str ) += "\n}"; 
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
+
+                sym_tab->print_all_scope();
+                sym_tab->exit_scope();
              }
-#line 1607 "y.tab.c" /* yacc.c:1646  */
+#line 1634 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 206 "demo.y" /* yacc.c:1646  */
+#line 221 "demo.y" /* yacc.c:1646  */
     { 
 
-            cout<<"At line no: "<<line_count<<" var_declaration : type_specifier declaration_list SEMICOLON\n"<<endl; 
+            print_grammar_rule("var_declaration","type_specifier declaration_list SEMICOLON");
             
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[-2]. temp_str );
@@ -1620,31 +1647,31 @@ yyreduce:
 
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 1624 "y.tab.c" /* yacc.c:1646  */
+#line 1651 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 220 "demo.y" /* yacc.c:1646  */
-    { cout<<"At line no: "<<line_count<<" type_specifier : INT\n"<<endl; cout<<(yyvsp[0].symbol_info)->key<<"\n"<<endl; *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key; }
-#line 1630 "y.tab.c" /* yacc.c:1646  */
+#line 235 "demo.y" /* yacc.c:1646  */
+    { print_grammar_rule("type_specifier","INT"); cout<<(yyvsp[0].symbol_info)->key<<"\n"<<endl; *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key; }
+#line 1657 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 221 "demo.y" /* yacc.c:1646  */
-    { cout<<"At line no: "<<line_count<<" type_specifier : FLOAT\n"<<endl; cout<<(yyvsp[0].symbol_info)->key<<"\n"<<endl; *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key;}
-#line 1636 "y.tab.c" /* yacc.c:1646  */
+#line 236 "demo.y" /* yacc.c:1646  */
+    { print_grammar_rule("type_specifier","FLOAT"); cout<<(yyvsp[0].symbol_info)->key<<"\n"<<endl; *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key;}
+#line 1663 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 222 "demo.y" /* yacc.c:1646  */
-    { cout<<"At line no: "<<line_count<<" type_specifier : VOID\n"<<endl; cout<<(yyvsp[0].symbol_info)->key<<"\n"<<endl; *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key;}
-#line 1642 "y.tab.c" /* yacc.c:1646  */
+#line 237 "demo.y" /* yacc.c:1646  */
+    { print_grammar_rule("type_specifier","VOID"); cout<<(yyvsp[0].symbol_info)->key<<"\n"<<endl; *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key;}
+#line 1669 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 225 "demo.y" /* yacc.c:1646  */
+#line 240 "demo.y" /* yacc.c:1646  */
     { 
-                    cout<<"At line no: "<<line_count<<" declaration_list COMMA ID\n"<<endl; 
+                    print_grammar_rule("declaration_list","declaration_list COMMA ID");
                     
                     (yyval. symbol_info_str ) = new string();
                     *(yyval. symbol_info_str ) = *(yyvsp[-2]. symbol_info_str );
@@ -1652,13 +1679,13 @@ yyreduce:
                     *(yyval. symbol_info_str ) += (yyvsp[0].symbol_info)->key;
                     cout<< *(yyval. symbol_info_str ) <<"\n"<<endl;
                 }
-#line 1656 "y.tab.c" /* yacc.c:1646  */
+#line 1683 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 234 "demo.y" /* yacc.c:1646  */
+#line 249 "demo.y" /* yacc.c:1646  */
     {
-               cout<<"At line no: "<<line_count<<" declaration_list COMMA ID LTHIRD CONST_INT RTHIRD\n"<<endl; 
+               print_grammar_rule("declaration_list","declaration_list COMMA ID LTHIRD CONST_INT RTHIRD");
            
                 (yyval. symbol_info_str ) = new string();
                 *(yyval. symbol_info_str ) = *(yyvsp[-5]. symbol_info_str );
@@ -1671,23 +1698,24 @@ yyreduce:
                 cout<< *(yyval. symbol_info_str ) <<"\n"<<endl;
            
            }
-#line 1675 "y.tab.c" /* yacc.c:1646  */
+#line 1702 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 248 "demo.y" /* yacc.c:1646  */
+#line 263 "demo.y" /* yacc.c:1646  */
     { 
-               cout<<"At line no: "<<line_count<<" declaration_list : ID\n"<<endl; cout<<(yyvsp[0].symbol_info)->key<<"\n"<<endl;
+               print_grammar_rule("declaration_list","ID");
+               cout<<(yyvsp[0].symbol_info)->key<<"\n"<<endl;
                 (yyval. symbol_info_str ) = new string();
                 *(yyval. symbol_info_str ) = (yyvsp[0].symbol_info)->key;
                }
-#line 1685 "y.tab.c" /* yacc.c:1646  */
+#line 1713 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 254 "demo.y" /* yacc.c:1646  */
+#line 270 "demo.y" /* yacc.c:1646  */
     {
-               cout<<"At line no: "<<line_count<<" declaration_list : ID LTHIRD CONST_INT RTHIRD\n"<<endl;
+               print_grammar_rule("declaration_list","ID LTHIRD CONST_INT RTHIRD");
            
                 (yyval. symbol_info_str ) = new string();
                 *(yyval. symbol_info_str ) = (yyvsp[-3].symbol_info)->key;
@@ -1697,25 +1725,25 @@ yyreduce:
 
                 cout<< *(yyval. symbol_info_str ) <<"\n"<<endl;
            }
-#line 1701 "y.tab.c" /* yacc.c:1646  */
+#line 1729 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 267 "demo.y" /* yacc.c:1646  */
+#line 283 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" statements : statement\n"<<endl;
+            print_grammar_rule("statements","statement");
             
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
             cout<<*(yyval. temp_str )<<"\n"<<endl; 
         }
-#line 1713 "y.tab.c" /* yacc.c:1646  */
+#line 1741 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 274 "demo.y" /* yacc.c:1646  */
+#line 290 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" statements : statements statement\n"<<endl; 
+            print_grammar_rule("statements","statements statement");
         
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[-1]. temp_str );
@@ -1724,52 +1752,52 @@ yyreduce:
 
             cout<<*(yyval. temp_str )<<"\n"<<endl; 
         }
-#line 1728 "y.tab.c" /* yacc.c:1646  */
+#line 1756 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 286 "demo.y" /* yacc.c:1646  */
+#line 302 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" statement : var_declaration\n"<<endl; 
+            print_grammar_rule("statement","var_declaration");
     
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 1740 "y.tab.c" /* yacc.c:1646  */
+#line 1768 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 293 "demo.y" /* yacc.c:1646  */
+#line 309 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" statement : expression_statement\n"<<endl; 
+            print_grammar_rule("statement","expression_statement");
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 1751 "y.tab.c" /* yacc.c:1646  */
+#line 1779 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 299 "demo.y" /* yacc.c:1646  */
+#line 315 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" statement : compound_statement\n"<<endl; 
+            print_grammar_rule("statement","compound_statement");
         }
-#line 1759 "y.tab.c" /* yacc.c:1646  */
+#line 1787 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 302 "demo.y" /* yacc.c:1646  */
+#line 318 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" statement : FOR LPAREN expression_statement expression_statement expression RPAREN statement\n"<<endl; 
+            print_grammar_rule("statement","FOR LPAREN expression_statement expression_statement expression RPAREN statement");
         }
-#line 1767 "y.tab.c" /* yacc.c:1646  */
+#line 1795 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 305 "demo.y" /* yacc.c:1646  */
-    {
-            cout<<"At line no: "<<line_count<<" statement : IF LPAREN expression RPAREN statement\n"<<endl; 
+#line 321 "demo.y" /* yacc.c:1646  */
+    { 
+            print_grammar_rule("statement","IF LPAREN expression RPAREN statement");
             
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = "if";
@@ -1781,13 +1809,13 @@ yyreduce:
             cout<<*(yyval. temp_str )<<"\n"<<endl;
 
         }
-#line 1785 "y.tab.c" /* yacc.c:1646  */
+#line 1813 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 318 "demo.y" /* yacc.c:1646  */
+#line 334 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" statement : IF LPAREN expression RPAREN statement ELSE statemen\n"<<endl; 
+            print_grammar_rule("statement","WHILE LPAREN expression RPAREN statement");
         
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = "if";
@@ -1801,29 +1829,29 @@ yyreduce:
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         
         }
-#line 1805 "y.tab.c" /* yacc.c:1646  */
+#line 1833 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 333 "demo.y" /* yacc.c:1646  */
+#line 349 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" statement : WHILE LPAREN expression RPAREN statement\n"<<endl; 
+            print_grammar_rule("statement","WHILE LPAREN expression RPAREN statement");
         }
-#line 1813 "y.tab.c" /* yacc.c:1646  */
+#line 1841 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 336 "demo.y" /* yacc.c:1646  */
+#line 352 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" statement : PRINTLN LPAREN ID RPAREN SEMICOLON\n"<<endl; 
+            print_grammar_rule("statement","PRINTLN LPAREN ID RPAREN SEMICOLON");
         }
-#line 1821 "y.tab.c" /* yacc.c:1646  */
+#line 1849 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 339 "demo.y" /* yacc.c:1646  */
+#line 355 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" statement : RETURN expression SEMICOLON\n"<<endl; 
+            print_grammar_rule("statement","RETURN expression SEMICOLON");
 
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = "return";
@@ -1833,45 +1861,45 @@ yyreduce:
 
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 1837 "y.tab.c" /* yacc.c:1646  */
+#line 1865 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 352 "demo.y" /* yacc.c:1646  */
+#line 368 "demo.y" /* yacc.c:1646  */
     {
-                    cout<<"At line no: "<<line_count<<" expression_statement : SEMICOLON\n"<<endl; 
+                    print_grammar_rule("expression_statement","SEMICOLON");
                 }
-#line 1845 "y.tab.c" /* yacc.c:1646  */
+#line 1873 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 355 "demo.y" /* yacc.c:1646  */
+#line 371 "demo.y" /* yacc.c:1646  */
     {
-                    cout<<"At line no: "<<line_count<<" expression_statement : expression SEMICOLON\n"<<endl; 
+                    print_grammar_rule("expression_statement","expression SEMICOLON");
                     (yyval. temp_str ) = new string();
                     *(yyval. temp_str ) = *(yyvsp[-1]. temp_str );
                     *(yyval. temp_str ) += ";";
 
                     cout<<*(yyval. temp_str )<<"\n"<<endl;
                 }
-#line 1858 "y.tab.c" /* yacc.c:1646  */
+#line 1886 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 365 "demo.y" /* yacc.c:1646  */
+#line 381 "demo.y" /* yacc.c:1646  */
     { 
-            cout<<"At line no: "<<line_count<<" variable : ID\n"<<endl; 
+            print_grammar_rule("variable","ID");
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key;
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 1869 "y.tab.c" /* yacc.c:1646  */
+#line 1897 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 371 "demo.y" /* yacc.c:1646  */
+#line 387 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" variable : ID LTHIRD expression RTHIRD\n"<<endl; 
+            print_grammar_rule("variable","ID LTHIRD expression RTHIRD");
             
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = (yyvsp[-3].symbol_info)->key;
@@ -1881,96 +1909,96 @@ yyreduce:
 
             cout<<*(yyval. temp_str )<<"\n"<<endl;
          }
-#line 1885 "y.tab.c" /* yacc.c:1646  */
+#line 1913 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 384 "demo.y" /* yacc.c:1646  */
+#line 400 "demo.y" /* yacc.c:1646  */
     {
-                cout<<"At line no: "<<line_count<<" expression : logic_expression\n"<<endl; 
+                print_grammar_rule("expression","logic_expression");
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
             }
-#line 1896 "y.tab.c" /* yacc.c:1646  */
+#line 1924 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 390 "demo.y" /* yacc.c:1646  */
+#line 406 "demo.y" /* yacc.c:1646  */
     {
-                cout<<"At line no: "<<line_count<<" expression : variable ASSIGNOP logic_expression\n"<<endl;
+                print_grammar_rule("expression","variable ASSIGNOP logic_expression");
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[-2]. temp_str );
                 *(yyval. temp_str ) += "=";
                 *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
             }
-#line 1909 "y.tab.c" /* yacc.c:1646  */
+#line 1937 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 402 "demo.y" /* yacc.c:1646  */
+#line 418 "demo.y" /* yacc.c:1646  */
     {
-                cout<<"At line no: "<<line_count<<" logic_expression : rel_expression\n"<<endl;
+                print_grammar_rule("logic_expression","rel_expression");
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
             }
-#line 1920 "y.tab.c" /* yacc.c:1646  */
+#line 1948 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 408 "demo.y" /* yacc.c:1646  */
+#line 424 "demo.y" /* yacc.c:1646  */
     {
-                cout<<"At line no: "<<line_count<<" logic_expression : rel_expression LOGICOP rel_expression\n"<<endl;
+                print_grammar_rule("logic_expression","rel_expression LOGICOP rel_expression");
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[-2]. temp_str );
                 *(yyval. temp_str ) += (yyvsp[-1].symbol_info)->key;
                 *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
             }
-#line 1933 "y.tab.c" /* yacc.c:1646  */
+#line 1961 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 418 "demo.y" /* yacc.c:1646  */
+#line 434 "demo.y" /* yacc.c:1646  */
     {
-                cout<<"At line no: "<<line_count<<" rel_expression : simple_expression\n"<<endl;
+                print_grammar_rule("rel_expression","simple_expression");
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
                  cout<<*(yyval. temp_str )<<"\n"<<endl;
             }
-#line 1944 "y.tab.c" /* yacc.c:1646  */
+#line 1972 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 424 "demo.y" /* yacc.c:1646  */
+#line 440 "demo.y" /* yacc.c:1646  */
     {
-                cout<<"At line no: "<<line_count<<" rel_expression : simple_expression RELOP simple_expression\n"<<endl;
+                print_grammar_rule("rel_expression","simple_expression RELOP simple_expression");
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[-2]. temp_str );
                 *(yyval. temp_str ) += (yyvsp[-1].symbol_info)->key;
                 *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
             }
-#line 1957 "y.tab.c" /* yacc.c:1646  */
+#line 1985 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 434 "demo.y" /* yacc.c:1646  */
+#line 450 "demo.y" /* yacc.c:1646  */
     {
-                cout<<"At line no: "<<line_count<<" simple_expression : term\n"<<endl;
+                print_grammar_rule("simple_expression","term");
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
             }
-#line 1968 "y.tab.c" /* yacc.c:1646  */
+#line 1996 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 440 "demo.y" /* yacc.c:1646  */
+#line 456 "demo.y" /* yacc.c:1646  */
     {
-                cout<<"At line no: "<<line_count<<" simple_expression : simple_expression ADDOP term\n"<<endl;
+               print_grammar_rule("simple_expression","simple_expression ADDOP term");
                (yyval. temp_str ) = new string();
                *(yyval. temp_str ) = *(yyvsp[-2]. temp_str );
                *(yyval. temp_str ) += (yyvsp[-1].symbol_info)->key;
@@ -1978,82 +2006,86 @@ yyreduce:
 
                cout<<*(yyval. temp_str )<<"\n"<<endl;
             }
-#line 1982 "y.tab.c" /* yacc.c:1646  */
+#line 2010 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 451 "demo.y" /* yacc.c:1646  */
+#line 467 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" term : unary_expression\n"<<endl;
+            print_grammar_rule("term","unary_expression");
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 1993 "y.tab.c" /* yacc.c:1646  */
+#line 2021 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 457 "demo.y" /* yacc.c:1646  */
+#line 473 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" term : term MULOP unary_expressio\n"<<endl;
+            print_grammar_rule("term","term MULOP unary_expression");
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[-2]. temp_str );
             *(yyval. temp_str ) += (yyvsp[-1].symbol_info)->key;
             *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 2006 "y.tab.c" /* yacc.c:1646  */
+#line 2034 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 467 "demo.y" /* yacc.c:1646  */
+#line 483 "demo.y" /* yacc.c:1646  */
     {
+                print_grammar_rule("unary_expression","ADDOP unary_expression");
                 
-                cout<<"At line no: "<<line_count<<" simple_expression : simple_expression ADDOP term\n"<<endl;
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = (yyvsp[-1].symbol_info)->key;
                 *(yyval. temp_str ) += *(yyvsp[0]. temp_str );
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
             }
-#line 2019 "y.tab.c" /* yacc.c:1646  */
+#line 2047 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 475 "demo.y" /* yacc.c:1646  */
+#line 491 "demo.y" /* yacc.c:1646  */
     {
+                print_grammar_rule("unary_expression","NOT unary_expression");
+                
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
             }
-#line 2028 "y.tab.c" /* yacc.c:1646  */
+#line 2058 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 479 "demo.y" /* yacc.c:1646  */
+#line 497 "demo.y" /* yacc.c:1646  */
     { 
-                cout<<"At line no: "<<line_count<<" unary_expression : factor\n"<<endl;
+                print_grammar_rule("unary_expression","factor");
+                
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
              }
-#line 2039 "y.tab.c" /* yacc.c:1646  */
+#line 2070 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 487 "demo.y" /* yacc.c:1646  */
+#line 506 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" factor : variable\n"<<endl;
+
+            print_grammar_rule("factor","variable");
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = *(yyvsp[0]. temp_str );
             cout<<*(yyval. temp_str )<<"\n"<<endl;
 
         }
-#line 2051 "y.tab.c" /* yacc.c:1646  */
+#line 2083 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 494 "demo.y" /* yacc.c:1646  */
+#line 514 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" factor : ID LPAREN argument_list RPAREN\n"<<endl; 
+            print_grammar_rule("factor","ID LPAREN argument_list RPAREN");
 
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = (yyvsp[-3].symbol_info)->key;
@@ -2063,13 +2095,14 @@ yyreduce:
             cout<<*(yyval. temp_str )<<"\n"<<endl;
 
         }
-#line 2067 "y.tab.c" /* yacc.c:1646  */
+#line 2099 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 505 "demo.y" /* yacc.c:1646  */
+#line 525 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" factor : LPAREN expression RPAREN\n"<<endl; 
+
+            print_grammar_rule("factor","LPAREN expression RPAREN");
 
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = "(";
@@ -2078,95 +2111,99 @@ yyreduce:
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         
         }
-#line 2082 "y.tab.c" /* yacc.c:1646  */
+#line 2115 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 515 "demo.y" /* yacc.c:1646  */
+#line 536 "demo.y" /* yacc.c:1646  */
     { 
-            cout<<"At line no: "<<line_count<<" factor : CONST_INT\n"<<endl; 
+            print_grammar_rule("factor","CONST_INT");
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key;
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 2093 "y.tab.c" /* yacc.c:1646  */
+#line 2126 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 521 "demo.y" /* yacc.c:1646  */
+#line 542 "demo.y" /* yacc.c:1646  */
     { 
-            cout<<"At line no: "<<line_count<<" factor : CONST_FLOAT\n"<<endl;
+            print_grammar_rule("factor","CONST_FLOAT");
             (yyval. temp_str ) = new string();
             *(yyval. temp_str ) = (yyvsp[0].symbol_info)->key; 
             cout<<*(yyval. temp_str )<<"\n"<<endl;
         }
-#line 2104 "y.tab.c" /* yacc.c:1646  */
+#line 2137 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 527 "demo.y" /* yacc.c:1646  */
+#line 548 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" factor : variable INCOP\n"<<endl; 
+            print_grammar_rule("factor","variable INCOP");
         }
-#line 2112 "y.tab.c" /* yacc.c:1646  */
+#line 2145 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 530 "demo.y" /* yacc.c:1646  */
+#line 551 "demo.y" /* yacc.c:1646  */
     {
-            cout<<"At line no: "<<line_count<<" factor : variable DECOP\n"<<endl; 
+            print_grammar_rule("factor","variable DECOP");
         }
-#line 2120 "y.tab.c" /* yacc.c:1646  */
+#line 2153 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 535 "demo.y" /* yacc.c:1646  */
+#line 556 "demo.y" /* yacc.c:1646  */
     {
-                    cout<<"At line no: "<<line_count<<" arguments : arguments\n"<<endl;
+
+                    print_grammar_rule("argument_list","arguments");
 
                     (yyval. temp_str ) = new string();
                     *(yyval. temp_str ) = *(yyvsp[0]. temp_str ); 
                     cout<<*(yyval. temp_str )<<"\n"<<endl;
                 }
-#line 2132 "y.tab.c" /* yacc.c:1646  */
+#line 2166 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 542 "demo.y" /* yacc.c:1646  */
+#line 564 "demo.y" /* yacc.c:1646  */
     {
                 cout<<"WHAT IS THIS"<<endl;
             }
-#line 2140 "y.tab.c" /* yacc.c:1646  */
+#line 2174 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 547 "demo.y" /* yacc.c:1646  */
+#line 569 "demo.y" /* yacc.c:1646  */
     {
-                cout<<"At line no: "<<line_count<<" arguments : arguments COMMA logic_expression\n"<<endl;
+
+                print_grammar_rule("arguments","arguments COMMA logic_expression");
+                
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[-2]. temp_str ); 
                 *(yyval. temp_str ) += " , "; 
                 *(yyval. temp_str ) += *(yyvsp[0]. temp_str ); 
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
             }
-#line 2153 "y.tab.c" /* yacc.c:1646  */
+#line 2189 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 555 "demo.y" /* yacc.c:1646  */
+#line 579 "demo.y" /* yacc.c:1646  */
     {
-                cout<<"At line no: "<<line_count<<" arguments : logic_expression\n"<<endl;
+
+                print_grammar_rule("arguments","logic_expression");
 
                 (yyval. temp_str ) = new string();
                 *(yyval. temp_str ) = *(yyvsp[0]. temp_str ); 
                 cout<<*(yyval. temp_str )<<"\n"<<endl;
             
             }
-#line 2166 "y.tab.c" /* yacc.c:1646  */
+#line 2203 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2170 "y.tab.c" /* yacc.c:1646  */
+#line 2207 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2394,7 +2431,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 565 "demo.y" /* yacc.c:1906  */
+#line 590 "demo.y" /* yacc.c:1906  */
 
 
 main(int argc,char *argv[])

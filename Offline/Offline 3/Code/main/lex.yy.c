@@ -577,7 +577,7 @@ char *yytext;
 #include "y.tab.h"
 
 extern YYSTYPE yylval;
-extern SymbolTable *table;
+extern SymbolTable *sym_tab;
 void yyerror(char *);
 
 int line_count = 1;
@@ -1063,7 +1063,7 @@ YY_RULE_SETUP
 case 36:
 YY_RULE_SETUP
 #line 102 "demo.l"
-{return LCURL;}
+{ sym_tab->enter_scope(); return LCURL;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP

@@ -12,7 +12,7 @@
 #include "y.tab.h"
 
 extern YYSTYPE yylval;
-extern SymbolTable *table;
+extern SymbolTable *sym_tab;
 void yyerror(char *);
 
 int line_count = 1;
@@ -99,7 +99,7 @@ ALL_EXCEPT_BACKSLASH [^\\]
 
 "("	{return LPAREN;}
 ")"	{return RPAREN;}
-"{"	{return LCURL;}
+"{"	{ sym_tab->enter_scope(); return LCURL;}
 "}"	{return RCURL;}
 "["	{return LTHIRD;}
 "]" {return RTHIRD;}

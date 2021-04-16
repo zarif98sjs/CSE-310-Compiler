@@ -151,10 +151,14 @@ void ScopeTable::print()
 
     for(int i=0; i<M; i++)
     {
-//        cout<<"Chain "<<i<<" : ";
+        SymbolInfo* now = ht[i];
+
+
+        if(now == NULL) continue;
+
         cout<<i<<" --> ";
 
-        SymbolInfo* now = ht[i];
+        
         while(now != NULL)
         {
             cout<<"< "<<now->key <<" : "<<now->val<<" > ";
