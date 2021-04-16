@@ -24,8 +24,9 @@ int yyparse(void);
 int yylex(void);
 
 extern int line_count;
-bool is_function_now = false;
 
+//////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////// SYMBOL TABLE //////////////////////////////////////////////////
 
 int hashF(string s)
 {
@@ -39,6 +40,16 @@ int hashF(string s)
 
 int bucket_size = 30;
 SymbolTable *sym_tab = new SymbolTable(bucket_size,hashF);
+
+//////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////// FUNCTION PARAMETER  ///////////////////////////////////////////
+
+bool is_function_now = false;
+vector<SymbolInfo>function_params;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////// ERROR HANDLING ///////////////////////////////////////////////
 
 string do_implicit_typecast(string left_op,string right_op)
 {
@@ -192,7 +203,7 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
             }
 		;
 		 
-func_definition: type_specifier ID LPAREN parameter_list RPAREN compound_statement { 
+func_definition: type_specifier ID LPAREN parameter_list RPAREN {is_function_now = true;} compound_statement { 
                 print_grammar_rule("func_definition","type_specifier ID LPAREN parameter_list RPAREN compound_statement");
                 
                 $$ = new Helper();
@@ -204,7 +215,7 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN compound_stateme
                 $$->text += "(";
                 $$->text += $4->text;
                 $$->text += ")";
-                $$->text += $6->text;
+                $$->text += $7->text; 
 
                 // insert function ID to SymbolTable with VAR_TYPE
                 $2->setVarType($1->text);
@@ -250,8 +261,8 @@ parameter_list: parameter_list COMMA type_specifier ID {
                 $$->text += $4->key;
 
                 // insert parameter ID to SymbolTable with VAR_TYPE
-                // $4->setVarType($3->text);
-                // sym_tab->insert_symbol(*$4);
+                $4->setVarType($3->text);
+                function_params.push_back(*$4);
 
                 print_log_text($$->text);
 
@@ -269,9 +280,9 @@ parameter_list: parameter_list COMMA type_specifier ID {
                 $$->text += " ";
                 $$->text += $2->key;
 
-                // insert parameter ID to SymbolTable with VAR_TYPE
-                // $2->setVarType($1->text);
-                // sym_tab->insert_symbol(*$2);
+                // insert parameter ID to Parameter SymbolTable with VAR_TYPE
+                $2->setVarType($1->text);
+                function_params.push_back(*$2);
 
                 print_log_text($$->text);
              }
@@ -279,15 +290,14 @@ parameter_list: parameter_list COMMA type_specifier ID {
             print_grammar_rule("parameter_list","type_specifier");
         }
  		;
-
  		
-compound_statement: LCURL statements RCURL {
+compound_statement: LCURL dummy_scope_function statements RCURL {
                 print_grammar_rule("compound_statement","LCURL statements RCURL");
                 
                 // string temp = $2->text;
                 $$ = new Helper();
                 $$->text = "{\n"; 
-                $$->text += $2->text; 
+                $$->text += $3->text; 
                 $$->text += "\n}"; 
                 print_log_text($$->text);
 
@@ -295,7 +305,7 @@ compound_statement: LCURL statements RCURL {
                 sym_tab->exit_scope();
 
              }
- 		    | LCURL RCURL {
+ 		    | LCURL dummy_scope_function RCURL {
                 print_grammar_rule("compound_statement","LCURL statements RCURL");
 
                 $$ = new Helper();
@@ -305,8 +315,24 @@ compound_statement: LCURL statements RCURL {
 
                 sym_tab->print_all_scope();
                 sym_tab->exit_scope();
+                is_function_now = false;
              }
  		    ;
+
+dummy_scope_function:  {
+
+                    sym_tab->enter_scope(); 
+
+                    if(is_function_now)
+                    {
+                        for(auto el:function_params)
+                        {
+                            // insert ID
+                            sym_tab->insert_symbol(el);
+                        }
+                    }
+                }
+                ;
  		    
 var_declaration: type_specifier declaration_list SEMICOLON { 
 

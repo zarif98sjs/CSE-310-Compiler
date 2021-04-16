@@ -1064,7 +1064,7 @@ YY_RULE_SETUP
 case 36:
 YY_RULE_SETUP
 #line 103 "demo.l"
-{ sym_tab->enter_scope(); return LCURL;}
+{return LCURL;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP

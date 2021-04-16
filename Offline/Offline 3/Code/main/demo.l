@@ -100,7 +100,7 @@ ALL_EXCEPT_BACKSLASH [^\\]
 
 "("	{return LPAREN;}
 ")"	{return RPAREN;}
-"{"	{ sym_tab->enter_scope(); return LCURL;}
+"{"	{return LCURL;}
 "}"	{return RCURL;}
 "["	{return LTHIRD;}
 "]" {return RTHIRD;}
