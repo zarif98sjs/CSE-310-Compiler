@@ -5,6 +5,7 @@ using namespace std;
 #include "SymbolTable.h"
 #include "SymbolInfo.h"
 #include "ScopeTable.h"
+#include "Helper.h"
 
 // #define YYSTYPE SymbolInfo*
 

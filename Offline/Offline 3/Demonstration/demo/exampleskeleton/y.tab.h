@@ -60,13 +60,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 28 "parser.y" /* yacc.c:1909  */
+#line 29 "parser.y" /* yacc.c:1909  */
 
 	int ival;
 	SymbolInfo* si;
 	vector<SymbolInfo*>* vs;
+	Helper* helper;
 
-#line 70 "y.tab.h" /* yacc.c:1909  */
+#line 71 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

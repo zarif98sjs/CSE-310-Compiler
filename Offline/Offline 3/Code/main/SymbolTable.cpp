@@ -53,7 +53,7 @@ bool SymbolTable::insert_symbol(SymbolInfo si)
 {
     SymbolInfo* temp = cur->search(si.key);
 
-    if(temp != NULL) /// cant insert
+    if(temp != NULL) /// can't insert
     {
         cout<<"<"<<temp->key<<","<<temp->val<<">"<<" already exists in current ScopeTable"<<endl;
         cout<<endl;
@@ -64,6 +64,7 @@ bool SymbolTable::insert_symbol(SymbolInfo si)
 
     cout<<"Inserted in ScopeTable# "<<getCurScopeTableId()<<" at position "<<ret->bucket<<","<<ret->bucket_pos<<endl;
     cout<<endl;
+    
     return ret!=NULL ;
 }
 

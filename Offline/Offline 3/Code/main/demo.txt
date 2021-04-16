@@ -1,3 +1,4 @@
-int var(int a, int b){
-	return a+b;
+void foo(){
+    x = 5 * 10.5 + 2.4 % 5;
+    x = + 5;
 }

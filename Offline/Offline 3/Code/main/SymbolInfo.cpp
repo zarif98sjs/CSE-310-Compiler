@@ -19,3 +19,7 @@ SymbolInfo::SymbolInfo(string key,string val,SymbolInfo* nxt)
     this->bucket = bucket;
     this->bucket_pos = bucket_pos;
 }
+
+void SymbolInfo::setVarType(string var_type){
+    this->var_type = var_type;
+}

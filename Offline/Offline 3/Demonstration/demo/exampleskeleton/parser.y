@@ -5,6 +5,7 @@ using namespace std;
 #include "SymbolTable.h"
 #include "SymbolInfo.h"
 #include "ScopeTable.h"
+#include "Helper.h"
 
 // #define YYSTYPE SymbolInfo*
 
@@ -29,12 +30,13 @@ void yyerror(char *s)
 	int ival;
 	SymbolInfo* si;
 	vector<SymbolInfo*>* vs;
+	Helper* helper;
 }
 
 %token <ival> SEMICOLON 
 %token <si> INT ID 
 
-%type <vs> declaration_list
+%type <helper> declaration_list
 
 // %left 
 // %right
@@ -56,11 +58,10 @@ program: unit { cout<<"program: unit\n"<<endl;}
 unit: var_declaration { cout<<"unit: var_declaration\n"<<endl;}
      ;
          
-var_declaration: type_specifier declaration_list SEMICOLON { 
+var_declaration: type_specifier {cout<<"actionnn"<<endl;} declaration_list SEMICOLON { 
 				cout<<"var_declaration: type_specifier declaration_list SEMICOLON\n"<<endl;
 
-				cout<<$2->size()<<endl;
-				cout<<$2->back()->key<<"\n"<<endl;
+				$3->print();
 			}
  		 ;
  		 
@@ -71,8 +72,10 @@ declaration_list: ID {
 				cout<<"declaration_list : ID\n"<<endl; 
 				cout<<$1->key<<"\n"<<endl;
 
-				$$ = new vector<SymbolInfo*>();
-				$$->push_back($1);
+				$$ = new Helper();
+				
+				$$->text = $1->key;
+				$$->v.push_back($1);
 			}
  		  ;
 

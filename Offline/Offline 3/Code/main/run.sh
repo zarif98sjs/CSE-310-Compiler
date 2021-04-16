@@ -9,8 +9,8 @@ echo 'Generated the scanner C file'
 g++ -w -c -o l.o lex.yy.c
 # if the above command doesn't work try g++ -fpermissive -w -c -o l.o lex.yy.c
 echo 'Generated the scanner object file'
-g++ SymbolInfo.cpp ScopeTable.cpp SymbolTable.cpp -c
+g++ SymbolInfo.cpp ScopeTable.cpp SymbolTable.cpp Helper.cpp -c
 echo 'Generated the symbol table object files'
-g++ SymbolInfo.o ScopeTable.o SymbolTable.o y.o l.o -lfl
+g++ SymbolInfo.o ScopeTable.o SymbolTable.o Helper.o y.o l.o -lfl
 echo 'All ready, running'
 ./a.out demo.txt > demo_out.txt

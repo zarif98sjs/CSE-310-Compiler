@@ -451,6 +451,7 @@ using namespace std;
 #include "SymbolTable.h"
 #include "SymbolInfo.h"
 #include "ScopeTable.h"
+#include "Helper.h"
 
 // #define YYSTYPE SymbolInfo*
 
@@ -466,8 +467,8 @@ void yyerror(char *);
 int line_count=1;
 int error=0;
 
-#line 470 "lex.yy.c"
 #line 471 "lex.yy.c"
+#line 472 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -684,10 +685,10 @@ YY_DECL
 		}
 
 	{
-#line 37 "scanner.l"
+#line 38 "scanner.l"
 
 
-#line 691 "lex.yy.c"
+#line 692 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -746,18 +747,18 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 39 "scanner.l"
+#line 40 "scanner.l"
 {}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 40 "scanner.l"
+#line 41 "scanner.l"
 {line_count++;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 42 "scanner.l"
+#line 43 "scanner.l"
 {
 			SymbolInfo* s= new SymbolInfo(yytext,"INT"); 
 			yylval.si = s;
@@ -766,12 +767,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 47 "scanner.l"
+#line 48 "scanner.l"
 {return SEMICOLON;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 49 "scanner.l"
+#line 50 "scanner.l"
 {	 
 							
 			SymbolInfo* s= new SymbolInfo(yytext,"ID");
@@ -782,10 +783,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 58 "scanner.l"
+#line 59 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 789 "lex.yy.c"
+#line 790 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1790,7 +1791,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 58 "scanner.l"
+#line 59 "scanner.l"
 
 
 int yywrap(void)
