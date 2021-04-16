@@ -95,6 +95,10 @@ void error_type_cast_mod()
     cout<<"Error at Line "<<line_count<<": non-integer operand on modulus operator\n"<<endl;
 }
 
+void error_undeclared_variable(string var_name)
+{
+    cout<<"Error at Line "<<line_count<<": Undeclared Variable: "<<var_name<<"\n"<<endl;
+}
 
 %}
 
@@ -219,7 +223,10 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN {is_function_now
 
                 // insert function ID to SymbolTable with VAR_TYPE
                 $2->setVarType($1->text);
-                sym_tab->insert_symbol(*$2);
+                if(!sym_tab->insert_symbol(*$2))
+                {
+                    error_multiple_declaration($2->key);
+                }
 
                 print_log_text($$->text);
 
@@ -597,8 +604,10 @@ variable: ID {
             // update text
             $$->text = $1->key;
 
-            // insert ID
-            sym_tab->insert_symbol(*$1);
+            if(sym_tab->lookup($1->key) == NULL)
+            {
+                error_undeclared_variable($1->key);
+            }
 
             print_log_text($$->text);
         }		

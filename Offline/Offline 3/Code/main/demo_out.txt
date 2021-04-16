@@ -26,73 +26,121 @@ Inserted in ScopeTable# 1.1 at position 8,0
 
 At line no: 2 variable : ID
 
-<a,ID> already exists in current ScopeTable
+Error at Line 2: Undeclared Variable: c
 
-a
+c
 
-At line no: 2 factor : variable
+At line no: 2 factor : CONST_INT
 
-a
+10
 
 At line no: 2 unary_expression : factor
 
-a
+10
 
 At line no: 2 term : unary_expression
 
-a
+10
 
 At line no: 2 simple_expression : term
 
+10
+
+At line no: 2 rel_expression : simple_expression
+
+10
+
+At line no: 2 logic_expression : rel_expression
+
+10
+
+At line no: 2 expression : variable ASSIGNOP logic_expression
+
+c=10
+
+At line no: 2 expression_statement : expression SEMICOLON
+
+c=10;
+
+At line no: 2 statement : expression_statement
+
+c=10;
+
+At line no: 2 statements : statement
+
+c=10;
+
+At line no: 3 variable : ID
+
+Found in ScopeTable# 1.1 at position 7,0
+
 a
 
-At line no: 2 variable : ID
+At line no: 3 factor : variable
 
-<b,ID> already exists in current ScopeTable
+a
+
+At line no: 3 unary_expression : factor
+
+a
+
+At line no: 3 term : unary_expression
+
+a
+
+At line no: 3 simple_expression : term
+
+a
+
+At line no: 3 variable : ID
+
+Found in ScopeTable# 1.1 at position 8,0
 
 b
 
-At line no: 2 factor : variable
+At line no: 3 factor : variable
 
 b
 
-At line no: 2 unary_expression : factor
+At line no: 3 unary_expression : factor
 
 b
 
-At line no: 2 term : unary_expression
+At line no: 3 term : unary_expression
 
 b
 
-At line no: 2 simple_expression : simple_expression ADDOP term
+At line no: 3 simple_expression : simple_expression ADDOP term
 
 Implicit Typecast : int
 
 a+b
 
-At line no: 2 rel_expression : simple_expression
+At line no: 3 rel_expression : simple_expression
 
 a+b
 
-At line no: 2 logic_expression : rel_expression
+At line no: 3 logic_expression : rel_expression
 
 a+b
 
-At line no: 2 expression : logic_expression
+At line no: 3 expression : logic_expression
 
 a+b
 
-At line no: 2 statement : RETURN expression SEMICOLON
+At line no: 3 statement : RETURN expression SEMICOLON
 
 return a+b;
 
-At line no: 2 statements : statement
+At line no: 3 statements : statements statement
 
+c=10;
 return a+b;
 
-At line no: 3 compound_statement : LCURL statements RCURL
+At line no: 4 compound_statement : LCURL statements RCURL
 
 {
+c=10;
 return a+b;
 }
 
@@ -105,23 +153,215 @@ ScopeTable # 1
 
 ScopeTable with id 1.1 removed
 
-At line no: 3 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
+At line no: 4 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
 Inserted in ScopeTable# 1 at position 29,0
 
 int var(int a,int b){
+c=10;
 return a+b;
 }
 
-At line no: 3 unit : func_definition
+At line no: 4 unit : func_definition
 
 int var(int a,int b){
+c=10;
 return a+b;
 }
 
-At line no: 3 program : unit
+At line no: 4 program : unit
 
 int var(int a,int b){
+c=10;
+return a+b;
+}
+
+At line no: 6 type_specifier : INT
+
+int
+
+At line no: 6 type_specifier : INT
+
+int
+
+At line no: 6 parameter_list : type_specifier ID
+
+int a
+
+At line no: 6 type_specifier : INT
+
+int
+
+At line no: 6 parameter_list : parameter_list COMMA type_specifier ID
+
+int a,int b
+
+New ScopeTable with id 1.2 created
+
+Inserted in ScopeTable# 1.2 at position 7,0
+
+Inserted in ScopeTable# 1.2 at position 8,0
+
+<a,ID> already exists in current ScopeTable
+
+<b,ID> already exists in current ScopeTable
+
+At line no: 7 variable : ID
+
+Error at Line 7: Undeclared Variable: c
+
+c
+
+At line no: 7 factor : CONST_INT
+
+10
+
+At line no: 7 unary_expression : factor
+
+10
+
+At line no: 7 term : unary_expression
+
+10
+
+At line no: 7 simple_expression : term
+
+10
+
+At line no: 7 rel_expression : simple_expression
+
+10
+
+At line no: 7 logic_expression : rel_expression
+
+10
+
+At line no: 7 expression : variable ASSIGNOP logic_expression
+
+c=10
+
+At line no: 7 expression_statement : expression SEMICOLON
+
+c=10;
+
+At line no: 7 statement : expression_statement
+
+c=10;
+
+At line no: 7 statements : statement
+
+c=10;
+
+At line no: 8 variable : ID
+
+Found in ScopeTable# 1.2 at position 7,0
+
+a
+
+At line no: 8 factor : variable
+
+a
+
+At line no: 8 unary_expression : factor
+
+a
+
+At line no: 8 term : unary_expression
+
+a
+
+At line no: 8 simple_expression : term
+
+a
+
+At line no: 8 variable : ID
+
+Found in ScopeTable# 1.2 at position 8,0
+
+b
+
+At line no: 8 factor : variable
+
+b
+
+At line no: 8 unary_expression : factor
+
+b
+
+At line no: 8 term : unary_expression
+
+b
+
+At line no: 8 simple_expression : simple_expression ADDOP term
+
+Implicit Typecast : int
+
+a+b
+
+At line no: 8 rel_expression : simple_expression
+
+a+b
+
+At line no: 8 logic_expression : rel_expression
+
+a+b
+
+At line no: 8 expression : logic_expression
+
+a+b
+
+At line no: 8 statement : RETURN expression SEMICOLON
+
+return a+b;
+
+At line no: 8 statements : statements statement
+
+c=10;
+return a+b;
+
+At line no: 9 compound_statement : LCURL statements RCURL
+
+{
+c=10;
+return a+b;
+}
+
+ScopeTable # 1.2
+7 --> < a : ID > 
+8 --> < b : ID > 
+
+ScopeTable # 1
+29 --> < var : ID > 
+
+
+ScopeTable with id 1.2 removed
+
+At line no: 9 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
+
+<var,ID> already exists in current ScopeTable
+
+Error at Line 9: Multiple Declaration of var
+
+int var(int a,int b){
+c=10;
+return a+b;
+}
+
+At line no: 9 unit : func_definition
+
+int var(int a,int b){
+c=10;
+return a+b;
+}
+
+At line no: 9 program : program unit
+
+int var(int a,int b){
+c=10;
+return a+b;
+}
+int var(int a,int b){
+c=10;
 return a+b;
 }
 
