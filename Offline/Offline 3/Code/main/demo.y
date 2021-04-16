@@ -100,6 +100,11 @@ void error_undeclared_variable(string var_name)
     cout<<"Error at Line "<<line_count<<": Undeclared Variable: "<<var_name<<"\n"<<endl;
 }
 
+void error_type_mismatch()
+{
+    cout<<"Error at Line "<<line_count<<": Type Mismatch\n"<<endl;
+}
+
 %}
 
 
@@ -301,28 +306,43 @@ parameter_list: parameter_list COMMA type_specifier ID {
 compound_statement: LCURL dummy_scope_function statements RCURL {
                 print_grammar_rule("compound_statement","LCURL statements RCURL");
                 
-                // string temp = $2->text;
+
                 $$ = new Helper();
+
+                // update text
                 $$->text = "{\n"; 
                 $$->text += $3->text; 
                 $$->text += "\n}"; 
+
                 print_log_text($$->text);
 
+                // EXIT
                 sym_tab->print_all_scope();
                 sym_tab->exit_scope();
+
+                // clear temp function params
+                is_function_now = false;
+                function_params.clear();
 
              }
  		    | LCURL dummy_scope_function RCURL {
                 print_grammar_rule("compound_statement","LCURL statements RCURL");
 
                 $$ = new Helper();
+
+                // update text
                 $$->text = "{\n";  
                 $$->text += "\n}"; 
+
                 print_log_text($$->text);
 
+                // EXIT
                 sym_tab->print_all_scope();
                 sym_tab->exit_scope();
+
+                // clear temp function params
                 is_function_now = false;
+                function_params.clear();
              }
  		    ;
 
@@ -335,6 +355,7 @@ dummy_scope_function:  {
                         for(auto el:function_params)
                         {
                             // insert ID
+                            cout<<"INSIDE FUNCTIONNN"<<endl;
                             sym_tab->insert_symbol(el);
                         }
                     }
@@ -353,6 +374,8 @@ var_declaration: type_specifier declaration_list SEMICOLON {
             $$->text += $2->text;
             $$->text += ";";
 
+            sym_tab->print_all_scope();
+
             // insert all declaration_list ID to SymbolTable with VAR_TYPE
             for(auto el:$2->v)
             {
@@ -361,6 +384,7 @@ var_declaration: type_specifier declaration_list SEMICOLON {
                 {
                     error_multiple_declaration(el->key);
                 }
+
             }
 
             print_log_text($$->text);
@@ -382,8 +406,11 @@ declaration_list: declaration_list COMMA ID {
                     $$->text += ",";
                     $$->text += $3->key;
 
-                    // update vector
+                    // update type
                     $$->HelperType = $1->HelperType;
+
+                    // init update vector
+                    $$->v = $1->v;
                     $$->v.push_back($3);
                     $$->print();
 
@@ -402,13 +429,15 @@ declaration_list: declaration_list COMMA ID {
                 $$->text += $5->key;
                 $$->text += "]";
 
-                // update vector
+                // update type
                 $$->HelperType = $1->HelperType;
+
+                // init & update vector
+                $$->v = $1->v;
                 $$->v.push_back($3);
                 $$->print();
 
                 print_log_text($$->text);
-           
            }
            | declaration_list COMMA ID LTHIRD CONST_FLOAT RTHIRD {
 
@@ -428,8 +457,11 @@ declaration_list: declaration_list COMMA ID {
                 $$->text += $5->key;
                 $$->text += "]";
 
-                // update vector
+                // update type
                 $$->HelperType = $1->HelperType;
+
+                // int & update vector
+                $$->v = $1->v;
                 $$->v.push_back($3);
                 $$->print();
 
@@ -548,6 +580,7 @@ statement: var_declaration {
 
         }
 	  | IF LPAREN expression RPAREN statement ELSE statement {
+
             print_grammar_rule("statement","WHILE LPAREN expression RPAREN statement");
         
             $$ = new Helper();
@@ -604,9 +637,17 @@ variable: ID {
             // update text
             $$->text = $1->key;
 
-            if(sym_tab->lookup($1->key) == NULL)
+            // check error
+            SymbolInfo* ret_symbol = sym_tab->lookup($1->key);
+
+            if(ret_symbol == NULL)
             {
                 error_undeclared_variable($1->key);
+                $$->setHelperType("NULL");
+            }
+            else
+            {
+                $$->setHelperType(ret_symbol->var_type);
             }
 
             print_log_text($$->text);
@@ -623,6 +664,18 @@ variable: ID {
             $$->text += "]";
 
             // check error
+            SymbolInfo* ret_symbol = sym_tab->lookup($1->key);
+
+            if(ret_symbol == NULL)
+            {
+                error_undeclared_variable($1->key);
+                $$->setHelperType("NULL");
+            }
+            else
+            {
+                $$->setHelperType(ret_symbol->var_type);
+            }
+
             if($3->HelperType != "int")
             {
                 error_array_index_float();
@@ -649,10 +702,18 @@ variable: ID {
                 
                 $$ = new Helper();
 
-                // updat text
+                // update text
                 $$->text = $1->text;
                 $$->text += "=";
                 $$->text += $3->text;
+
+                //check error
+
+                if($1->HelperType != $3->HelperType)
+                {
+                    cout<<$1->HelperType<<" ---- "<<$3->HelperType<<endl;
+                    error_type_mismatch();
+                }
 
                 print_log_text($$->text);
             }	

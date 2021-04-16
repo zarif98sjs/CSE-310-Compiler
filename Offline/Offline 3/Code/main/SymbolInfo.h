@@ -19,7 +19,8 @@ struct SymbolInfo
     SymbolInfo();
 
     SymbolInfo(string key,string val);
-
+    SymbolInfo(string key,string val,string var_type);
+    SymbolInfo(string key,string val,string var_type,SymbolInfo* nxt);
     SymbolInfo(string key,string val,SymbolInfo* nxt);
 
     void setVarType(string var_type);

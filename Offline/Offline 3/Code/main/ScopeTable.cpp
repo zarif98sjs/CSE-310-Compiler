@@ -88,10 +88,11 @@ SymbolInfo* ScopeTable::insert(SymbolInfo si)
 {
     string key = si.key;
     string val = si.val;
+    string var_type = si.var_type;
 
     int bucket = hash(key);
 
-    SymbolInfo* to_insert = new SymbolInfo(key,val,NULL);
+    SymbolInfo* to_insert = new SymbolInfo(key,val,var_type,NULL);
     to_insert->bucket = bucket;
 
     assert(bucket<M);
@@ -161,7 +162,8 @@ void ScopeTable::print()
         
         while(now != NULL)
         {
-            cout<<"< "<<now->key <<" : "<<now->val<<" > ";
+            // cout<<"< "<<now->key <<" : "<<now->val<<" > ";
+            cout<<"< "<<now->key <<" : "<<now->val<<" > ("<<now->var_type<<")";
             now = now->nxt;
         }
         cout<<endl;
