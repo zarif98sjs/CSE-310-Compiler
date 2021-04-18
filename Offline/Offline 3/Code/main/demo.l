@@ -20,6 +20,9 @@ int line_count = 1;
 int error_count = 0;
 int nl_inside = 0;
 
+string cur_id;
+string cur_type;
+
 %}
 
 
@@ -52,7 +55,7 @@ ALL_EXCEPT_BACKSLASH [^\\]
 "case" {return CASE;}
 "default" {return DEFAULT;}
 "continue" {return CONTINUE;}
-"println"	{return PRINTLN;}
+"printf"	{return PRINTLN;}
 
 {DIGIT}+	{
 				SymbolInfo *s= new  SymbolInfo(yytext, "CONST_INT");
@@ -80,6 +83,7 @@ ALL_EXCEPT_BACKSLASH [^\\]
 		SymbolInfo *s= new  SymbolInfo(yytext, "ID");
 		yylval.symbol_info = s;
 		// cout<<"ID -------------------------->"<<yytext<<endl;
+		cur_id = yytext;
 		return ID;
 }
 

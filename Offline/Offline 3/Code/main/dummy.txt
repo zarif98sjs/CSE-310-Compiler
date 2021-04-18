@@ -1,0 +1,499 @@
+
+type_specifier : INT
+
+
+declaration_list : ID LTHIRD CONST_INT RTHIRD
+a
+
+
+declaration_list : declaration_list COMMA ID
+c
+
+
+declaration_list : declaration_list COMMA ID
+i
+
+
+declaration_list : declaration_list COMMA ID
+j
+
+
+var_declaration : type_specifier declaration_list SEMICOLON
+
+
+type_specifier : FLOAT
+
+
+declaration_list : ID
+d
+
+
+var_declaration : type_specifier declaration_list SEMICOLON
+
+
+factor : CONST_INT
+0
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+rel_expression : simple_expression
+
+
+logic_expression : rel_expression
+
+
+expression : logic_expression
+
+
+variable : ID LTHIRD expression RTHIRD
+a
+
+
+factor : CONST_INT
+1
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+rel_expression : simple_expression
+
+
+logic_expression : rel_expression
+
+
+expression : variable ASSIGNOP logic_expression
+4 --> < a, ID, { 1, -1 } >
+6 --> < c, ID, -9999999.000000>
+7 --> < d, ID, -9999999.000000>
+12 --> < i, ID, -9999999.000000>
+13 --> < j, ID, -9999999.000000>
+
+
+expression_statement : expression SEMICOLON
+
+
+statement : expression_statement
+
+
+statements : statement
+
+
+factor : CONST_INT
+1
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+rel_expression : simple_expression
+
+
+logic_expression : rel_expression
+
+
+expression : logic_expression
+
+
+variable : ID LTHIRD expression RTHIRD
+a
+
+
+factor : CONST_INT
+5
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+rel_expression : simple_expression
+
+
+logic_expression : rel_expression
+
+
+expression : variable ASSIGNOP logic_expression
+4 --> < a, ID, { 1, 5 } >
+6 --> < c, ID, -9999999.000000>
+7 --> < d, ID, -9999999.000000>
+12 --> < i, ID, -9999999.000000>
+13 --> < j, ID, -9999999.000000>
+
+
+expression_statement : expression SEMICOLON
+
+
+statement : expression_statement
+
+
+statements : statements statement
+
+
+variable : ID
+i
+
+
+factor : CONST_INT
+0
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+rel_expression : simple_expression
+
+
+logic_expression : rel_expression
+
+
+expression : variable ASSIGNOP logic_expression
+4 --> < a, ID, { 1, 5 } >
+6 --> < c, ID, -9999999.000000>
+7 --> < d, ID, -9999999.000000>
+12 --> < i, ID, 0.000000>
+13 --> < j, ID, -9999999.000000>
+
+
+expression_statement : expression SEMICOLON
+
+
+variable : ID
+i
+
+
+factor : variable
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+factor : CONST_INT
+2
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+rel_expression : simple_expression RELOP simple_expression
+
+
+logic_expression : rel_expression
+
+
+expression : logic_expression
+
+
+expression_statement : expression SEMICOLON
+
+
+variable : ID
+i
+
+
+variable : ID
+i
+
+
+factor : variable
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+factor : CONST_INT
+1
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : simple_expression ADDOP term
+
+
+rel_expression : simple_expression
+
+
+logic_expression : rel_expression
+
+
+expression : variable ASSIGNOP logic_expression
+4 --> < a, ID, { 1, 5 } >
+6 --> < c, ID, -9999999.000000>
+7 --> < d, ID, -9999999.000000>
+12 --> < i, ID, 1.000000>
+13 --> < j, ID, -9999999.000000>
+
+
+variable : ID
+i
+
+
+factor : variable
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+factor : CONST_INT
+0
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+rel_expression : simple_expression RELOP simple_expression
+
+
+logic_expression : rel_expression
+
+
+expression : logic_expression
+
+
+factor : CONST_INT
+0
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+rel_expression : simple_expression
+
+
+logic_expression : rel_expression
+
+
+expression : logic_expression
+
+
+variable : ID LTHIRD expression RTHIRD
+a
+
+
+factor : CONST_INT
+8
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+rel_expression : simple_expression
+
+
+logic_expression : rel_expression
+
+
+expression : variable ASSIGNOP logic_expression
+4 --> < a, ID, { 8, 5 } >
+6 --> < c, ID, -9999999.000000>
+7 --> < d, ID, -9999999.000000>
+12 --> < i, ID, 1.000000>
+13 --> < j, ID, -9999999.000000>
+
+
+expression_statement : expression SEMICOLON
+
+
+statement : expression_statement
+
+
+factor : CONST_INT
+1
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+rel_expression : simple_expression
+
+
+logic_expression : rel_expression
+
+
+expression : logic_expression
+
+
+variable : ID LTHIRD expression RTHIRD
+a
+
+
+factor : CONST_INT
+7
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+rel_expression : simple_expression
+
+
+logic_expression : rel_expression
+
+
+expression : variable ASSIGNOP logic_expression
+4 --> < a, ID, { 8, 7 } >
+6 --> < c, ID, -9999999.000000>
+7 --> < d, ID, -9999999.000000>
+12 --> < i, ID, 1.000000>
+13 --> < j, ID, -9999999.000000>
+
+
+expression_statement : expression SEMICOLON
+
+
+statement : expression_statement
+
+
+statement : IF LPAREN expression RPAREN statement ELSE statement
+
+
+statements : statement
+
+
+compound_statement : LCURL statements RCURL
+
+
+statement : compound_statement
+
+
+statement : FOR LPAREN expression_statement expression_statement expression RPAREN statement
+
+
+statements : statements statement
+
+
+factor : CONST_INT
+0
+
+
+unary_expression : factor
+
+
+term : unary_expression
+
+
+simple_expression : term
+
+
+rel_expression : simple_expression
+
+
+logic_expression : rel_expression
+
+
+expression : logic_expression
+
+
+statement : RETURN expression SEMICOLON
+
+
+statements : statements statement
+
+
+compound_statement : LCURL var_declaration statements RCURL
+
+
+Program : INT MAIN compound_statement
+
+
+
+		symbol table: 
+4 --> < a, ID, { 8, 7 } >
+6 --> < c, ID, -9999999.000000>
+7 --> < d, ID, -9999999.000000>
+12 --> < i, ID, 1.000000>
+13 --> < j, ID, -9999999.000000>
+
+Total Lines: 13
+
+Total Errors: 0
+

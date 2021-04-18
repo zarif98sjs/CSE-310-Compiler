@@ -1,8 +1,7 @@
-float foo(int a,int b,float c);
+void foo(int,int);
 
-int main()
+int foo(int x,float y)
 {
-	int y,z;
-	float x;
-	z = foo(y,z);
+
 }
+

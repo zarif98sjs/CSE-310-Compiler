@@ -47,7 +47,6 @@ SymbolTable *sym_tab = new SymbolTable(bucket_size,hashF);
 bool is_function_now = false;
 vector<SymbolInfo>function_params;
 
-
 /////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////// ERROR HANDLING ///////////////////////////////////////////////
 
@@ -126,6 +125,86 @@ void error_undeclared_variable(string var_name)
 void error_type_mismatch()
 {
     cout<<"Error at Line "<<line_count<<": Type Mismatch\n"<<endl;
+}
+
+void error_function_parameter_type(string extra_s="")
+{
+    cout<<"Error at Line "<<line_count<<": Parameter Type Mismactch "<<extra_s<<"\n"<<endl;
+}
+
+void error_function_parameter_number(string extra_s="")
+{
+    cout<<"Error at Line "<<line_count<<": Parameter Number Mismactch\n"<<extra_s<<"\n"<<endl;
+}
+
+void error_function_not_implemented()
+{
+    cout<<"Error at Line "<<line_count<<": Function not implemented\n"<<endl;
+}
+
+void error_function_return_condflict()
+{
+    cout<<"Error at Line "<<line_count<<": Function return type mismatch\n"<<endl;
+}
+
+
+void error_not_function(string f_name)
+{
+    cout<<"Error at Line "<<line_count<<": "<<f_name<<" not a function\n"<<endl;
+}
+
+///////////////////////////////////////////
+
+void insert_function_to_global(SymbolInfo* temp_s,string var_type)
+{
+    // insert function ID to SymbolTable with VAR_TYPE
+    temp_s->setVarType(var_type);
+    temp_s->isFunction = true;
+
+    // update parrameter type
+    for(auto temp_p : function_params)
+    {
+        temp_s->param_v.push_back(temp_p.var_type);
+    }
+
+    if(!sym_tab->insert_symbol(*temp_s))
+    {
+        SymbolInfo* ret_symbol = sym_tab->lookup(temp_s->key);
+
+        if(ret_symbol->isFunctionDeclaration == false){
+            error_multiple_declaration(temp_s->key);
+        }
+        else{
+
+            // declared before , now definition happening
+
+            // check if any clash between declaration and definition
+
+            if(ret_symbol->var_type != temp_s->var_type)
+            {
+                error_function_return_condflict();
+            }
+
+            if(ret_symbol->param_v.size() != temp_s->param_v.size())
+            {
+                error_function_parameter_number("(Declaration vs Definition)");
+            }
+            else
+            {
+                for(int i=0;i<ret_symbol->param_v.size();i++)
+                {
+                    if(ret_symbol->param_v[i] != temp_s->param_v[i]){
+                        error_function_parameter_type("(Declaration vs Definition)");
+                        break;
+                    }
+                }
+            }
+
+            // the following line is commented out because in case of clash , use the declaration info 
+            // ret_symbol->param_v = $2->param_v;
+            ret_symbol->isFunctionDeclaration = false; // declaration + 
+        }
+    }
 }
 
 
@@ -256,10 +335,13 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
                 }
 
                 print_log_text($$->text);
+
+                function_params.clear();
             }
 		;
+
 		 
-func_definition: type_specifier ID LPAREN parameter_list RPAREN {is_function_now = true;} compound_statement { 
+func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_now = true;insert_function_to_global($2,$1->text);} compound_statement { 
                 print_grammar_rule("func_definition","type_specifier ID LPAREN parameter_list RPAREN compound_statement");
                 
                 $$ = new Helper();
@@ -273,56 +355,6 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN {is_function_now
                 $$->text += ")";
                 $$->text += $7->text; 
 
-                // insert function ID to SymbolTable with VAR_TYPE
-                $2->setVarType($1->text);
-                $2->isFunction = true;
-
-                // update parrameter type
-                for(auto temp_s : function_params)
-                {
-                    $2->param_v.push_back(temp_s.var_type);
-                }
-
-                if(!sym_tab->insert_symbol(*$2))
-                {
-                    SymbolInfo* ret_symbol = sym_tab->lookup($2->key);
-
-                    if(ret_symbol->isFunctionDeclaration == false){
-                        error_multiple_declaration($2->key);
-                    }
-                    else{
-
-                        // declared before , now definition happening
-
-                        // check if any clash between declaration and definition
-
-                        if(ret_symbol->var_type != $2->var_type)
-                        {
-                            cout<<"Error : Function return type conflict (Declaration vs Definition)"<<endl;
-                        }
-
-                        if(ret_symbol->param_v.size() != $2->param_v.size())
-                        {
-                            cout<<"Error : Parameter number conflict (Declaration vs Definition)"<<endl;
-                        }
-                        else
-                        {
-                            for(int i=0;i<ret_symbol->param_v.size();i++)
-                            {
-                                if(ret_symbol->param_v[i] != $2->param_v[i]){
-                                    cout<<"Error : Parameter type conflict (Declaration vs Definition)"<<endl;
-                                    break;
-                                }
-                            }
-                        }
-
-
-                        // the following line is commented out because in case of clash , use the declaration info 
-                        // ret_symbol->param_v = $2->param_v;
-                        ret_symbol->isFunctionDeclaration = false; // declaration + 
-                    }
-                }
-
                 print_log_text($$->text);
 
                 // clear temp function params
@@ -330,7 +362,7 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN {is_function_now
                 function_params.clear();
 
             }
-		|   type_specifier ID LPAREN RPAREN compound_statement { 
+		|   type_specifier ID LPAREN RPAREN {is_function_now = true;insert_function_to_global($2,$1->text);} compound_statement { 
                 print_grammar_rule("func_definition","type_specifier ID LPAREN RPAREN compound_statement");
 
                 $$ = new Helper();
@@ -341,7 +373,7 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN {is_function_now
                 $$->text += $2->key;
                 $$->text += "(";
                 $$->text += ")";
-                $$->text += $5->text;
+                $$->text += $6->text;
 
                 // insert function ID to SymbolTable with VAR_TYPE
                 $2->setVarType($1->text);
@@ -350,6 +382,9 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN {is_function_now
 
                 print_log_text($$->text);
             
+                // clear temp function params
+                is_function_now = false;
+                function_params.clear();
             }
  		;				
 
@@ -376,6 +411,20 @@ parameter_list: parameter_list COMMA type_specifier ID {
             }
 		| parameter_list COMMA type_specifier {
              print_grammar_rule("parameter_list","parameter_list COMMA type_specifier");
+
+                $$ = new Helper();
+
+                // update text
+                $$->text = $1->text;
+                $$->text += ",";
+                $$->text += $3->text;
+
+                SymbolInfo temp_s = SymbolInfo("dummy_key","dummy_value");
+                temp_s.var_type = $3->text;
+
+                function_params.push_back(temp_s);
+
+                print_log_text($$->text);
         }
  		| type_specifier ID  { 
                 print_grammar_rule("parameter_list","type_specifier ID");
@@ -395,6 +444,18 @@ parameter_list: parameter_list COMMA type_specifier ID {
              }
 		| type_specifier {
             print_grammar_rule("parameter_list","type_specifier");
+
+            $$ = new Helper();
+
+            // update text
+            $$->text = $1->text;
+
+            SymbolInfo temp_s = SymbolInfo("dummy_key","dummy_value");
+            temp_s.var_type = $1->text;
+
+            function_params.push_back(temp_s);
+
+            print_log_text($$->text);
         }
  		;
  		
@@ -445,7 +506,7 @@ dummy_scope_function:  {
                         for(auto el:function_params)
                         {
                             // insert ID
-                            cout<<"INSIDE FUNCTIONNN"<<endl;
+                            // cout<<"INSIDE FUNCTIONNN"<<endl;
                             sym_tab->insert_symbol(el);
                         }
                     }
@@ -464,12 +525,10 @@ var_declaration: type_specifier declaration_list SEMICOLON {
             $$->text += $2->text;
             $$->text += ";";
 
-            sym_tab->print_all_scope();
-
             // insert all declaration_list ID to SymbolTable with VAR_TYPE
             for(auto el:$2->v)
             {
-                if(el->var_type == "array") el->setVarType($1->text + "_array") , cout<<"ARRAY"<<endl; 
+                if(el->var_type == "array") el->setVarType($1->text + "_array") ; 
                 else el->setVarType($1->text); 
                 
                 if(!sym_tab->insert_symbol(*el)) // already present in current scope
@@ -484,7 +543,7 @@ var_declaration: type_specifier declaration_list SEMICOLON {
  		;
  		 
 type_specifier: INT  { print_grammar_rule("type_specifier","INT"); cout<<$1->key<<"\n"<<endl; $$->text = $1->key; }
- 		| FLOAT { print_grammar_rule("type_specifier","FLOAT"); cout<<$1->key<<"\n"<<endl; $$->text = $1->key;}
+ 		| FLOAT { print_grammar_rule("type_specifier","FLOAT"); cout<<$1->key<<"\n"<<endl; $$->text = $1->key; }
  		| VOID { print_grammar_rule("type_specifier","VOID"); cout<<$1->key<<"\n"<<endl; $$->text = $1->key;}
  		;
  		
@@ -504,7 +563,7 @@ declaration_list: declaration_list COMMA ID {
                     // init update vector
                     $$->v = $1->v;
                     $$->v.push_back($3);
-                    $$->print();
+                    // $$->print();
 
                     print_log_text($$->text);
             }
@@ -528,7 +587,7 @@ declaration_list: declaration_list COMMA ID {
                 $$->v = $1->v;
                 $3->setVarType("array");
                 $$->v.push_back($3);
-                $$->print();
+                // $$->print();
 
                 print_log_text($$->text);
            }
@@ -557,7 +616,7 @@ declaration_list: declaration_list COMMA ID {
                 $$->v = $1->v;
                 $3->setVarType("array");
                 $$->v.push_back($3);
-                $$->print();
+                // $$->print();
 
                 error_array_size_float();
 
@@ -593,8 +652,8 @@ declaration_list: declaration_list COMMA ID {
                     // init vector
                     $1->setVarType("array");
                     $$->v.push_back($1);
-                    cout<<"PRINT"<<endl;
-                    $$->print();
+                    // cout<<"PRINT"<<endl;
+                    // $$->print();
 
                     print_log_text($$->text);
             }
@@ -646,7 +705,6 @@ statements: statement {
 	   
 statement: var_declaration {
             print_grammar_rule("statement","var_declaration");
-    
             $$ = new Helper();
             $$->text = $1->text;
             print_log_text($$->text);
@@ -659,14 +717,31 @@ statement: var_declaration {
         }
 	  | compound_statement {
             print_grammar_rule("statement","compound_statement");
+            $$ = new Helper();
+            $$->text = $1->text;
+            print_log_text($$->text);
+
         }
 	  | FOR LPAREN expression_statement expression_statement expression RPAREN statement {
             print_grammar_rule("statement","FOR LPAREN expression_statement expression_statement expression RPAREN statement");
+
+            $$ = new Helper();
+            // update text
+            $$->text = "for";
+            $$->text += "(";
+            $$->text += $3->text;
+            $$->text += $4->text;
+            $$->text += $5->text;
+            $$->text += ")";
+            $$->text += $7->text;
+            
+            print_log_text($$->text);
         }
 	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE { 
             print_grammar_rule("statement","IF LPAREN expression RPAREN statement");
             
             $$ = new Helper();
+            // update text
             $$->text = "if";
             $$->text += "(";
             $$->text += $3->text;
@@ -674,19 +749,19 @@ statement: var_declaration {
             $$->text += $5->text;
 
             print_log_text($$->text);
-
         }
 	  | IF LPAREN expression RPAREN statement ELSE statement {
 
-            print_grammar_rule("statement","WHILE LPAREN expression RPAREN statement");
+            print_grammar_rule("statement","IF LPAREN expression RPAREN statement");
         
             $$ = new Helper();
+            // update text
             $$->text = "if";
             $$->text += "(";
             $$->text += $3->text;
             $$->text += ")";
             $$->text += $5->text;
-            $$->text += "else ";
+            $$->text += "\nelse ";
             $$->text += $7->text;
 
             print_log_text($$->text);
@@ -694,6 +769,16 @@ statement: var_declaration {
         }
 	  | WHILE LPAREN expression RPAREN statement {
             print_grammar_rule("statement","WHILE LPAREN expression RPAREN statement");
+
+            $$ = new Helper();
+            // update text
+            $$->text = "while";
+            $$->text += "(";
+            $$->text += $3->text;
+            $$->text += ")";
+            $$->text += $5->text;
+
+            print_log_text($$->text);
         }
 	  | PRINTLN LPAREN ID RPAREN SEMICOLON {
             print_grammar_rule("statement","PRINTLN LPAREN ID RPAREN SEMICOLON");
@@ -709,10 +794,29 @@ statement: var_declaration {
 
             print_log_text($$->text);
         }
+        | RETURN SEMICOLON {
+
+            /***
+                EXTRA RULE ADDED 
+            ***/
+
+            print_grammar_rule("statement","RETURN SEMICOLON");
+
+            $$ = new Helper();
+            $$->text = "return";
+            $$->text += ";";
+
+            print_log_text($$->text);
+        }
 	  ;
 	  
 expression_statement: SEMICOLON	{
                     print_grammar_rule("expression_statement","SEMICOLON");
+
+                    $$ = new Helper();
+                    $$->text = ";";
+
+                    print_log_text($$->text);
                 }		
 			| expression SEMICOLON {
                     print_grammar_rule("expression_statement","expression SEMICOLON");
@@ -781,7 +885,7 @@ variable: ID {
                 }
 
                 $$->setHelperType(ret_symbol->var_type);
-                cout<<"HelperType : "<<$$->HelperType<<endl;
+                // cout<<"HelperType : "<<$$->HelperType<<endl;
             }
 
             if($3->HelperType != "int")
@@ -1032,16 +1136,15 @@ factor: variable {
                 if(ret_symbol->isFunction == false)
                 {
                     $$->setHelperType("NULL");
-                    cout<<"Error : Not a function"<<endl;
+                    error_not_function($1->key);
                     break;
                 }
-
 
                 $$->setHelperType(ret_symbol->var_type);
 
                 if(ret_symbol->isFunctionDeclaration) // only declared , no definition
                 {
-                    cout<<"Error : Function not implemented"<<endl;
+                    error_function_not_implemented();
                 }
                 else // other errors
                 {
@@ -1063,14 +1166,14 @@ factor: variable {
 
                     if(ret_symbol->param_v.size() != $3->param_v.size())
                     {
-                        cout<<"Error : Parameter number conflict"<<endl;
+                        error_function_parameter_number();
                     }
                     else
                     {
                         for(int i=0;i<ret_symbol->param_v.size();i++)
                         {
                             if(!is_param_typecast_ok(ret_symbol->param_v[i],$3->param_v[i])){
-                                cout<<"Error : Parameter type conflict"<<endl;
+                                error_function_parameter_type();
                                 break;
                             }
                         }
@@ -1118,9 +1221,21 @@ factor: variable {
         }
 	| variable INCOP {
             print_grammar_rule("factor","variable INCOP");
+
+            $$ = new Helper();
+            $$->text = $1->text;
+            $$->text += "++";
+
+            print_log_text($$->text);
         }
 	| variable DECOP {
             print_grammar_rule("factor","variable DECOP");
+
+            $$ = new Helper();
+            $$->text = $1->text;
+            $$->text += "--";
+
+            print_log_text($$->text);
         }
 	;
 	
@@ -1191,6 +1306,11 @@ main(int argc,char *argv[])
 
     yyin=fin;
 	yyparse();
+
+    sym_tab->print_all_scope();
+
+    cout<<"Total Lines : "<<line_count<<endl;
+
     fclose(yyin);
 
     exit(0);

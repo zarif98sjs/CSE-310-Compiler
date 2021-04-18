@@ -1,292 +1,101 @@
-At line no: 1 type_specifier : FLOAT
+At line no: 1 type_specifier : VOID
 
-float
-
-At line no: 1 type_specifier : INT
-
-int
-
-At line no: 1 parameter_list : type_specifier ID
-
-int a
+void
 
 At line no: 1 type_specifier : INT
 
 int
 
-At line no: 1 parameter_list : parameter_list COMMA type_specifier ID
+At line no: 1 parameter_list : type_specifier
 
-int a,int b
+int
 
-At line no: 1 type_specifier : FLOAT
+At line no: 1 type_specifier : INT
 
-float
+int
 
-At line no: 1 parameter_list : parameter_list COMMA type_specifier ID
+At line no: 1 parameter_list : parameter_list COMMA type_specifier
 
-int a,int b,float c
+int,int
 
 At line no: 1 func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON
 
-Inserted in ScopeTable# 1 at position 24,0
 
-Found in ScopeTable# 1 at position 24,0
-
-float foo(int a,int b,float c);
+void foo(int,int);
 
 At line no: 1 unit : func_declaration
 
-float foo(int a,int b,float c);
+void foo(int,int);
 
 At line no: 1 program : unit
 
-float foo(int a,int b,float c);
+void foo(int,int);
 
 At line no: 3 type_specifier : INT
 
 int
 
-New ScopeTable with id 1.1 created
-
-At line no: 5 type_specifier : INT
+At line no: 3 type_specifier : INT
 
 int
 
-At line no: 5 declaration_list : ID
+At line no: 3 parameter_list : type_specifier ID
 
-y
+int x
 
-At line no: 5 declaration_list : declaration_list COMMA ID
-
-Text : y,z
-Vector Size : 2
-Vector  : 
-y , ID
-z , ID
-y,z
-
-At line no: 5 var_declaration : type_specifier declaration_list SEMICOLON
-
-ScopeTable # 1.1
-
-ScopeTable # 1
-24 --> < foo : ID > (float)
-
-
-Inserted in ScopeTable# 1.1 at position 1,0
-
-Inserted in ScopeTable# 1.1 at position 2,0
-
-int y,z;
-
-At line no: 5 statement : var_declaration
-
-int y,z;
-
-At line no: 5 statements : statement
-
-int y,z;
-
-At line no: 6 type_specifier : FLOAT
+At line no: 3 type_specifier : FLOAT
 
 float
 
-At line no: 6 declaration_list : ID
+At line no: 3 parameter_list : parameter_list COMMA type_specifier ID
 
-x
+int x,float y
 
-At line no: 6 var_declaration : type_specifier declaration_list SEMICOLON
 
-ScopeTable # 1.1
-1 --> < y : ID > (int)
-2 --> < z : ID > (int)
 
-ScopeTable # 1
-24 --> < foo : ID > (float)
+Error at Line 4: Function return type mismatch
 
+Error at Line 4: Parameter Type Mismactch (Declaration vs Definition)
 
-Inserted in ScopeTable# 1.1 at position 0,0
+New ScopeTable with id 1.1 created
 
-float x;
-
-At line no: 6 statement : var_declaration
-
-float x;
-
-At line no: 6 statements : statements statement
-
-int y,z;
-float x;
-
-At line no: 7 variable : ID
-
-Found in ScopeTable# 1.1 at position 2,0
-
-z
-
-At line no: 7 variable : ID
-
-Found in ScopeTable# 1.1 at position 1,0
-
-y
-
-At line no: 7 factor : variable
-
-y
-
-At line no: 7 unary_expression : factor
-
-y
-
-At line no: 7 term : unary_expression
-
-y
-
-At line no: 7 simple_expression : term
-
-y
-
-At line no: 7 rel_expression : simple_expression
-
-y
-
-At line no: 7 logic_expression : rel_expression
-
-y
-
-At line no: 7 arguments : logic_expression
-
-y
-
-At line no: 7 variable : ID
-
-Found in ScopeTable# 1.1 at position 2,0
-
-z
-
-At line no: 7 factor : variable
-
-z
-
-At line no: 7 unary_expression : factor
-
-z
-
-At line no: 7 term : unary_expression
-
-z
-
-At line no: 7 simple_expression : term
-
-z
-
-At line no: 7 rel_expression : simple_expression
-
-z
-
-At line no: 7 logic_expression : rel_expression
-
-z
-
-At line no: 7 arguments : arguments COMMA logic_expression
-
-y , z
-
-At line no: 7 argument_list : arguments
-
-y , z
-
-At line no: 7 factor : ID LPAREN argument_list RPAREN
-
-Found in ScopeTable# 1 at position 24,0
-
-Error : Function not implemented
-foo( y , z )
-
-At line no: 7 unary_expression : factor
-
-foo( y , z )
-
-At line no: 7 term : unary_expression
-
-foo( y , z )
-
-At line no: 7 simple_expression : term
-
-foo( y , z )
-
-At line no: 7 rel_expression : simple_expression
-
-foo( y , z )
-
-At line no: 7 logic_expression : rel_expression
-
-foo( y , z )
-
-At line no: 7 expression : variable ASSIGNOP logic_expression
-
-int ---- float
-Error at Line 7: Type Mismatch
-
-z=foo( y , z )
-
-At line no: 7 expression_statement : expression SEMICOLON
-
-z=foo( y , z );
-
-At line no: 7 statement : expression_statement
-
-z=foo( y , z );
-
-At line no: 7 statements : statements statement
-
-int y,z;
-float x;
-z=foo( y , z );
-
-At line no: 8 compound_statement : LCURL statements RCURL
+At line no: 6 compound_statement : LCURL statements RCURL
 
 {
-int y,z;
-float x;
-z=foo( y , z );
+
 }
 
 ScopeTable # 1.1
-0 --> < x : ID > (float)
-1 --> < y : ID > (int)
-2 --> < z : ID > (int)
+0 --> < x : ID > (int)
+1 --> < y : ID > (float)
 
 ScopeTable # 1
-24 --> < foo : ID > (float)
+24 --> < foo : ID > (void)
 
 
 ScopeTable with id 1.1 removed
 
-At line no: 8 func_definition : type_specifier ID LPAREN RPAREN compound_statement
+At line no: 6 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
-Inserted in ScopeTable# 1 at position 1,0
+int foo(int x,float y){
 
-int main(){
-int y,z;
-float x;
-z=foo( y , z );
 }
 
-At line no: 8 unit : func_definition
+At line no: 6 unit : func_definition
 
-int main(){
-int y,z;
-float x;
-z=foo( y , z );
+int foo(int x,float y){
+
 }
 
-At line no: 8 program : program unit
+At line no: 6 program : program unit
 
-float foo(int a,int b,float c);
-int main(){
-int y,z;
-float x;
-z=foo( y , z );
+void foo(int,int);
+int foo(int x,float y){
+
 }
 
+ScopeTable # 1
+24 --> < foo : ID > (void)
+
+
+Total Lines : 8

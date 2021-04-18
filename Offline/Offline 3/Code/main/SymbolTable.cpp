@@ -55,15 +55,15 @@ bool SymbolTable::insert_symbol(SymbolInfo si)
 
     if(temp != NULL) /// can't insert
     {
-        cout<<"<"<<temp->key<<","<<temp->val<<">"<<" already exists in current ScopeTable"<<endl;
+        // cout<<"<"<<temp->key<<","<<temp->val<<">"<<" already exists in current ScopeTable"<<endl;
         cout<<endl;
         return false;
     }
 
     SymbolInfo* ret = cur->insert(si);
 
-    cout<<"Inserted in ScopeTable# "<<getCurScopeTableId()<<" at position "<<ret->bucket<<","<<ret->bucket_pos<<endl;
-    cout<<endl;
+    // cout<<"Inserted in ScopeTable# "<<getCurScopeTableId()<<" at position "<<ret->bucket<<","<<ret->bucket_pos<<endl;
+    // cout<<endl;
     
     return ret!=NULL ;
 }
@@ -98,7 +98,7 @@ SymbolInfo* SymbolTable::lookup(string key)
 
         if(ret != NULL)
         {
-            cout<<"Found in ScopeTable# "<<now->get_id()<<" at position "<<ret->bucket<<","<<ret->bucket_pos<<endl;
+            // cout<<"Found in ScopeTable# "<<now->get_id()<<" at position "<<ret->bucket<<","<<ret->bucket_pos<<endl;
             cout<<endl;
             return ret;
         }
