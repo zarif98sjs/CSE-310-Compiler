@@ -11,6 +11,7 @@ struct Helper{
     string text;
     vector<SymbolInfo*>v;
     string HelperType;
+    vector<string>param_v;
 
     Helper();
     Helper(string text,vector<SymbolInfo*>v);

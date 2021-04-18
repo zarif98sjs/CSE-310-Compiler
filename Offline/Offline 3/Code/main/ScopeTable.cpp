@@ -89,10 +89,13 @@ SymbolInfo* ScopeTable::insert(SymbolInfo si)
     string key = si.key;
     string val = si.val;
     string var_type = si.var_type;
+    vector<string>param_v = si.param_v;
+    bool isFunctionDeclaration = si.isFunctionDeclaration;
+    bool isFunction = si.isFunction;
 
     int bucket = hash(key);
 
-    SymbolInfo* to_insert = new SymbolInfo(key,val,var_type,NULL);
+    SymbolInfo* to_insert = new SymbolInfo(key,val,var_type,param_v,isFunctionDeclaration,isFunction,NULL);
     to_insert->bucket = bucket;
 
     assert(bucket<M);

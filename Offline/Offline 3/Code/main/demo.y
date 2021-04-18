@@ -60,6 +60,29 @@ string do_implicit_typecast(string left_op,string right_op)
     return "int";
 }
 
+bool is_param_typecast_ok(string og_p,string pass_p)
+{
+    if(og_p == "void") return pass_p == "void";
+    if(og_p == "int") return pass_p == "int";
+    if(og_p == "float") return pass_p != "void";
+}
+
+bool check_assignop(string left_op,string right_op)
+{
+
+    if(left_op == "void" || right_op == "void") return false;
+
+    if(left_op == "int" && right_op =="int_array") return true;
+    if(left_op == "int_array" && right_op =="int") return true;
+
+    if(left_op == "float" && right_op =="float_array") return true;
+    if(left_op == "float_array" && right_op =="float") return true;
+
+    if(left_op == "int" && right_op !="int") return false;
+
+    return true;
+}
+
 void print_grammar_rule(string left_part,string right_part)
 {
     cout<<"At line no: "<<line_count<<" "<<left_part<<" : "<<right_part<<"\n"<<endl; 
@@ -104,6 +127,7 @@ void error_type_mismatch()
 {
     cout<<"Error at Line "<<line_count<<": Type Mismatch\n"<<endl;
 }
+
 
 %}
 
@@ -179,12 +203,28 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
 
                 // insert function ID to SymbolTable with VAR_TYPE
                 $2->setVarType($1->text);
-                if(!sym_tab->insert_symbol(*$2))
+                $2->isFunction = true;
+
+                // update parameter type
+                for(auto temp_s : function_params)
+                {
+                    $2->param_v.push_back(temp_s.var_type);
+                }
+
+                if(sym_tab->insert_symbol(*$2))
+                {
+                    SymbolInfo* ret_symbol = sym_tab->lookup($2->key);
+                    ret_symbol->isFunctionDeclaration = true; // mark as function declaration
+                }
+                else
                 {
                     error_multiple_declaration($2->key);
                 }
 
                 print_log_text($$->text);
+
+                // clear param_info
+                function_params.clear();
     
             }
 		| type_specifier ID LPAREN RPAREN SEMICOLON { 
@@ -203,7 +243,14 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
 
                 // insert function ID to SymbolTable with VAR_TYPE
                 $2->setVarType($1->text);
-                if(!sym_tab->insert_symbol(*$2))
+                $2->isFunction = true;
+                
+                if(sym_tab->insert_symbol(*$2))
+                {
+                    SymbolInfo* ret_symbol = sym_tab->lookup($2->key);
+                    ret_symbol->isFunctionDeclaration = true; // mark as function declaration
+                }
+                else
                 {
                     error_multiple_declaration($2->key);
                 }
@@ -228,15 +275,62 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN {is_function_now
 
                 // insert function ID to SymbolTable with VAR_TYPE
                 $2->setVarType($1->text);
+                $2->isFunction = true;
+
+                // update parrameter type
+                for(auto temp_s : function_params)
+                {
+                    $2->param_v.push_back(temp_s.var_type);
+                }
+
                 if(!sym_tab->insert_symbol(*$2))
                 {
-                    error_multiple_declaration($2->key);
+                    SymbolInfo* ret_symbol = sym_tab->lookup($2->key);
+
+                    if(ret_symbol->isFunctionDeclaration == false){
+                        error_multiple_declaration($2->key);
+                    }
+                    else{
+
+                        // declared before , now definition happening
+
+                        // check if any clash between declaration and definition
+
+                        if(ret_symbol->var_type != $2->var_type)
+                        {
+                            cout<<"Error : Function return type conflict (Declaration vs Definition)"<<endl;
+                        }
+
+                        if(ret_symbol->param_v.size() != $2->param_v.size())
+                        {
+                            cout<<"Error : Parameter number conflict (Declaration vs Definition)"<<endl;
+                        }
+                        else
+                        {
+                            for(int i=0;i<ret_symbol->param_v.size();i++)
+                            {
+                                if(ret_symbol->param_v[i] != $2->param_v[i]){
+                                    cout<<"Error : Parameter type conflict (Declaration vs Definition)"<<endl;
+                                    break;
+                                }
+                            }
+                        }
+
+
+                        // the following line is commented out because in case of clash , use the declaration info 
+                        // ret_symbol->param_v = $2->param_v;
+                        ret_symbol->isFunctionDeclaration = false; // declaration + 
+                    }
                 }
 
                 print_log_text($$->text);
 
+                // clear temp function params
+                is_function_now = false;
+                function_params.clear();
+
             }
-		| type_specifier ID LPAREN RPAREN compound_statement { 
+		|   type_specifier ID LPAREN RPAREN compound_statement { 
                 print_grammar_rule("func_definition","type_specifier ID LPAREN RPAREN compound_statement");
 
                 $$ = new Helper();
@@ -251,6 +345,7 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN {is_function_now
 
                 // insert function ID to SymbolTable with VAR_TYPE
                 $2->setVarType($1->text);
+                $2->isFunction = true;
                 sym_tab->insert_symbol(*$2);
 
                 print_log_text($$->text);
@@ -306,7 +401,6 @@ parameter_list: parameter_list COMMA type_specifier ID {
 compound_statement: LCURL dummy_scope_function statements RCURL {
                 print_grammar_rule("compound_statement","LCURL statements RCURL");
                 
-
                 $$ = new Helper();
 
                 // update text
@@ -319,10 +413,6 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
                 // EXIT
                 sym_tab->print_all_scope();
                 sym_tab->exit_scope();
-
-                // clear temp function params
-                is_function_now = false;
-                function_params.clear();
 
              }
  		    | LCURL dummy_scope_function RCURL {
@@ -340,9 +430,9 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
                 sym_tab->print_all_scope();
                 sym_tab->exit_scope();
 
-                // clear temp function params
-                is_function_now = false;
-                function_params.clear();
+                // // clear temp function params
+                // is_function_now = false;
+                // function_params.clear();
              }
  		    ;
 
@@ -379,7 +469,9 @@ var_declaration: type_specifier declaration_list SEMICOLON {
             // insert all declaration_list ID to SymbolTable with VAR_TYPE
             for(auto el:$2->v)
             {
-                el->setVarType($1->text); 
+                if(el->var_type == "array") el->setVarType($1->text + "_array") , cout<<"ARRAY"<<endl; 
+                else el->setVarType($1->text); 
+                
                 if(!sym_tab->insert_symbol(*el)) // already present in current scope
                 {
                     error_multiple_declaration(el->key);
@@ -434,6 +526,7 @@ declaration_list: declaration_list COMMA ID {
 
                 // init & update vector
                 $$->v = $1->v;
+                $3->setVarType("array");
                 $$->v.push_back($3);
                 $$->print();
 
@@ -462,6 +555,7 @@ declaration_list: declaration_list COMMA ID {
 
                 // int & update vector
                 $$->v = $1->v;
+                $3->setVarType("array");
                 $$->v.push_back($3);
                 $$->print();
 
@@ -497,7 +591,10 @@ declaration_list: declaration_list COMMA ID {
                     $$->text += "]";
 
                     // init vector
+                    $1->setVarType("array");
                     $$->v.push_back($1);
+                    cout<<"PRINT"<<endl;
+                    $$->print();
 
                     print_log_text($$->text);
             }
@@ -647,7 +744,12 @@ variable: ID {
             }
             else
             {
-                $$->setHelperType(ret_symbol->var_type);
+                if(ret_symbol->var_type == "int_array" || ret_symbol->var_type == "float_array")
+                {
+                   error_type_mismatch();
+                }
+
+                 $$->setHelperType(ret_symbol->var_type);
             }
 
             print_log_text($$->text);
@@ -673,7 +775,13 @@ variable: ID {
             }
             else
             {
+                if(ret_symbol->var_type == "int" || ret_symbol->var_type == "float")
+                {
+                   error_type_mismatch();
+                }
+
                 $$->setHelperType(ret_symbol->var_type);
+                cout<<"HelperType : "<<$$->HelperType<<endl;
             }
 
             if($3->HelperType != "int")
@@ -691,7 +799,6 @@ variable: ID {
                 $$ = new Helper();
                 // update text
                 $$->text = $1->text;
-
                 // update vector : push up
                 $$->HelperType = $1->HelperType;
 
@@ -708,8 +815,7 @@ variable: ID {
                 $$->text += $3->text;
 
                 //check error
-
-                if($1->HelperType != $3->HelperType)
+                if(!check_assignop($1->HelperType,$3->HelperType))
                 {
                     cout<<$1->HelperType<<" ---- "<<$3->HelperType<<endl;
                     error_type_mismatch();
@@ -759,7 +865,8 @@ rel_expression: simple_expression {
                 $$->text = $1->text;
                 // update vector : push up
                 $$->HelperType = $1->HelperType;
-                 print_log_text($$->text);
+
+                print_log_text($$->text);
             }
 		| simple_expression RELOP simple_expression	{
                 print_grammar_rule("rel_expression","simple_expression RELOP simple_expression");
@@ -896,6 +1003,8 @@ factor: variable {
             $$ = new Helper();
             // update text
             $$->text = $1->text;
+            // implicit typecast
+            $$->HelperType = $1->HelperType;
 
             print_log_text($$->text);
         }
@@ -909,6 +1018,65 @@ factor: variable {
             $$->text += "( ";
             $$->text += $3->text;
             $$->text += " )";
+
+            // check error
+            SymbolInfo* ret_symbol = sym_tab->lookup($1->key);
+
+            if(ret_symbol == NULL)
+            {
+                error_undeclared_variable($1->key);
+                $$->setHelperType("NULL");
+            }
+            else
+            {
+                if(ret_symbol->isFunction == false)
+                {
+                    $$->setHelperType("NULL");
+                    cout<<"Error : Not a function"<<endl;
+                    break;
+                }
+
+
+                $$->setHelperType(ret_symbol->var_type);
+
+                if(ret_symbol->isFunctionDeclaration) // only declared , no definition
+                {
+                    cout<<"Error : Function not implemented"<<endl;
+                }
+                else // other errors
+                {
+                    // printing function param_list
+                    cout<<"OG Param : ";
+                    for(auto s:ret_symbol->param_v)
+                    {
+                        cout<<s<<" , ";
+                    }
+                    cout<<endl;
+
+                    // printing argument_list
+                    cout<<"Called Args : ";
+                    for(auto s:$3->param_v)
+                    {
+                        cout<<s<<" , ";
+                    }
+                    cout<<endl;
+
+                    if(ret_symbol->param_v.size() != $3->param_v.size())
+                    {
+                        cout<<"Error : Parameter number conflict"<<endl;
+                    }
+                    else
+                    {
+                        for(int i=0;i<ret_symbol->param_v.size();i++)
+                        {
+                            if(!is_param_typecast_ok(ret_symbol->param_v[i],$3->param_v[i])){
+                                cout<<"Error : Parameter type conflict"<<endl;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
 
             print_log_text($$->text);
         }
@@ -961,11 +1129,15 @@ argument_list: arguments {
                     print_grammar_rule("argument_list","arguments");
 
                     $$ = new Helper();
-                    $$->text = $1->text; 
+                    $$->text = $1->text;
+
+                    $$->param_v = $1->param_v; 
+
                     print_log_text($$->text);
                 }
 			| {
-                cout<<"WHAT IS THIS"<<endl;
+                print_grammar_rule("argument_list","");
+                $$ = new Helper();
             }   
 			;
 	
@@ -976,7 +1148,12 @@ arguments: arguments COMMA logic_expression {
                 $$ = new Helper();
                 $$->text = $1->text; 
                 $$->text += " , "; 
-                $$->text += $3->text; 
+                $$->text += $3->text;
+
+                // update vector
+                $$->param_v = $1->param_v; 
+                $$->param_v.push_back($1->HelperType);
+
                 print_log_text($$->text);
             }
 	    | logic_expression {
@@ -984,7 +1161,14 @@ arguments: arguments COMMA logic_expression {
                 print_grammar_rule("arguments","logic_expression");
 
                 $$ = new Helper();
+
+                // update text
                 $$->text = $1->text; 
+                // update helper type
+                $$->HelperType = $1->HelperType;
+                // init vector
+                $$->param_v.push_back($1->HelperType);
+
                 print_log_text($$->text);
 
             }
