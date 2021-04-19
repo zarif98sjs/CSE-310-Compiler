@@ -54,9 +54,12 @@ string do_implicit_typecast(string left_op,string right_op)
 {
     if(left_op == "void" || right_op == "void") return "error";
 
-    if(left_op == "float" || right_op == "float") return "float";
+    if(left_op == "float" && right_op == "float") return "float";
+    if(left_op == "float" && right_op == "int") return "float";
+    if(left_op == "int" && right_op == "float") return "float";
+    if(left_op == "int" && right_op == "int") return "int";
 
-    return "int";
+    return "error";
 }
 
 bool is_param_typecast_ok(string og_p,string pass_p)
@@ -70,6 +73,8 @@ bool check_assignop(string left_op,string right_op)
 {
 
     if(left_op == "void" || right_op == "void") return false;
+    if(left_op == "NULL" || right_op == "NULL") return false;
+    if(left_op == "" || right_op == "") return false;
 
     if(left_op == "int" && right_op =="int_array") return true;
     if(left_op == "int_array" && right_op =="int") return true;
@@ -109,7 +114,7 @@ void error_array_index_invalid()
 
 void error_type_cast()
 {
-    cout<<"Error at Line "<<line_count<<": operand is void\n"<<endl;
+    cout<<"Error at Line "<<line_count<<": Incompatible Operand\n"<<endl;
 }
 
 void error_type_cast_mod()
@@ -869,6 +874,7 @@ variable: ID {
                 }
 
                  $$->setHelperType(ret_symbol->var_type);
+                 cout<<"Helper : "<<$$->HelperType<<endl;
             }
 
             print_log_text($$->text);
@@ -934,9 +940,9 @@ variable: ID {
                 $$->text += $3->text;
 
                 //check error
+                cout<<$1->HelperType<<" ---- "<<$3->HelperType<<endl;
                 if(!check_assignop($1->HelperType,$3->HelperType))
                 {
-                    cout<<$1->HelperType<<" ---- "<<$3->HelperType<<endl;
                     error_type_mismatch();
                 }
 
@@ -1027,6 +1033,7 @@ simple_expression: term {
                     $$->text += $2->key;
                     $$->text += $3->text;
                     // do implicit typecast
+                    cout<<$1->HelperType<<" --- "<<$3->HelperType<<endl;
                     string typecast_ret = do_implicit_typecast($1->HelperType,$3->HelperType);
                     if(typecast_ret != "error") $$->setHelperType(typecast_ret);
                     else error_type_cast();
@@ -1065,6 +1072,11 @@ term:	unary_expression {
                 if(typecast_ret != "int")
                 {
                     error_type_cast_mod();
+                    $$->setHelperType("NULL");
+                }
+                else{
+                    $$->setHelperType("int");
+                    cout<<"HERERE"<<endl;
                 }
             }
             else
@@ -1208,6 +1220,8 @@ factor: variable {
             $$->text += $2->text;
             $$->text += ")";
 
+            $$->HelperType = $2->HelperType;
+
             print_log_text($$->text);
         
         }
@@ -1282,7 +1296,7 @@ arguments: arguments COMMA logic_expression {
 
                 // update vector
                 $$->param_v = $1->param_v; 
-                $$->param_v.push_back($1->HelperType);
+                $$->param_v.push_back($3->HelperType);
 
                 print_log_text($$->text);
             }
@@ -1296,6 +1310,7 @@ arguments: arguments COMMA logic_expression {
                 $$->text = $1->text; 
                 // update helper type
                 $$->HelperType = $1->HelperType;
+                cout<<"Logic Helper : "<<$$->HelperType<<endl;
                 // init vector
                 $$->param_v.push_back($1->HelperType);
 

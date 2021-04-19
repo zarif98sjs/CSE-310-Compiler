@@ -1,6 +1,6 @@
 At line no: 1 type_specifier : INT
 
-int
+int 
 
 At line no: 1 declaration_list : ID
 
@@ -14,17 +14,20 @@ At line no: 1 var_declaration : type_specifier declaration_list SEMICOLON
 
 int a,b;
 
+
 At line no: 1 unit : var_declaration
 
 int a,b;
+
 
 At line no: 1 program : unit
 
 int a,b;
 
+
 At line no: 1 type_specifier : FLOAT
 
-float
+float 
 
 At line no: 1 declaration_list : ID
 
@@ -34,33 +37,34 @@ At line no: 1 var_declaration : type_specifier declaration_list SEMICOLON
 
 float c;
 
+
 At line no: 1 unit : var_declaration
 
 float c;
+
 
 At line no: 1 program : program unit
 
 int a,b;
 float c;
 
-At line no: 3 type_specifier : FLOAT
-
-float
 
 At line no: 3 type_specifier : FLOAT
 
-float
+float 
+
+At line no: 3 type_specifier : FLOAT
+
+float 
 
 At line no: 3 parameter_list : type_specifier ID
 
 float a
 
 New ScopeTable with id 1.1 created
-
+Found in ScopeTable# 1.1 at position 7, 0
 At line no: 4 variable : ID
 
-
-Helper : float
 a
 
 At line no: 4 factor : variable
@@ -95,9 +99,11 @@ At line no: 4 statement : RETURN expression SEMICOLON
 
 return a;
 
+
 At line no: 4 statements : statement
 
 return a;
+
 
 At line no: 5 compound_statement : LCURL statements RCURL
 
@@ -106,17 +112,15 @@ return a;
 }
 
 ScopeTable # 1.1
-7 --> < a : ID > (float)
+ 7 --> < a : ID> 
 
 ScopeTable # 1
-7 --> < a : ID > (int)
-8 --> < b : ID > (int)
-9 --> < c : ID > (float)
-27 --> < func1 : ID > (float)
-
+ 7 --> < a : ID> 
+ 8 --> < b : ID> 
+ 9 --> < c : ID> 
+ 27 --> < func1 : ID> 
 
 ScopeTable with id 1.1 removed
-
 At line no: 5 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
 float func1(float a){
@@ -139,11 +143,11 @@ return a;
 
 At line no: 7 type_specifier : INT
 
-int
+int 
 
 At line no: 7 type_specifier : INT
 
-int
+int 
 
 At line no: 7 parameter_list : type_specifier ID
 
@@ -151,7 +155,7 @@ int a
 
 At line no: 7 type_specifier : FLOAT
 
-float
+float 
 
 At line no: 7 parameter_list : parameter_list COMMA type_specifier ID
 
@@ -159,18 +163,16 @@ int a,float b
 
 At line no: 7 type_specifier : INT
 
-int
+int 
 
 At line no: 7 parameter_list : parameter_list COMMA type_specifier ID
 
 int a,float b,int c
 
 New ScopeTable with id 1.2 created
-
+Found in ScopeTable# 1.2 at position 7, 0
 At line no: 8 variable : ID
 
-
-Helper : int
 a
 
 At line no: 8 factor : variable
@@ -205,9 +207,11 @@ At line no: 8 statement : RETURN expression SEMICOLON
 
 return a;
 
+
 At line no: 8 statements : statement
 
 return a;
+
 
 At line no: 9 compound_statement : LCURL statements RCURL
 
@@ -216,20 +220,18 @@ return a;
 }
 
 ScopeTable # 1.2
-7 --> < a : ID > (int)
-8 --> < b : ID > (float)
-9 --> < c : ID > (int)
+ 7 --> < a : ID> 
+ 8 --> < b : ID> 
+ 9 --> < c : ID> 
 
 ScopeTable # 1
-7 --> < a : ID > (int)
-8 --> < b : ID > (int)
-9 --> < c : ID > (float)
-27 --> < func1 : ID > (float)
-28 --> < func2 : ID > (int)
-
+ 7 --> < a : ID> 
+ 8 --> < b : ID> 
+ 9 --> < c : ID> 
+ 27 --> < func1 : ID> 
+ 28 --> < func2 : ID> 
 
 ScopeTable with id 1.2 removed
-
 At line no: 9 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
 int func2(int a,float b,int c){
@@ -248,20 +250,18 @@ int a,b;
 float c;
 float func1(float a){
 return a;
-}
-int func2(int a,float b,int c){
+}int func2(int a,float b,int c){
 return a;
 }
 
 At line no: 11 type_specifier : VOID
 
-void
+void 
 
 New ScopeTable with id 1.3 created
-
 At line no: 12 type_specifier : INT
 
-int
+int 
 
 At line no: 12 declaration_list : ID
 
@@ -271,13 +271,16 @@ At line no: 12 var_declaration : type_specifier declaration_list SEMICOLON
 
 int a;
 
+
 At line no: 12 statement : var_declaration
 
 int a;
 
+
 At line no: 12 statements : statement
 
 int a;
+
 
 At line no: 13 compound_statement : LCURL statements RCURL
 
@@ -286,21 +289,18 @@ int a;
 }
 
 ScopeTable # 1.3
-7 --> < a : ID > (int)
+ 7 --> < a : ID> 
 
 ScopeTable # 1
-7 --> < a : ID > (int)
-8 --> < b : ID > (int)
-9 --> < c : ID > (float)
-27 --> < func1 : ID > (float)
-28 --> < func2 : ID > (int)
-29 --> < func3 : ID > (void)
-
+ 7 --> < a : ID> 
+ 8 --> < b : ID> 
+ 9 --> < c : ID> 
+ 27 --> < func1 : ID> 
+ 28 --> < func2 : ID> 
+ 29 --> < func3 : ID> 
 
 ScopeTable with id 1.3 removed
-
 At line no: 13 func_definition : type_specifier ID LPAREN RPAREN compound_statement
-
 
 void func3(){
 int a;
@@ -318,23 +318,20 @@ int a,b;
 float c;
 float func1(float a){
 return a;
-}
-int func2(int a,float b,int c){
+}int func2(int a,float b,int c){
 return a;
-}
-void func3(){
+}void func3(){
 int a;
 }
 
 At line no: 15 type_specifier : INT
 
-int
+int 
 
 New ScopeTable with id 1.4 created
-
 At line no: 16 type_specifier : INT
 
-int
+int 
 
 At line no: 16 declaration_list : ID LTHIRD CONST_INT RTHIRD
 
@@ -344,18 +341,20 @@ At line no: 16 var_declaration : type_specifier declaration_list SEMICOLON
 
 int arr[10];
 
+
 At line no: 16 statement : var_declaration
 
 int arr[10];
+
 
 At line no: 16 statements : statement
 
 int arr[10];
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 18 variable : ID
 
-
-Helper : int
 a
 
 At line no: 18 factor : CONST_INT
@@ -384,26 +383,27 @@ At line no: 18 logic_expression : rel_expression
 
 At line no: 18 expression : variable ASSIGNOP logic_expression
 
-int ---- int
 a=10
 
 At line no: 18 expression_statement : expression SEMICOLON
 
 a=10;
 
+
 At line no: 18 statement : expression_statement
 
 a=10;
+
 
 At line no: 18 statements : statements statement
 
 int arr[10];
 a=10;
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 19 variable : ID
 
-
-Helper : int
 a
 
 At line no: 19 factor : CONST_FLOAT
@@ -432,18 +432,17 @@ At line no: 19 logic_expression : rel_expression
 
 At line no: 19 expression : variable ASSIGNOP logic_expression
 
-int ---- float
-Error at Line 19: Type Mismatch
-
 a=10.0
 
 At line no: 19 expression_statement : expression SEMICOLON
 
 a=10.0;
 
+
 At line no: 19 statement : expression_statement
 
 a=10.0;
+
 
 At line no: 19 statements : statements statement
 
@@ -451,10 +450,10 @@ int arr[10];
 a=10;
 a=10.0;
 
+
+Found in ScopeTable# 1 at position 9, 0
 At line no: 20 variable : ID
 
-
-Helper : float
 c
 
 At line no: 20 factor : CONST_INT
@@ -483,16 +482,17 @@ At line no: 20 logic_expression : rel_expression
 
 At line no: 20 expression : variable ASSIGNOP logic_expression
 
-float ---- int
 c=10
 
 At line no: 20 expression_statement : expression SEMICOLON
 
 c=10;
 
+
 At line no: 20 statement : expression_statement
 
 c=10;
+
 
 At line no: 20 statements : statements statement
 
@@ -501,16 +501,15 @@ a=10;
 a=10.0;
 c=10;
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 21 variable : ID
 
-
-Helper : int
 a
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 21 variable : ID
 
-
-Helper : float
 c
 
 At line no: 21 factor : variable
@@ -539,54 +538,50 @@ c
 
 At line no: 21 arguments : logic_expression
 
-Logic Helper : float
 c
 
 At line no: 21 argument_list : arguments
 
 c
 
+Found in ScopeTable# 1 at position 27, 0
 At line no: 21 factor : ID LPAREN argument_list RPAREN
 
-
-OG Param : float , 
-Called Args : float , 
-func1( c )
+func1(c)
 
 At line no: 21 unary_expression : factor
 
-func1( c )
+func1(c)
 
 At line no: 21 term : unary_expression
 
-func1( c )
+func1(c)
 
 At line no: 21 simple_expression : term
 
-func1( c )
+func1(c)
 
 At line no: 21 rel_expression : simple_expression
 
-func1( c )
+func1(c)
 
 At line no: 21 logic_expression : rel_expression
 
-func1( c )
+func1(c)
 
 At line no: 21 expression : variable ASSIGNOP logic_expression
 
-int ---- float
-Error at Line 21: Type Mismatch
-
-a=func1( c )
+a=func1(c)
 
 At line no: 21 expression_statement : expression SEMICOLON
 
-a=func1( c );
+a=func1(c);
+
 
 At line no: 21 statement : expression_statement
 
-a=func1( c );
+a=func1(c);
+
 
 At line no: 21 statements : statements statement
 
@@ -594,18 +589,17 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 22 variable : ID
 
-
-Helper : int
 a
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 22 variable : ID
 
-
-Helper : float
 c
 
 At line no: 22 factor : variable
@@ -634,18 +628,17 @@ c
 
 At line no: 22 expression : variable ASSIGNOP logic_expression
 
-int ---- float
-Error at Line 22: Type Mismatch
-
 a=c
 
 At line no: 22 expression_statement : expression SEMICOLON
 
 a=c;
 
+
 At line no: 22 statement : expression_statement
 
 a=c;
+
 
 At line no: 22 statements : statements statement
 
@@ -653,19 +646,18 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
 
+
+Found in ScopeTable# 1 at position 9, 0
 At line no: 23 variable : ID
 
-
-Helper : float
 c
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 23 variable : ID
 
-
-Helper : float
 c
 
 At line no: 23 factor : variable
@@ -684,10 +676,9 @@ At line no: 23 simple_expression : term
 
 c
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 23 variable : ID
 
-
-Helper : float
 c
 
 At line no: 23 factor : variable
@@ -716,39 +707,32 @@ c
 
 At line no: 23 arguments : logic_expression
 
-Logic Helper : float
 c
 
 At line no: 23 argument_list : arguments
 
 c
 
+Found in ScopeTable# 1 at position 27, 0
 At line no: 23 factor : ID LPAREN argument_list RPAREN
 
-
-OG Param : float , 
-Called Args : float , 
-func1( c )
+func1(c)
 
 At line no: 23 unary_expression : factor
 
-func1( c )
+func1(c)
 
 At line no: 23 term : unary_expression
 
-func1( c )
+func1(c)
 
 At line no: 23 simple_expression : simple_expression ADDOP term
 
-float --- float
-Implicit Typecast : float
+c+func1(c)
 
-c+func1( c )
-
+Found in ScopeTable# 1 at position 7, 0
 At line no: 23 variable : ID
 
-
-Helper : int
 a
 
 At line no: 23 factor : variable
@@ -765,15 +749,11 @@ a
 
 At line no: 23 simple_expression : simple_expression ADDOP term
 
-float --- int
-Implicit Typecast : float
+c+func1(c)+a
 
-c+func1( c )+a
-
+Found in ScopeTable# 1 at position 8, 0
 At line no: 23 variable : ID
 
-
-Helper : int
 b
 
 At line no: 23 factor : variable
@@ -790,31 +770,29 @@ b
 
 At line no: 23 simple_expression : simple_expression ADDOP term
 
-float --- int
-Implicit Typecast : float
-
-c+func1( c )+a+b
+c+func1(c)+a+b
 
 At line no: 23 rel_expression : simple_expression
 
-c+func1( c )+a+b
+c+func1(c)+a+b
 
 At line no: 23 logic_expression : rel_expression
 
-c+func1( c )+a+b
+c+func1(c)+a+b
 
 At line no: 23 expression : variable ASSIGNOP logic_expression
 
-float ---- float
-c=c+func1( c )+a+b
+c=c+func1(c)+a+b
 
 At line no: 23 expression_statement : expression SEMICOLON
 
-c=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+
 
 At line no: 23 statement : expression_statement
 
-c=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+
 
 At line no: 23 statements : statements statement
 
@@ -822,20 +800,19 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 24 variable : ID
 
-
-Helper : int
 a
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 24 variable : ID
 
-
-Helper : float
 c
 
 At line no: 24 factor : variable
@@ -854,10 +831,9 @@ At line no: 24 simple_expression : term
 
 c
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 24 variable : ID
 
-
-Helper : float
 c
 
 At line no: 24 factor : variable
@@ -886,39 +862,32 @@ c
 
 At line no: 24 arguments : logic_expression
 
-Logic Helper : float
 c
 
 At line no: 24 argument_list : arguments
 
 c
 
+Found in ScopeTable# 1 at position 27, 0
 At line no: 24 factor : ID LPAREN argument_list RPAREN
 
-
-OG Param : float , 
-Called Args : float , 
-func1( c )
+func1(c)
 
 At line no: 24 unary_expression : factor
 
-func1( c )
+func1(c)
 
 At line no: 24 term : unary_expression
 
-func1( c )
+func1(c)
 
 At line no: 24 simple_expression : simple_expression ADDOP term
 
-float --- float
-Implicit Typecast : float
+c+func1(c)
 
-c+func1( c )
-
+Found in ScopeTable# 1 at position 7, 0
 At line no: 24 variable : ID
 
-
-Helper : int
 a
 
 At line no: 24 factor : variable
@@ -935,15 +904,11 @@ a
 
 At line no: 24 simple_expression : simple_expression ADDOP term
 
-float --- int
-Implicit Typecast : float
+c+func1(c)+a
 
-c+func1( c )+a
-
+Found in ScopeTable# 1 at position 8, 0
 At line no: 24 variable : ID
 
-
-Helper : int
 b
 
 At line no: 24 factor : variable
@@ -960,33 +925,29 @@ b
 
 At line no: 24 simple_expression : simple_expression ADDOP term
 
-float --- int
-Implicit Typecast : float
-
-c+func1( c )+a+b
+c+func1(c)+a+b
 
 At line no: 24 rel_expression : simple_expression
 
-c+func1( c )+a+b
+c+func1(c)+a+b
 
 At line no: 24 logic_expression : rel_expression
 
-c+func1( c )+a+b
+c+func1(c)+a+b
 
 At line no: 24 expression : variable ASSIGNOP logic_expression
 
-int ---- float
-Error at Line 24: Type Mismatch
-
-a=c+func1( c )+a+b
+a=c+func1(c)+a+b
 
 At line no: 24 expression_statement : expression SEMICOLON
 
-a=c+func1( c )+a+b;
+a=c+func1(c)+a+b;
+
 
 At line no: 24 statement : expression_statement
 
-a=c+func1( c )+a+b;
+a=c+func1(c)+a+b;
+
 
 At line no: 24 statements : statements statement
 
@@ -994,15 +955,15 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 26 variable : ID
 
-
-Helper : int
 a
 
 At line no: 26 factor : CONST_INT
@@ -1033,8 +994,8 @@ At line no: 26 expression : logic_expression
 
 10
 
+Found in ScopeTable# 1.4 at position 25, 0
 At line no: 26 variable : ID LTHIRD expression RTHIRD
-
 
 arr[10]
 
@@ -1064,16 +1025,17 @@ arr[10]
 
 At line no: 26 expression : variable ASSIGNOP logic_expression
 
-int ---- int_array
 a=arr[10]
 
 At line no: 26 expression_statement : expression SEMICOLON
 
 a=arr[10];
 
+
 At line no: 26 statement : expression_statement
 
 a=arr[10];
+
 
 At line no: 26 statements : statements statement
 
@@ -1081,16 +1043,16 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 27 variable : ID
 
-
-Helper : int
 a
 
 At line no: 27 factor : CONST_FLOAT
@@ -1121,10 +1083,8 @@ At line no: 27 expression : logic_expression
 
 1.10
 
+Found in ScopeTable# 1.4 at position 25, 0
 At line no: 27 variable : ID LTHIRD expression RTHIRD
-
-
-Error at Line 27: Non-integer Array Index
 
 arr[1.10]
 
@@ -1154,16 +1114,17 @@ arr[1.10]
 
 At line no: 27 expression : variable ASSIGNOP logic_expression
 
-int ---- int_array
 a=arr[1.10]
 
 At line no: 27 expression_statement : expression SEMICOLON
 
 a=arr[1.10];
 
+
 At line no: 27 statement : expression_statement
 
 a=arr[1.10];
+
 
 At line no: 27 statements : statements statement
 
@@ -1171,17 +1132,17 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 29 variable : ID
 
-
-Helper : int
 a
 
 At line no: 29 factor : CONST_INT
@@ -1222,7 +1183,6 @@ At line no: 29 unary_expression : factor
 
 At line no: 29 term : term MULOP unary_expression
 
-HERERE
 10%5
 
 At line no: 29 simple_expression : term
@@ -1255,9 +1215,6 @@ At line no: 29 term : unary_expression
 
 At line no: 29 simple_expression : simple_expression ADDOP term
 
-int --- int
-Implicit Typecast : int
-
 10+(10%5)
 
 At line no: 29 rel_expression : simple_expression
@@ -1270,16 +1227,17 @@ At line no: 29 logic_expression : rel_expression
 
 At line no: 29 expression : variable ASSIGNOP logic_expression
 
-int ---- int
 a=10+(10%5)
 
 At line no: 29 expression_statement : expression SEMICOLON
 
 a=10+(10%5);
 
+
 At line no: 29 statement : expression_statement
 
 a=10+(10%5);
+
 
 At line no: 29 statements : statements statement
 
@@ -1287,18 +1245,18 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 30 variable : ID
 
-
-Helper : int
 a
 
 At line no: 30 factor : CONST_INT
@@ -1329,10 +1287,9 @@ At line no: 30 term : unary_expression
 
 10
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 30 variable : ID
 
-
-Helper : float
 c
 
 At line no: 30 factor : variable
@@ -1344,8 +1301,6 @@ At line no: 30 unary_expression : factor
 c
 
 At line no: 30 term : term MULOP unary_expression
-
-Error at Line 30: non-integer operand on modulus operator
 
 10%c
 
@@ -1379,11 +1334,6 @@ At line no: 30 term : unary_expression
 
 At line no: 30 simple_expression : simple_expression ADDOP term
 
-int --- NULL
-Error at Line 30: Incompatible Operand
-
-Implicit Typecast : 
-
 10+(10%c)
 
 At line no: 30 rel_expression : simple_expression
@@ -1396,18 +1346,17 @@ At line no: 30 logic_expression : rel_expression
 
 At line no: 30 expression : variable ASSIGNOP logic_expression
 
-int ---- 
-Error at Line 30: Type Mismatch
-
 a=10+(10%c)
 
 At line no: 30 expression_statement : expression SEMICOLON
 
 a=10+(10%c);
 
+
 At line no: 30 statement : expression_statement
 
 a=10+(10%c);
+
 
 At line no: 30 statements : statements statement
 
@@ -1415,25 +1364,24 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 32 variable : ID
 
-
-Helper : int
 a
 
+Found in ScopeTable# 1 at position 7, 0
 At line no: 32 variable : ID
 
-
-Helper : int
 a
 
 At line no: 32 factor : variable
@@ -1462,13 +1410,11 @@ a
 
 At line no: 32 arguments : logic_expression
 
-Logic Helper : int
 a
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 32 variable : ID
 
-
-Helper : float
 c
 
 At line no: 32 factor : variable
@@ -1497,12 +1443,11 @@ c
 
 At line no: 32 arguments : arguments COMMA logic_expression
 
-a , c
+a,c
 
+Found in ScopeTable# 1 at position 8, 0
 At line no: 32 variable : ID
 
-
-Helper : int
 b
 
 At line no: 32 factor : variable
@@ -1531,51 +1476,50 @@ b
 
 At line no: 32 arguments : arguments COMMA logic_expression
 
-a , c , b
+a,c,b
 
 At line no: 32 argument_list : arguments
 
-a , c , b
+a,c,b
 
+Found in ScopeTable# 1 at position 28, 0
 At line no: 32 factor : ID LPAREN argument_list RPAREN
 
-
-OG Param : int , float , int , 
-Called Args : int , float , int , 
-func2( a , c , b )
+func2(a,c,b)
 
 At line no: 32 unary_expression : factor
 
-func2( a , c , b )
+func2(a,c,b)
 
 At line no: 32 term : unary_expression
 
-func2( a , c , b )
+func2(a,c,b)
 
 At line no: 32 simple_expression : term
 
-func2( a , c , b )
+func2(a,c,b)
 
 At line no: 32 rel_expression : simple_expression
 
-func2( a , c , b )
+func2(a,c,b)
 
 At line no: 32 logic_expression : rel_expression
 
-func2( a , c , b )
+func2(a,c,b)
 
 At line no: 32 expression : variable ASSIGNOP logic_expression
 
-int ---- int
-a=func2( a , c , b )
+a=func2(a,c,b)
 
 At line no: 32 expression_statement : expression SEMICOLON
 
-a=func2( a , c , b );
+a=func2(a,c,b);
+
 
 At line no: 32 statement : expression_statement
 
-a=func2( a , c , b );
+a=func2(a,c,b);
+
 
 At line no: 32 statements : statements statement
 
@@ -1583,26 +1527,25 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
+a=func2(a,c,b);
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 33 variable : ID
 
-
-Helper : int
 a
 
+Found in ScopeTable# 1 at position 7, 0
 At line no: 33 variable : ID
 
-
-Helper : int
 a
 
 At line no: 33 factor : variable
@@ -1631,13 +1574,11 @@ a
 
 At line no: 33 arguments : logic_expression
 
-Logic Helper : int
 a
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 33 variable : ID
 
-
-Helper : float
 c
 
 At line no: 33 factor : variable
@@ -1666,54 +1607,50 @@ c
 
 At line no: 33 arguments : arguments COMMA logic_expression
 
-a , c
+a,c
 
 At line no: 33 argument_list : arguments
 
-a , c
+a,c
 
+Found in ScopeTable# 1 at position 28, 0
 At line no: 33 factor : ID LPAREN argument_list RPAREN
 
-
-OG Param : int , float , int , 
-Called Args : int , float , 
-Error at Line 33: Parameter Number Mismactch
-
-
-func2( a , c )
+func2(a,c)
 
 At line no: 33 unary_expression : factor
 
-func2( a , c )
+func2(a,c)
 
 At line no: 33 term : unary_expression
 
-func2( a , c )
+func2(a,c)
 
 At line no: 33 simple_expression : term
 
-func2( a , c )
+func2(a,c)
 
 At line no: 33 rel_expression : simple_expression
 
-func2( a , c )
+func2(a,c)
 
 At line no: 33 logic_expression : rel_expression
 
-func2( a , c )
+func2(a,c)
 
 At line no: 33 expression : variable ASSIGNOP logic_expression
 
-int ---- int
-a=func2( a , c )
+a=func2(a,c)
 
 At line no: 33 expression_statement : expression SEMICOLON
 
-a=func2( a , c );
+a=func2(a,c);
+
 
 At line no: 33 statement : expression_statement
 
-a=func2( a , c );
+a=func2(a,c);
+
 
 At line no: 33 statements : statements statement
 
@@ -1721,27 +1658,26 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
+a=func2(a,c,b);
+a=func2(a,c);
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 34 variable : ID
 
-
-Helper : int
 a
 
+Found in ScopeTable# 1 at position 7, 0
 At line no: 34 variable : ID
 
-
-Helper : int
 a
 
 At line no: 34 factor : variable
@@ -1770,13 +1706,11 @@ a
 
 At line no: 34 arguments : logic_expression
 
-Logic Helper : int
 a
 
+Found in ScopeTable# 1 at position 8, 0
 At line no: 34 variable : ID
 
-
-Helper : int
 b
 
 At line no: 34 factor : variable
@@ -1805,12 +1739,11 @@ b
 
 At line no: 34 arguments : arguments COMMA logic_expression
 
-a , b
+a,b
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 34 variable : ID
 
-
-Helper : float
 c
 
 At line no: 34 factor : variable
@@ -1839,53 +1772,50 @@ c
 
 At line no: 34 arguments : arguments COMMA logic_expression
 
-a , b , c
+a,b,c
 
 At line no: 34 argument_list : arguments
 
-a , b , c
+a,b,c
 
+Found in ScopeTable# 1 at position 28, 0
 At line no: 34 factor : ID LPAREN argument_list RPAREN
 
-
-OG Param : int , float , int , 
-Called Args : int , int , float , 
-Error at Line 34: Parameter Type Mismactch 
-
-func2( a , b , c )
+func2(a,b,c)
 
 At line no: 34 unary_expression : factor
 
-func2( a , b , c )
+func2(a,b,c)
 
 At line no: 34 term : unary_expression
 
-func2( a , b , c )
+func2(a,b,c)
 
 At line no: 34 simple_expression : term
 
-func2( a , b , c )
+func2(a,b,c)
 
 At line no: 34 rel_expression : simple_expression
 
-func2( a , b , c )
+func2(a,b,c)
 
 At line no: 34 logic_expression : rel_expression
 
-func2( a , b , c )
+func2(a,b,c)
 
 At line no: 34 expression : variable ASSIGNOP logic_expression
 
-int ---- int
-a=func2( a , b , c )
+a=func2(a,b,c)
 
 At line no: 34 expression_statement : expression SEMICOLON
 
-a=func2( a , b , c );
+a=func2(a,b,c);
+
 
 At line no: 34 statement : expression_statement
 
-a=func2( a , b , c );
+a=func2(a,b,c);
+
 
 At line no: 34 statements : statements statement
 
@@ -1893,58 +1823,61 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+
 
 At line no: 36 argument_list : 
 
+
+
+Found in ScopeTable# 1 at position 29, 0
 At line no: 36 factor : ID LPAREN argument_list RPAREN
 
-
-OG Param : 
-Called Args : 
-func3(  )
+func3()
 
 At line no: 36 unary_expression : factor
 
-func3(  )
+func3()
 
 At line no: 36 term : unary_expression
 
-func3(  )
+func3()
 
 At line no: 36 simple_expression : term
 
-func3(  )
+func3()
 
 At line no: 36 rel_expression : simple_expression
 
-func3(  )
+func3()
 
 At line no: 36 logic_expression : rel_expression
 
-func3(  )
+func3()
 
 At line no: 36 expression : logic_expression
 
-func3(  )
+func3()
 
 At line no: 36 expression_statement : expression SEMICOLON
 
-func3(  );
+func3();
+
 
 At line no: 36 statement : expression_statement
 
-func3(  );
+func3();
+
 
 At line no: 36 statements : statements statement
 
@@ -1952,68 +1885,67 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 37 variable : ID
 
-
-Helper : int
 a
 
 At line no: 37 argument_list : 
 
+
+
+Found in ScopeTable# 1 at position 29, 0
 At line no: 37 factor : ID LPAREN argument_list RPAREN
 
-
-OG Param : 
-Called Args : 
-func3(  )
+func3()
 
 At line no: 37 unary_expression : factor
 
-func3(  )
+func3()
 
 At line no: 37 term : unary_expression
 
-func3(  )
+func3()
 
 At line no: 37 simple_expression : term
 
-func3(  )
+func3()
 
 At line no: 37 rel_expression : simple_expression
 
-func3(  )
+func3()
 
 At line no: 37 logic_expression : rel_expression
 
-func3(  )
+func3()
 
 At line no: 37 expression : variable ASSIGNOP logic_expression
 
-int ---- void
-Error at Line 37: Type Mismatch
-
-a=func3(  )
+a=func3()
 
 At line no: 37 expression_statement : expression SEMICOLON
 
-a=func3(  );
+a=func3();
+
 
 At line no: 37 statement : expression_statement
 
-a=func3(  );
+a=func3();
+
 
 At line no: 37 statements : statements statement
 
@@ -2021,30 +1953,29 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 40 variable : ID
 
-
-Helper : int
 a
 
+Found in ScopeTable# 1 at position 7, 0
 At line no: 40 variable : ID
 
-
-Helper : int
 a
 
 At line no: 40 factor : variable
@@ -2067,10 +1998,9 @@ At line no: 40 rel_expression : simple_expression
 
 a
 
+Found in ScopeTable# 1 at position 8, 0
 At line no: 40 variable : ID
 
-
-Helper : int
 b
 
 At line no: 40 factor : variable
@@ -2093,10 +2023,9 @@ At line no: 40 rel_expression : simple_expression
 
 b
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 40 variable : ID
 
-
-Helper : float
 c
 
 At line no: 40 factor : variable
@@ -2120,8 +2049,6 @@ At line no: 40 rel_expression : simple_expression
 c
 
 At line no: 40 logic_expression : rel_expression LOGICOP rel_expression
-
-Implicit Typecast : int
 
 b&&c
 
@@ -2150,8 +2077,6 @@ At line no: 40 rel_expression : simple_expression
 (b&&c)
 
 At line no: 40 logic_expression : rel_expression LOGICOP rel_expression
-
-Implicit Typecast : int
 
 a||(b&&c)
 
@@ -2185,16 +2110,17 @@ At line no: 40 logic_expression : rel_expression
 
 At line no: 40 expression : variable ASSIGNOP logic_expression
 
-int ---- int
 a=(a||(b&&c))
 
 At line no: 40 expression_statement : expression SEMICOLON
 
 a=(a||(b&&c));
 
+
 At line no: 40 statement : expression_statement
 
 a=(a||(b&&c));
+
 
 At line no: 40 statements : statements statement
 
@@ -2202,31 +2128,30 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 41 variable : ID
 
-
-Helper : int
 a
 
+Found in ScopeTable# 1 at position 7, 0
 At line no: 41 variable : ID
 
-
-Helper : int
 a
 
 At line no: 41 factor : variable
@@ -2249,10 +2174,9 @@ At line no: 41 rel_expression : simple_expression
 
 a
 
+Found in ScopeTable# 1 at position 8, 0
 At line no: 41 variable : ID
 
-
-Helper : int
 b
 
 At line no: 41 factor : variable
@@ -2277,111 +2201,102 @@ b
 
 At line no: 41 argument_list : 
 
+
+
+Found in ScopeTable# 1 at position 29, 0
 At line no: 41 factor : ID LPAREN argument_list RPAREN
 
-
-OG Param : 
-Called Args : 
-func3(  )
+func3()
 
 At line no: 41 unary_expression : factor
 
-func3(  )
+func3()
 
 At line no: 41 term : unary_expression
 
-func3(  )
+func3()
 
 At line no: 41 simple_expression : term
 
-func3(  )
+func3()
 
 At line no: 41 rel_expression : simple_expression
 
-func3(  )
+func3()
 
 At line no: 41 logic_expression : rel_expression LOGICOP rel_expression
 
-Error at Line 41: Incompatible Operand
-
-Implicit Typecast : 
-
-b&&func3(  )
+b&&func3()
 
 At line no: 41 expression : logic_expression
 
-b&&func3(  )
+b&&func3()
 
 At line no: 41 factor : LPAREN expression RPAREN
 
-(b&&func3(  ))
+(b&&func3())
 
 At line no: 41 unary_expression : factor
 
-(b&&func3(  ))
+(b&&func3())
 
 At line no: 41 term : unary_expression
 
-(b&&func3(  ))
+(b&&func3())
 
 At line no: 41 simple_expression : term
 
-(b&&func3(  ))
+(b&&func3())
 
 At line no: 41 rel_expression : simple_expression
 
-(b&&func3(  ))
+(b&&func3())
 
 At line no: 41 logic_expression : rel_expression LOGICOP rel_expression
 
-Error at Line 41: Incompatible Operand
-
-Implicit Typecast : 
-
-a||(b&&func3(  ))
+a||(b&&func3())
 
 At line no: 41 expression : logic_expression
 
-a||(b&&func3(  ))
+a||(b&&func3())
 
 At line no: 41 factor : LPAREN expression RPAREN
 
-(a||(b&&func3(  )))
+(a||(b&&func3()))
 
 At line no: 41 unary_expression : factor
 
-(a||(b&&func3(  )))
+(a||(b&&func3()))
 
 At line no: 41 term : unary_expression
 
-(a||(b&&func3(  )))
+(a||(b&&func3()))
 
 At line no: 41 simple_expression : term
 
-(a||(b&&func3(  )))
+(a||(b&&func3()))
 
 At line no: 41 rel_expression : simple_expression
 
-(a||(b&&func3(  )))
+(a||(b&&func3()))
 
 At line no: 41 logic_expression : rel_expression
 
-(a||(b&&func3(  )))
+(a||(b&&func3()))
 
 At line no: 41 expression : variable ASSIGNOP logic_expression
 
-int ---- 
-Error at Line 41: Type Mismatch
-
-a=(a||(b&&func3(  )))
+a=(a||(b&&func3()))
 
 At line no: 41 expression_statement : expression SEMICOLON
 
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
+
 
 At line no: 41 statement : expression_statement
 
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
+
 
 At line no: 41 statements : statements statement
 
@@ -2389,32 +2304,31 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 43 variable : ID
 
-
-Helper : int
 a
 
+Found in ScopeTable# 1 at position 7, 0
 At line no: 43 variable : ID
 
-
-Helper : int
 a
 
 At line no: 43 factor : variable
@@ -2433,10 +2347,9 @@ At line no: 43 simple_expression : term
 
 a
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 43 variable : ID
 
-
-Helper : float
 c
 
 At line no: 43 factor : variable
@@ -2456,8 +2369,6 @@ At line no: 43 simple_expression : term
 c
 
 At line no: 43 rel_expression : simple_expression RELOP simple_expression
-
-Implicit Typecast : int
 
 a<=c
 
@@ -2495,16 +2406,17 @@ At line no: 43 logic_expression : rel_expression
 
 At line no: 43 expression : variable ASSIGNOP logic_expression
 
-int ---- int
 a=(a<=c)
 
 At line no: 43 expression_statement : expression SEMICOLON
 
 a=(a<=c);
 
+
 At line no: 43 statement : expression_statement
 
 a=(a<=c);
+
 
 At line no: 43 statements : statements statement
 
@@ -2512,33 +2424,32 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 44 variable : ID
 
-
-Helper : int
 a
 
+Found in ScopeTable# 1 at position 7, 0
 At line no: 44 variable : ID
 
-
-Helper : int
 a
 
 At line no: 44 factor : variable
@@ -2559,79 +2470,74 @@ a
 
 At line no: 44 argument_list : 
 
+
+
+Found in ScopeTable# 1 at position 29, 0
 At line no: 44 factor : ID LPAREN argument_list RPAREN
 
-
-OG Param : 
-Called Args : 
-func3(  )
+func3()
 
 At line no: 44 unary_expression : factor
 
-func3(  )
+func3()
 
 At line no: 44 term : unary_expression
 
-func3(  )
+func3()
 
 At line no: 44 simple_expression : term
 
-func3(  )
+func3()
 
 At line no: 44 rel_expression : simple_expression RELOP simple_expression
 
-Error at Line 44: Incompatible Operand
-
-Implicit Typecast : 
-
-a==func3(  )
+a==func3()
 
 At line no: 44 logic_expression : rel_expression
 
-a==func3(  )
+a==func3()
 
 At line no: 44 expression : logic_expression
 
-a==func3(  )
+a==func3()
 
 At line no: 44 factor : LPAREN expression RPAREN
 
-(a==func3(  ))
+(a==func3())
 
 At line no: 44 unary_expression : factor
 
-(a==func3(  ))
+(a==func3())
 
 At line no: 44 term : unary_expression
 
-(a==func3(  ))
+(a==func3())
 
 At line no: 44 simple_expression : term
 
-(a==func3(  ))
+(a==func3())
 
 At line no: 44 rel_expression : simple_expression
 
-(a==func3(  ))
+(a==func3())
 
 At line no: 44 logic_expression : rel_expression
 
-(a==func3(  ))
+(a==func3())
 
 At line no: 44 expression : variable ASSIGNOP logic_expression
 
-int ---- 
-Error at Line 44: Type Mismatch
-
-a=(a==func3(  ))
+a=(a==func3())
 
 At line no: 44 expression_statement : expression SEMICOLON
 
-a=(a==func3(  ));
+a=(a==func3());
+
 
 At line no: 44 statement : expression_statement
 
-a=(a==func3(  ));
+a=(a==func3());
+
 
 At line no: 44 statements : statements statement
 
@@ -2639,34 +2545,33 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 
+
+Not found
 At line no: 47 variable : ID
-
-Error at Line 47: Undeclared Variable: d
 
 d
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 47 variable : ID
 
-
-Helper : float
 c
 
 At line no: 47 factor : variable
@@ -2695,18 +2600,17 @@ c
 
 At line no: 47 expression : variable ASSIGNOP logic_expression
 
-NULL ---- float
-Error at Line 47: Type Mismatch
-
 d=c
 
 At line no: 47 expression_statement : expression SEMICOLON
 
 d=c;
 
+
 At line no: 47 statement : expression_statement
 
 d=c;
+
 
 At line no: 47 statements : statements statement
 
@@ -2714,28 +2618,29 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
+
 
 At line no: 48 type_specifier : INT
 
-int
+int 
 
 At line no: 48 declaration_list : ID LTHIRD CONST_INT RTHIRD
 
@@ -2743,14 +2648,13 @@ arr[10]
 
 At line no: 48 var_declaration : type_specifier declaration_list SEMICOLON
 
-
-Error at Line 48: Multiple Declaration of arr
-
 int arr[10];
+
 
 At line no: 48 statement : var_declaration
 
 int arr[10];
+
 
 At line no: 48 statements : statements statement
 
@@ -2758,25 +2662,26 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
+
 
 At line no: 51 factor : CONST_INT
 
@@ -2806,15 +2711,14 @@ At line no: 51 expression : logic_expression
 
 10
 
+Found in ScopeTable# 1.4 at position 25, 0
 At line no: 51 variable : ID LTHIRD expression RTHIRD
-
 
 arr[10]
 
+Found in ScopeTable# 1 at position 7, 0
 At line no: 51 variable : ID
 
-
-Helper : int
 a
 
 At line no: 51 factor : variable
@@ -2843,16 +2747,17 @@ a
 
 At line no: 51 expression : variable ASSIGNOP logic_expression
 
-int_array ---- int
 arr[10]=a
 
 At line no: 51 expression_statement : expression SEMICOLON
 
 arr[10]=a;
 
+
 At line no: 51 statement : expression_statement
 
 arr[10]=a;
+
 
 At line no: 51 statements : statements statement
 
@@ -2860,39 +2765,36 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 
+
+Found in ScopeTable# 1.4 at position 25, 0
 At line no: 52 variable : ID
 
-
-Error at Line 52: Type Mismatch
-
-Helper : int_array
 arr
 
+Found in ScopeTable# 1 at position 7, 0
 At line no: 52 variable : ID
 
-
-Helper : int
 a
 
 At line no: 52 factor : variable
@@ -2921,16 +2823,17 @@ a
 
 At line no: 52 expression : variable ASSIGNOP logic_expression
 
-int_array ---- int
 arr=a
 
 At line no: 52 expression_statement : expression SEMICOLON
 
 arr=a;
 
+
 At line no: 52 statement : expression_statement
 
 arr=a;
+
 
 At line no: 52 statements : statements statement
 
@@ -2938,32 +2841,32 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 53 variable : ID
 
-
-Helper : int
 a
 
 At line no: 53 factor : CONST_INT
@@ -2994,10 +2897,8 @@ At line no: 53 expression : logic_expression
 
 10
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 53 variable : ID LTHIRD expression RTHIRD
-
-
-Error at Line 53: Type Mismatch
 
 c[10]
 
@@ -3027,18 +2928,17 @@ c[10]
 
 At line no: 53 expression : variable ASSIGNOP logic_expression
 
-int ---- float
-Error at Line 53: Type Mismatch
-
 a=c[10]
 
 At line no: 53 expression_statement : expression SEMICOLON
 
 a=c[10];
 
+
 At line no: 53 statement : expression_statement
 
 a=c[10];
+
 
 At line no: 53 statements : statements statement
 
@@ -3046,39 +2946,38 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
 
+
+Found in ScopeTable# 1 at position 7, 0
 At line no: 56 variable : ID
 
-
-Helper : int
 a
 
+Found in ScopeTable# 1 at position 8, 0
 At line no: 56 variable : ID
 
-
-Helper : int
 b
 
 At line no: 56 factor : variable
@@ -3107,52 +3006,50 @@ b
 
 At line no: 56 arguments : logic_expression
 
-Logic Helper : int
 b
 
 At line no: 56 argument_list : arguments
 
 b
 
+Found in ScopeTable# 1 at position 9, 0
 At line no: 56 factor : ID LPAREN argument_list RPAREN
 
-
-Error at Line 56: c not a function
+c(b)
 
 At line no: 56 unary_expression : factor
 
-c( b )
+c(b)
 
 At line no: 56 term : unary_expression
 
-c( b )
+c(b)
 
 At line no: 56 simple_expression : term
 
-c( b )
+c(b)
 
 At line no: 56 rel_expression : simple_expression
 
-c( b )
+c(b)
 
 At line no: 56 logic_expression : rel_expression
 
-c( b )
+c(b)
 
 At line no: 56 expression : variable ASSIGNOP logic_expression
 
-int ---- NULL
-Error at Line 56: Type Mismatch
-
-a=c( b )
+a=c(b)
 
 At line no: 56 expression_statement : expression SEMICOLON
 
-a=c( b );
+a=c(b);
+
 
 At line no: 56 statement : expression_statement
 
-a=c( b );
+a=c(b);
+
 
 At line no: 56 statements : statements statement
 
@@ -3160,29 +3057,30 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
+a=c(b);
+
 
 At line no: 57 compound_statement : LCURL statements RCURL
 
@@ -3191,77 +3089,74 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
+a=c(b);
 }
 
 ScopeTable # 1.4
-25 --> < arr : ID > (int_array)
+ 25 --> < arr : ID> 
 
 ScopeTable # 1
-1 --> < main : ID > (int)
-7 --> < a : ID > (int)
-8 --> < b : ID > (int)
-9 --> < c : ID > (float)
-27 --> < func1 : ID > (float)
-28 --> < func2 : ID > (int)
-29 --> < func3 : ID > (void)
-
+ 1 --> < main : ID> 
+ 7 --> < a : ID> 
+ 8 --> < b : ID> 
+ 9 --> < c : ID> 
+ 27 --> < func1 : ID> 
+ 28 --> < func2 : ID> 
+ 29 --> < func3 : ID> 
 
 ScopeTable with id 1.4 removed
-
 At line no: 57 func_definition : type_specifier ID LPAREN RPAREN compound_statement
-
 
 int main(){
 int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
+a=c(b);
 }
 
 At line no: 57 unit : func_definition
@@ -3271,29 +3166,29 @@ int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
+a=c(b);
 }
 
 At line no: 57 program : program unit
@@ -3302,50 +3197,47 @@ int a,b;
 float c;
 float func1(float a){
 return a;
-}
-int func2(int a,float b,int c){
+}int func2(int a,float b,int c){
 return a;
-}
-void func3(){
+}void func3(){
 int a;
-}
-int main(){
+}int main(){
 int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
+a=c(b);
 }
 
 At line no: 61 type_specifier : INT
 
-int
+int 
 
 At line no: 61 type_specifier : INT
 
-int
+int 
 
 At line no: 61 parameter_list : type_specifier ID
 
@@ -3353,12 +3245,13 @@ int a
 
 At line no: 61 func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON
 
-
 int func4(int a);
+
 
 At line no: 61 unit : func_declaration
 
 int func4(int a);
+
 
 At line no: 61 program : program unit
 
@@ -3366,66 +3259,63 @@ int a,b;
 float c;
 float func1(float a){
 return a;
-}
-int func2(int a,float b,int c){
+}int func2(int a,float b,int c){
 return a;
-}
-void func3(){
+}void func3(){
 int a;
-}
-int main(){
+}int main(){
 int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
-}
-int func4(int a);
+a=c(b);
+}int func4(int a);
+
 
 At line no: 63 type_specifier : INT
 
-int
+int 
 
 At line no: 63 type_specifier : INT
 
-int
+int 
 
 At line no: 63 parameter_list : type_specifier ID
 
 int a
 
+Found in ScopeTable# 1 at position 0, 0
 At line no: 63 func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON
 
-
-Error at Line 63: Multiple Declaration of func4
-
 int func4(int a);
+
 
 At line no: 63 unit : func_declaration
 
 int func4(int a);
+
 
 At line no: 63 program : program unit
 
@@ -3433,52 +3323,49 @@ int a,b;
 float c;
 float func1(float a){
 return a;
-}
-int func2(int a,float b,int c){
+}int func2(int a,float b,int c){
 return a;
-}
-void func3(){
+}void func3(){
 int a;
-}
-int main(){
+}int main(){
 int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
-}
+a=c(b);
+}int func4(int a);
 int func4(int a);
-int func4(int a);
+
 
 At line no: 65 type_specifier : INT
 
-int
+int 
 
 At line no: 65 type_specifier : INT
 
-int
+int 
 
 At line no: 65 parameter_list : type_specifier ID
 
@@ -3486,23 +3373,17 @@ int a
 
 At line no: 65 type_specifier : FLOAT
 
-float
+float 
 
 At line no: 65 parameter_list : parameter_list COMMA type_specifier ID
 
 int a,float b
 
-
-
-Error at Line 65: Parameter Number Mismactch
-(Declaration vs Definition)
-
+Found in ScopeTable# 1 at position 0, 0
 New ScopeTable with id 1.5 created
-
+Found in ScopeTable# 1.5 at position 7, 0
 At line no: 66 variable : ID
 
-
-Helper : int
 a
 
 At line no: 66 factor : variable
@@ -3537,9 +3418,11 @@ At line no: 66 statement : RETURN expression SEMICOLON
 
 return a;
 
+
 At line no: 66 statements : statement
 
 return a;
+
 
 At line no: 67 compound_statement : LCURL statements RCURL
 
@@ -3548,22 +3431,20 @@ return a;
 }
 
 ScopeTable # 1.5
-7 --> < a : ID > (int)
-8 --> < b : ID > (float)
+ 7 --> < a : ID> 
+ 8 --> < b : ID> 
 
 ScopeTable # 1
-0 --> < func4 : ID > (int)
-1 --> < main : ID > (int)
-7 --> < a : ID > (int)
-8 --> < b : ID > (int)
-9 --> < c : ID > (float)
-27 --> < func1 : ID > (float)
-28 --> < func2 : ID > (int)
-29 --> < func3 : ID > (void)
-
+ 0 --> < func4 : ID> 
+ 1 --> < main : ID> 
+ 7 --> < a : ID> 
+ 8 --> < b : ID> 
+ 9 --> < c : ID> 
+ 27 --> < func1 : ID> 
+ 28 --> < func2 : ID> 
+ 29 --> < func3 : ID> 
 
 ScopeTable with id 1.5 removed
-
 At line no: 67 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
 int func4(int a,float b){
@@ -3582,43 +3463,39 @@ int a,b;
 float c;
 float func1(float a){
 return a;
-}
-int func2(int a,float b,int c){
+}int func2(int a,float b,int c){
 return a;
-}
-void func3(){
+}void func3(){
 int a;
-}
-int main(){
+}int main(){
 int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
-}
-int func4(int a);
+a=c(b);
+}int func4(int a);
 int func4(int a);
 int func4(int a,float b){
 return a;
@@ -3626,11 +3503,11 @@ return a;
 
 At line no: 69 type_specifier : FLOAT
 
-float
+float 
 
 At line no: 69 type_specifier : INT
 
-int
+int 
 
 At line no: 69 parameter_list : type_specifier ID
 
@@ -3638,12 +3515,13 @@ int c
 
 At line no: 69 func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON
 
-
 float func5(int c);
+
 
 At line no: 69 unit : func_declaration
 
 float func5(int c);
+
 
 At line no: 69 program : program unit
 
@@ -3651,71 +3529,62 @@ int a,b;
 float c;
 float func1(float a){
 return a;
-}
-int func2(int a,float b,int c){
+}int func2(int a,float b,int c){
 return a;
-}
-void func3(){
+}void func3(){
 int a;
-}
-int main(){
+}int main(){
 int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
-}
-int func4(int a);
+a=c(b);
+}int func4(int a);
 int func4(int a);
 int func4(int a,float b){
 return a;
-}
-float func5(int c);
+}float func5(int c);
+
 
 At line no: 71 type_specifier : INT
 
-int
+int 
 
 At line no: 71 type_specifier : INT
 
-int
+int 
 
 At line no: 71 parameter_list : type_specifier ID
 
 int c
 
-
-
-Error at Line 71: Function return type mismatch
-
+Found in ScopeTable# 1 at position 1, 1
 New ScopeTable with id 1.6 created
-
+Found in ScopeTable# 1.6 at position 9, 0
 At line no: 72 variable : ID
 
-
-Helper : int
 c
 
 At line no: 72 factor : variable
@@ -3750,9 +3619,11 @@ At line no: 72 statement : RETURN expression SEMICOLON
 
 return c;
 
+
 At line no: 72 statements : statement
 
 return c;
+
 
 At line no: 73 compound_statement : LCURL statements RCURL
 
@@ -3761,21 +3632,19 @@ return c;
 }
 
 ScopeTable # 1.6
-9 --> < c : ID > (int)
+ 9 --> < c : ID> 
 
 ScopeTable # 1
-0 --> < func4 : ID > (int)
-1 --> < main : ID > (int)< func5 : ID > (float)
-7 --> < a : ID > (int)
-8 --> < b : ID > (int)
-9 --> < c : ID > (float)
-27 --> < func1 : ID > (float)
-28 --> < func2 : ID > (int)
-29 --> < func3 : ID > (void)
-
+ 0 --> < func4 : ID> 
+ 1 --> < main : ID> < func5 : ID> 
+ 7 --> < a : ID> 
+ 8 --> < b : ID> 
+ 9 --> < c : ID> 
+ 27 --> < func1 : ID> 
+ 28 --> < func2 : ID> 
+ 29 --> < func3 : ID> 
 
 ScopeTable with id 1.6 removed
-
 At line no: 73 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
 int func5(int c){
@@ -3794,59 +3663,54 @@ int a,b;
 float c;
 float func1(float a){
 return a;
-}
-int func2(int a,float b,int c){
+}int func2(int a,float b,int c){
 return a;
-}
-void func3(){
+}void func3(){
 int a;
-}
-int main(){
+}int main(){
 int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
-}
-int func4(int a);
+a=c(b);
+}int func4(int a);
 int func4(int a);
 int func4(int a,float b){
 return a;
-}
-float func5(int c);
+}float func5(int c);
 int func5(int c){
 return c;
 }
 
 At line no: 75 type_specifier : INT
 
-int
+int 
 
 At line no: 75 type_specifier : INT
 
-int
+int 
 
 At line no: 75 parameter_list : type_specifier ID
 
@@ -3854,12 +3718,13 @@ int a
 
 At line no: 75 func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON
 
-
 int func6(int a);
+
 
 At line no: 75 unit : func_declaration
 
 int func6(int a);
+
 
 At line no: 75 program : program unit
 
@@ -3867,73 +3732,65 @@ int a,b;
 float c;
 float func1(float a){
 return a;
-}
-int func2(int a,float b,int c){
+}int func2(int a,float b,int c){
 return a;
-}
-void func3(){
+}void func3(){
 int a;
-}
-int main(){
+}int main(){
 int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
-}
-int func4(int a);
+a=c(b);
+}int func4(int a);
 int func4(int a);
 int func4(int a,float b){
 return a;
-}
-float func5(int c);
+}float func5(int c);
 int func5(int c){
 return c;
-}
-int func6(int a);
+}int func6(int a);
+
 
 At line no: 77 type_specifier : INT
 
-int
+int 
 
 At line no: 77 type_specifier : INT
 
-int
+int 
 
 At line no: 77 parameter_list : type_specifier ID
 
 int a
 
-
-
+Found in ScopeTable# 1 at position 2, 0
 New ScopeTable with id 1.7 created
-
+Found in ScopeTable# 1.7 at position 7, 0
 At line no: 78 variable : ID
 
-
-Helper : int
 a
 
 At line no: 78 factor : variable
@@ -3968,9 +3825,11 @@ At line no: 78 statement : RETURN expression SEMICOLON
 
 return a;
 
+
 At line no: 78 statements : statement
 
 return a;
+
 
 At line no: 79 compound_statement : LCURL statements RCURL
 
@@ -3979,22 +3838,20 @@ return a;
 }
 
 ScopeTable # 1.7
-7 --> < a : ID > (int)
+ 7 --> < a : ID> 
 
 ScopeTable # 1
-0 --> < func4 : ID > (int)
-1 --> < main : ID > (int)< func5 : ID > (float)
-2 --> < func6 : ID > (int)
-7 --> < a : ID > (int)
-8 --> < b : ID > (int)
-9 --> < c : ID > (float)
-27 --> < func1 : ID > (float)
-28 --> < func2 : ID > (int)
-29 --> < func3 : ID > (void)
-
+ 0 --> < func4 : ID> 
+ 1 --> < main : ID> < func5 : ID> 
+ 2 --> < func6 : ID> 
+ 7 --> < a : ID> 
+ 8 --> < b : ID> 
+ 9 --> < c : ID> 
+ 27 --> < func1 : ID> 
+ 28 --> < func2 : ID> 
+ 29 --> < func3 : ID> 
 
 ScopeTable with id 1.7 removed
-
 At line no: 79 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
 int func6(int a){
@@ -4013,78 +3870,67 @@ int a,b;
 float c;
 float func1(float a){
 return a;
-}
-int func2(int a,float b,int c){
+}int func2(int a,float b,int c){
 return a;
-}
-void func3(){
+}void func3(){
 int a;
-}
-int main(){
+}int main(){
 int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
-}
-int func4(int a);
+a=c(b);
+}int func4(int a);
 int func4(int a);
 int func4(int a,float b){
 return a;
-}
-float func5(int c);
+}float func5(int c);
 int func5(int c){
 return c;
-}
-int func6(int a);
+}int func6(int a);
 int func6(int a){
 return a;
 }
 
 At line no: 81 type_specifier : INT
 
-int
+int 
 
 At line no: 81 type_specifier : INT
 
-int
+int 
 
 At line no: 81 parameter_list : type_specifier ID
 
 int a
 
-
-
-Error at Line 81: Multiple Declaration of func6
-
+Found in ScopeTable# 1 at position 2, 0
 New ScopeTable with id 1.8 created
-
+Found in ScopeTable# 1.8 at position 7, 0
 At line no: 82 variable : ID
 
-
-Helper : int
 a
 
 At line no: 82 factor : variable
@@ -4119,9 +3965,11 @@ At line no: 82 statement : RETURN expression SEMICOLON
 
 return a;
 
+
 At line no: 82 statements : statement
 
 return a;
+
 
 At line no: 83 compound_statement : LCURL statements RCURL
 
@@ -4130,22 +3978,20 @@ return a;
 }
 
 ScopeTable # 1.8
-7 --> < a : ID > (int)
+ 7 --> < a : ID> 
 
 ScopeTable # 1
-0 --> < func4 : ID > (int)
-1 --> < main : ID > (int)< func5 : ID > (float)
-2 --> < func6 : ID > (int)
-7 --> < a : ID > (int)
-8 --> < b : ID > (int)
-9 --> < c : ID > (float)
-27 --> < func1 : ID > (float)
-28 --> < func2 : ID > (int)
-29 --> < func3 : ID > (void)
-
+ 0 --> < func4 : ID> 
+ 1 --> < main : ID> < func5 : ID> 
+ 2 --> < func6 : ID> 
+ 7 --> < a : ID> 
+ 8 --> < b : ID> 
+ 9 --> < c : ID> 
+ 27 --> < func1 : ID> 
+ 28 --> < func2 : ID> 
+ 29 --> < func3 : ID> 
 
 ScopeTable with id 1.8 removed
-
 At line no: 83 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
 int func6(int a){
@@ -4164,66 +4010,59 @@ int a,b;
 float c;
 float func1(float a){
 return a;
-}
-int func2(int a,float b,int c){
+}int func2(int a,float b,int c){
 return a;
-}
-void func3(){
+}void func3(){
 int a;
-}
-int main(){
+}int main(){
 int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
-}
-int func4(int a);
+a=c(b);
+}int func4(int a);
 int func4(int a);
 int func4(int a,float b){
 return a;
-}
-float func5(int c);
+}float func5(int c);
 int func5(int c){
 return c;
-}
-int func6(int a);
+}int func6(int a);
 int func6(int a){
 return a;
-}
-int func6(int a){
+}int func6(int a){
 return a;
 }
 
 At line no: 85 type_specifier : FLOAT
 
-float
+float 
 
 At line no: 85 type_specifier : INT
 
-int
+int 
 
 At line no: 85 parameter_list : type_specifier ID
 
@@ -4231,12 +4070,13 @@ int a
 
 At line no: 85 func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON
 
-
 float func7(int a);
+
 
 At line no: 85 unit : func_declaration
 
 float func7(int a);
+
 
 At line no: 85 program : program unit
 
@@ -4244,67 +4084,60 @@ int a,b;
 float c;
 float func1(float a){
 return a;
-}
-int func2(int a,float b,int c){
+}int func2(int a,float b,int c){
 return a;
-}
-void func3(){
+}void func3(){
 int a;
-}
-int main(){
+}int main(){
 int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
-}
-int func4(int a);
+a=c(b);
+}int func4(int a);
 int func4(int a);
 int func4(int a,float b){
 return a;
-}
-float func5(int c);
+}float func5(int c);
 int func5(int c){
 return c;
-}
-int func6(int a);
+}int func6(int a);
 int func6(int a){
 return a;
-}
-int func6(int a){
+}int func6(int a){
 return a;
-}
-float func7(int a);
+}float func7(int a);
+
 
 At line no: 87 type_specifier : FLOAT
 
-float
+float 
 
 At line no: 87 type_specifier : INT
 
-int
+int 
 
 At line no: 87 parameter_list : type_specifier ID
 
@@ -4312,23 +4145,17 @@ int c
 
 At line no: 87 type_specifier : INT
 
-int
+int 
 
 At line no: 87 parameter_list : parameter_list COMMA type_specifier ID
 
 int c,int a
 
-
-
-Error at Line 87: Parameter Number Mismactch
-(Declaration vs Definition)
-
+Found in ScopeTable# 1 at position 3, 0
 New ScopeTable with id 1.9 created
-
+Found in ScopeTable# 1.9 at position 9, 0
 At line no: 88 variable : ID
 
-
-Helper : int
 c
 
 At line no: 88 factor : variable
@@ -4363,9 +4190,11 @@ At line no: 88 statement : RETURN expression SEMICOLON
 
 return c;
 
+
 At line no: 88 statements : statement
 
 return c;
+
 
 At line no: 89 compound_statement : LCURL statements RCURL
 
@@ -4374,24 +4203,22 @@ return c;
 }
 
 ScopeTable # 1.9
-7 --> < a : ID > (int)
-9 --> < c : ID > (int)
+ 7 --> < a : ID> 
+ 9 --> < c : ID> 
 
 ScopeTable # 1
-0 --> < func4 : ID > (int)
-1 --> < main : ID > (int)< func5 : ID > (float)
-2 --> < func6 : ID > (int)
-3 --> < func7 : ID > (float)
-7 --> < a : ID > (int)
-8 --> < b : ID > (int)
-9 --> < c : ID > (float)
-27 --> < func1 : ID > (float)
-28 --> < func2 : ID > (int)
-29 --> < func3 : ID > (void)
-
+ 0 --> < func4 : ID> 
+ 1 --> < main : ID> < func5 : ID> 
+ 2 --> < func6 : ID> 
+ 3 --> < func7 : ID> 
+ 7 --> < a : ID> 
+ 8 --> < b : ID> 
+ 9 --> < c : ID> 
+ 27 --> < func1 : ID> 
+ 28 --> < func2 : ID> 
+ 29 --> < func3 : ID> 
 
 ScopeTable with id 1.9 removed
-
 At line no: 89 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
 float func7(int c,int a){
@@ -4410,74 +4237,122 @@ int a,b;
 float c;
 float func1(float a){
 return a;
-}
-int func2(int a,float b,int c){
+}int func2(int a,float b,int c){
 return a;
-}
-void func3(){
+}void func3(){
 int a;
-}
-int main(){
+}int main(){
 int arr[10];
 a=10;
 a=10.0;
 c=10;
-a=func1( c );
+a=func1(c);
 a=c;
-c=c+func1( c )+a+b;
-a=c+func1( c )+a+b;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
 a=arr[10];
 a=arr[1.10];
 a=10+(10%5);
 a=10+(10%c);
-a=func2( a , c , b );
-a=func2( a , c );
-a=func2( a , b , c );
-func3(  );
-a=func3(  );
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
 a=(a||(b&&c));
-a=(a||(b&&func3(  )));
+a=(a||(b&&func3()));
 a=(a<=c);
-a=(a==func3(  ));
+a=(a==func3());
 d=c;
 int arr[10];
 arr[10]=a;
 arr=a;
 a=c[10];
-a=c( b );
-}
-int func4(int a);
+a=c(b);
+}int func4(int a);
 int func4(int a);
 int func4(int a,float b){
 return a;
-}
-float func5(int c);
+}float func5(int c);
 int func5(int c){
 return c;
-}
-int func6(int a);
+}int func6(int a);
 int func6(int a){
 return a;
-}
-int func6(int a){
+}int func6(int a){
 return a;
-}
-float func7(int a);
+}float func7(int a);
 float func7(int c,int a){
 return c;
 }
 
+At line no: 90 start : program
+
+int a,b;
+float c;
+float func1(float a){
+return a;
+}int func2(int a,float b,int c){
+return a;
+}void func3(){
+int a;
+}int main(){
+int arr[10];
+a=10;
+a=10.0;
+c=10;
+a=func1(c);
+a=c;
+c=c+func1(c)+a+b;
+a=c+func1(c)+a+b;
+a=arr[10];
+a=arr[1.10];
+a=10+(10%5);
+a=10+(10%c);
+a=func2(a,c,b);
+a=func2(a,c);
+a=func2(a,b,c);
+func3();
+a=func3();
+a=(a||(b&&c));
+a=(a||(b&&func3()));
+a=(a<=c);
+a=(a==func3());
+d=c;
+int arr[10];
+arr[10]=a;
+arr=a;
+a=c[10];
+a=c(b);
+}int func4(int a);
+int func4(int a);
+int func4(int a,float b){
+return a;
+}float func5(int c);
+int func5(int c){
+return c;
+}int func6(int a);
+int func6(int a){
+return a;
+}int func6(int a){
+return a;
+}float func7(int a);
+float func7(int c,int a){
+return c;
+}
+
+symbol table:
 ScopeTable # 1
-0 --> < func4 : ID > (int)
-1 --> < main : ID > (int)< func5 : ID > (float)
-2 --> < func6 : ID > (int)
-3 --> < func7 : ID > (float)
-7 --> < a : ID > (int)
-8 --> < b : ID > (int)
-9 --> < c : ID > (float)
-27 --> < func1 : ID > (float)
-28 --> < func2 : ID > (int)
-29 --> < func3 : ID > (void)
+ 0 --> < func4 : ID> 
+ 1 --> < main : ID> < func5 : ID> 
+ 2 --> < func6 : ID> 
+ 3 --> < func7 : ID> 
+ 7 --> < a : ID> 
+ 8 --> < b : ID> 
+ 9 --> < c : ID> 
+ 27 --> < func1 : ID> 
+ 28 --> < func2 : ID> 
+ 29 --> < func3 : ID> 
 
-
-Total Lines : 90
+Total lines: 90
+Total errors: 24
