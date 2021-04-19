@@ -2,72 +2,107 @@ At line no: 1 type_specifier : VOID
 
 void
 
-At line no: 1 type_specifier : INT
-
-int
-
-At line no: 1 parameter_list : type_specifier
-
-int
-
-At line no: 1 type_specifier : INT
-
-int
-
-At line no: 1 parameter_list : parameter_list COMMA type_specifier
-
-int,int
-
-At line no: 1 func_declaration : type_specifier ID LPAREN parameter_list RPAREN SEMICOLON
-
-
-void foo(int,int);
-
-At line no: 1 unit : func_declaration
-
-void foo(int,int);
-
-At line no: 1 program : unit
-
-void foo(int,int);
-
-At line no: 3 type_specifier : INT
-
-int
-
-At line no: 3 type_specifier : INT
-
-int
-
-At line no: 3 parameter_list : type_specifier ID
-
-int x
-
-At line no: 3 type_specifier : FLOAT
-
-float
-
-At line no: 3 parameter_list : parameter_list COMMA type_specifier ID
-
-int x,float y
-
-
-
-Error at Line 4: Function return type mismatch
-
-Error at Line 4: Parameter Type Mismactch (Declaration vs Definition)
-
 New ScopeTable with id 1.1 created
 
-At line no: 6 compound_statement : LCURL statements RCURL
+At line no: 2 factor : CONST_FLOAT
+
+2.5
+
+At line no: 2 unary_expression : factor
+
+2.5
+
+At line no: 2 term : unary_expression
+
+2.5
+
+At line no: 2 simple_expression : term
+
+2.5
+
+At line no: 2 factor : CONST_INT
+
+3
+
+At line no: 2 unary_expression : factor
+
+3
+
+At line no: 2 term : unary_expression
+
+3
+
+At line no: 2 simple_expression : term
+
+3
+
+At line no: 2 rel_expression : simple_expression RELOP simple_expression
+
+Implicit Typecast : int
+
+2.5<3
+
+At line no: 2 logic_expression : rel_expression
+
+2.5<3
+
+At line no: 2 expression : logic_expression
+
+2.5<3
+
+At line no: 2 variable : ID LTHIRD expression RTHIRD
+
+Error at Line 2: Undeclared Variable: a
+
+a[2.5<3]
+
+At line no: 2 factor : CONST_INT
+
+1
+
+At line no: 2 unary_expression : factor
+
+1
+
+At line no: 2 term : unary_expression
+
+1
+
+At line no: 2 simple_expression : term
+
+1
+
+At line no: 2 rel_expression : simple_expression
+
+1
+
+At line no: 2 logic_expression : rel_expression
+
+1
+
+At line no: 2 expression : variable ASSIGNOP logic_expression
+
+a[2.5<3]=1
+
+At line no: 2 expression_statement : expression SEMICOLON
+
+a[2.5<3]=1;
+
+At line no: 2 statement : expression_statement
+
+a[2.5<3]=1;
+
+At line no: 2 statements : statement
+
+a[2.5<3]=1;
+
+At line no: 3 compound_statement : LCURL statements RCURL
 
 {
-
+a[2.5<3]=1;
 }
 
 ScopeTable # 1.1
-0 --> < x : ID > (int)
-1 --> < y : ID > (float)
 
 ScopeTable # 1
 24 --> < foo : ID > (void)
@@ -75,27 +110,27 @@ ScopeTable # 1
 
 ScopeTable with id 1.1 removed
 
-At line no: 6 func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
+At line no: 3 func_definition : type_specifier ID LPAREN RPAREN compound_statement
 
-int foo(int x,float y){
 
+void foo(){
+a[2.5<3]=1;
 }
 
-At line no: 6 unit : func_definition
+At line no: 3 unit : func_definition
 
-int foo(int x,float y){
-
+void foo(){
+a[2.5<3]=1;
 }
 
-At line no: 6 program : program unit
+At line no: 3 program : unit
 
-void foo(int,int);
-int foo(int x,float y){
-
+void foo(){
+a[2.5<3]=1;
 }
 
 ScopeTable # 1
 24 --> < foo : ID > (void)
 
 
-Total Lines : 8
+Total Lines : 4

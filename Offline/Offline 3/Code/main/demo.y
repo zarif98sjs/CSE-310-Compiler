@@ -102,7 +102,7 @@ void error_array_size_float()
     cout<<"Error at Line "<<line_count<<": Non-integer Array Size\n"<<endl;
 }
 
-void error_array_index_float()
+void error_array_index_invalid()
 {
     cout<<"Error at Line "<<line_count<<": Non-integer Array Index\n"<<endl;
 }
@@ -337,6 +337,11 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
                 print_log_text($$->text);
 
                 function_params.clear();
+            }
+            | error SEMICOLON {
+                cout<<"inside error function ;"<<endl;
+                yyclearin;
+                yyerrok;
             }
 		;
 
@@ -808,6 +813,16 @@ statement: var_declaration {
 
             print_log_text($$->text);
         }
+        | error SEMICOLON {
+            cout<<"inside error statement ;"<<endl;
+            yyclearin;
+            yyerrok;
+        }
+        | error RCURL {
+            cout<<"inside error statement }"<<endl;
+            yyclearin;
+            yyerrok;
+        }
 	  ;
 	  
 expression_statement: SEMICOLON	{
@@ -850,7 +865,7 @@ variable: ID {
             {
                 if(ret_symbol->var_type == "int_array" || ret_symbol->var_type == "float_array")
                 {
-                   error_type_mismatch();
+                   error_type_mismatch(); // should i change this to indexing
                 }
 
                  $$->setHelperType(ret_symbol->var_type);
@@ -890,7 +905,7 @@ variable: ID {
 
             if($3->HelperType != "int")
             {
-                error_array_index_float();
+                error_array_index_invalid();
             }
 
             print_log_text($$->text);
