@@ -215,6 +215,7 @@ void insert_function_to_global(SymbolInfo* temp_s,string var_type)
 
 %}
 
+%error-verbose
 
 %union{
     SymbolInfo* symbol_info;
@@ -237,8 +238,11 @@ void insert_function_to_global(SymbolInfo* temp_s,string var_type)
 %type < helper > arguments argument_list
 %type < helper > declaration_list
 
+
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
+
+
 
 %%
 
@@ -310,7 +314,53 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
                 // clear param_info
                 function_params.clear();
     
-            }
+        }
+        | type_specifier ID LPAREN parameter_list error RPAREN SEMICOLON { 
+
+                /**
+                    To handle errors like: 
+                        void foo(int x-y);
+                **/
+                
+                print_grammar_rule("func_declaration","type_specifier ID LPAREN parameter_list error RPAREN SEMICOLON");
+                
+                $$ = new Helper();
+
+                // update text
+                $$->text = $1->text;
+                $$->text += " ";
+                $$->text += $2->key;
+                $$->text += "(";
+                $$->text += $4->text;
+                $$->text += ")";
+                $$->text += ";";
+
+                // insert function ID to SymbolTable with VAR_TYPE
+                $2->setVarType($1->text);
+                $2->isFunction = true;
+
+                // update parameter type
+                for(auto temp_s : function_params)
+                {
+                    $2->param_v.push_back(temp_s.var_type);
+                }
+
+                if(sym_tab->insert_symbol(*$2))
+                {
+                    SymbolInfo* ret_symbol = sym_tab->lookup($2->key);
+                    ret_symbol->isFunctionDeclaration = true; // mark as function declaration
+                }
+                else
+                {
+                    error_multiple_declaration($2->key);
+                }
+
+                print_log_text($$->text);
+
+                // clear param_info
+                function_params.clear();
+    
+        }
 		| type_specifier ID LPAREN RPAREN SEMICOLON { 
 
                 print_grammar_rule("func_declaration","type_specifier ID LPAREN RPAREN SEMICOLON");
@@ -343,10 +393,42 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
 
                 function_params.clear();
             }
-            | error SEMICOLON {
-                cout<<"inside error function ;"<<endl;
-                yyclearin;
-                yyerrok;
+        | type_specifier ID LPAREN error RPAREN SEMICOLON { 
+
+                /**
+                    To handle errors like: 
+                        void foo(-);
+                **/
+
+                print_grammar_rule("func_declaration","type_specifier ID LPAREN error RPAREN SEMICOLON");
+                
+                $$ = new Helper();
+
+                // update text
+                $$->text = $1->text;
+                $$->text += " ";
+                $$->text += $2->key;
+                $$->text += "(";
+                $$->text += ")";
+                $$->text += ";";
+
+                // insert function ID to SymbolTable with VAR_TYPE
+                $2->setVarType($1->text);
+                $2->isFunction = true;
+                
+                if(sym_tab->insert_symbol(*$2))
+                {
+                    SymbolInfo* ret_symbol = sym_tab->lookup($2->key);
+                    ret_symbol->isFunctionDeclaration = true; // mark as function declaration
+                }
+                else
+                {
+                    error_multiple_declaration($2->key);
+                }
+
+                print_log_text($$->text);
+
+                function_params.clear();
             }
 		;
 
@@ -372,6 +454,33 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_no
                 function_params.clear();
 
             }
+        | type_specifier ID LPAREN parameter_list error RPAREN { is_function_now = true;insert_function_to_global($2,$1->text);} compound_statement { 
+                
+                /**
+                    To handle cases like :
+                        void foo(int x-y){}
+                **/
+                
+                print_grammar_rule("func_definition","type_specifier ID LPAREN parameter_list error RPAREN compound_statement");
+                
+                $$ = new Helper();
+
+                // update text
+                $$->text = $1->text;
+                $$->text += " ";
+                $$->text += $2->key;
+                $$->text += "(";
+                $$->text += $4->text;
+                $$->text += ")";
+                $$->text += $8->text; 
+
+                print_log_text($$->text);
+
+                // clear temp function params
+                is_function_now = false;
+                function_params.clear();
+
+        }
 		|   type_specifier ID LPAREN RPAREN {is_function_now = true;insert_function_to_global($2,$1->text);} compound_statement { 
                 print_grammar_rule("func_definition","type_specifier ID LPAREN RPAREN compound_statement");
 
@@ -396,6 +505,35 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_no
                 is_function_now = false;
                 function_params.clear();
             }
+        |  type_specifier ID LPAREN error RPAREN { is_function_now = true;insert_function_to_global($2,$1->text);} compound_statement {
+                
+                /**
+                    To handle cases like :
+                        void foo(-){}
+                **/
+                
+                cout<<"inside func_definition syntax_error 1"<<endl;
+
+                $$ = new Helper();
+
+                // update text
+                $$->text = $1->text;
+                $$->text += " ";
+                $$->text += $2->key;
+                $$->text += "(";
+                // $$->text += $4->text;
+                $$->text += ")";
+                $$->text += $7->text; 
+
+                print_log_text($$->text);
+
+                // clear temp function params
+                is_function_now = false;
+                function_params.clear();
+
+                yyclearin;
+                yyerrok;
+        }
  		;				
 
 
@@ -419,7 +557,32 @@ parameter_list: parameter_list COMMA type_specifier ID {
                 print_log_text($$->text);
 
             }
-		| parameter_list COMMA type_specifier {
+        | parameter_list error COMMA type_specifier ID {
+
+                /**
+                    To handle errors like:
+                    void foo(int x-y,int z){}
+                **/
+
+               print_grammar_rule("parameter_list","parameter_list error COMMA type_specifier ID");
+
+                $$ = new Helper();
+
+                // update text
+                $$->text = $1->text;
+                $$->text += ",";
+                $$->text += $4->text;
+                $$->text += " ";
+                $$->text += $5->key;
+
+                // insert parameter ID to SymbolTable with VAR_TYPE
+                $5->setVarType($4->text);
+                function_params.push_back(*$5);
+
+                print_log_text($$->text);
+
+        }
+        | parameter_list COMMA type_specifier {
              print_grammar_rule("parameter_list","parameter_list COMMA type_specifier");
 
                 $$ = new Helper();
@@ -431,6 +594,29 @@ parameter_list: parameter_list COMMA type_specifier ID {
 
                 SymbolInfo temp_s = SymbolInfo("dummy_key","dummy_value");
                 temp_s.var_type = $3->text;
+
+                function_params.push_back(temp_s);
+
+                print_log_text($$->text);
+        }
+        | parameter_list error COMMA type_specifier {
+
+            /**
+                To handle cases like:
+                    void foo(int x-y,int);
+            **/
+
+             print_grammar_rule("parameter_list","parameter_list error COMMA type_specifier");
+
+                $$ = new Helper();
+
+                // update text
+                $$->text = $1->text;
+                $$->text += ",";
+                $$->text += $4->text;
+
+                SymbolInfo temp_s = SymbolInfo("dummy_key","dummy_value");
+                temp_s.var_type = $4->text;
 
                 function_params.push_back(temp_s);
 
@@ -451,7 +637,7 @@ parameter_list: parameter_list COMMA type_specifier ID {
                 function_params.push_back(*$2);
 
                 print_log_text($$->text);
-             }
+        }
 		| type_specifier {
             print_grammar_rule("parameter_list","type_specifier");
 
@@ -550,6 +736,40 @@ var_declaration: type_specifier declaration_list SEMICOLON {
 
             print_log_text($$->text);
         }
+        | type_specifier declaration_list error SEMICOLON { 
+
+            /**
+                To handle errors like :
+                    int x-y;
+                    int x[10]-y;
+                    int x[10.5]-y;
+            **/            
+
+            print_grammar_rule("var_declaration","type_specifier declaration_list error SEMICOLON");
+            
+            $$ = new Helper();
+
+            // update text
+            $$->text = $1->text;
+            $$->text += " ";
+            $$->text += $2->text;
+            $$->text += ";";
+
+            // insert all declaration_list ID to SymbolTable with VAR_TYPE
+            for(auto el:$2->v)
+            {
+                if(el->var_type == "array") el->setVarType($1->text + "_array") ; 
+                else el->setVarType($1->text); 
+                
+                if(!sym_tab->insert_symbol(*el)) // already present in current scope
+                {
+                    error_multiple_declaration(el->key);
+                }
+
+            }
+
+            print_log_text($$->text);
+        }
  		;
  		 
 type_specifier: INT  { print_grammar_rule("type_specifier","INT"); cout<<$1->key<<"\n"<<endl; $$->text = $1->key; }
@@ -577,6 +797,32 @@ declaration_list: declaration_list COMMA ID {
 
                     print_log_text($$->text);
             }
+            | declaration_list error COMMA ID {
+
+                /**
+                To handle errors like :
+                    int x-y,z;
+                **/    
+
+                print_grammar_rule("declaration_list","declaration_list error COMMA ID");
+
+                $$ = new Helper();
+
+                // update text
+                $$->text = $1->text;
+                $$->text += ",";
+                $$->text += $4->key;
+
+                // update type
+                $$->HelperType = $1->HelperType;
+
+                // init update vector
+                $$->v = $1->v;
+                $$->v.push_back($4);
+                // $$->print();
+
+                print_log_text($$->text);
+            }
  		    | declaration_list COMMA ID LTHIRD CONST_INT RTHIRD {
                print_grammar_rule("declaration_list","declaration_list COMMA ID LTHIRD CONST_INT RTHIRD");
            
@@ -597,6 +843,36 @@ declaration_list: declaration_list COMMA ID {
                 $$->v = $1->v;
                 $3->setVarType("array");
                 $$->v.push_back($3);
+                // $$->print();
+
+                print_log_text($$->text);
+           }
+           | declaration_list error COMMA ID LTHIRD CONST_INT RTHIRD {
+
+               /**
+                To handle errors like :
+                    int x-y,z[10];
+                **/  
+
+               print_grammar_rule("declaration_list","declaration_list error COMMA ID LTHIRD CONST_INT RTHIRD");
+           
+                $$ = new Helper();
+
+                // update text
+                $$->text = $1->text;
+                $$->text += ",";
+                $$->text += $4->key;
+                $$->text += "[";
+                $$->text += $6->key;
+                $$->text += "]";
+
+                // update type
+                $$->HelperType = $1->HelperType;
+
+                // init & update vector
+                $$->v = $1->v;
+                $4->setVarType("array");
+                $$->v.push_back($4);
                 // $$->print();
 
                 print_log_text($$->text);
@@ -626,6 +902,42 @@ declaration_list: declaration_list COMMA ID {
                 $$->v = $1->v;
                 $3->setVarType("array");
                 $$->v.push_back($3);
+                // $$->print();
+
+                error_array_size_float();
+
+                print_log_text($$->text);
+           
+            }
+            | declaration_list error COMMA ID LTHIRD CONST_FLOAT RTHIRD {
+
+                /***
+                    THIS IS AS EXTRA RULE ADDED TO CATCH ERROR
+                    
+                    Also,
+                    To handle errors like :
+                    int x-y,z[10.5];
+                ***/
+
+               print_grammar_rule("declaration_list","declaration_list error COMMA ID LTHIRD CONST_FLOAT RTHIRD");
+           
+                $$ = new Helper();
+
+                // update text
+                $$->text = $1->text;
+                $$->text += ",";
+                $$->text += $4->key;
+                $$->text += "[";
+                $$->text += $6->key;
+                $$->text += "]";
+
+                // update type
+                $$->HelperType = $1->HelperType;
+
+                // int & update vector
+                $$->v = $1->v;
+                $4->setVarType("array");
+                $$->v.push_back($4);
                 // $$->print();
 
                 error_array_size_float();
@@ -817,16 +1129,6 @@ statement: var_declaration {
             $$->text += ";";
 
             print_log_text($$->text);
-        }
-        | error SEMICOLON {
-            cout<<"inside error statement ;"<<endl;
-            yyclearin;
-            yyerrok;
-        }
-        | error RCURL {
-            cout<<"inside error statement }"<<endl;
-            yyclearin;
-            yyerrok;
         }
 	  ;
 	  

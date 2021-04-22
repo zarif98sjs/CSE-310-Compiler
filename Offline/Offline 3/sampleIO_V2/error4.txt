@@ -1,0 +1,40 @@
+Error at line 20: Multiple declaration of a in parameter
+
+Error at line 24: Return type mismatch with function declaration in function foo3
+
+Error at line 28: Multiple declaration of z
+
+Error at line 32: Total number of arguments mismatch with declaration in function var
+
+Error at line 42: Variable type cannot be void
+
+Error at line 43: Multiple declaration of a
+
+Error at line 43: Multiple declaration of c
+
+Error at line 45: 1th argument mismatch in function func
+
+Error at line 48: Type mismatch, c is an array
+
+Error at line 49: Total number of arguments mismatch in function correct_foo
+
+Error at line 51: Undeclared variable k
+
+Error at line 52: b not an array
+
+Error at line 53: Expression inside third brackets not an integer
+
+Error at line 54: Void function used in expression
+
+Error at line 57: Void function used in expression
+
+Error at line 58: Type Mismatch
+
+Error at line 59: Modulus by Zero
+
+Error at line 60: Non-Integer operand on modulus operator
+
+Error at line 62: Undeclared function foo5
+
+Error at line 67: Undeclared variable h
+
