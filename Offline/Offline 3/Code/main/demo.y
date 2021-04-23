@@ -212,6 +212,19 @@ void insert_function_to_global(SymbolInfo* temp_s,string var_type)
     }
 }
 
+/////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////  FREE   MEMORY /////////////////////////////////////////
+
+void erm_s(SymbolInfo* s) // erase memory of SymbolInfo pointer
+{
+    if(s!=NULL) free(s);
+}
+
+void erm_h(Helper* h) // erase memory of Helper pointer
+{
+    if(h!=NULL) free(h);
+}
+
 
 %}
 
@@ -261,17 +274,48 @@ program: program unit  {
             $$->text += $2->text;
 
             print_log_text($$->text); 
+
+            erm_h($1); erm_h($2);
         }
 	| unit { 
             print_grammar_rule("program","unit");
 
-            print_log_text($1->text); 
+            $$ = new Helper();
+            $$->text = $1->text;
+
+            print_log_text($$->text); 
+
+            erm_h($1);
         }
 	;
 	
-unit: var_declaration { print_grammar_rule("unit","var_declaration"); print_log_text($1->text); }
-     | func_declaration { print_grammar_rule("unit","func_declaration"); print_log_text($1->text);  }
-     | func_definition { print_grammar_rule("unit","func_definition"); print_log_text($1->text);  }
+unit: var_declaration { 
+            print_grammar_rule("unit","var_declaration"); 
+
+            $$ = new Helper();
+            $$->text = $1->text;
+
+            print_log_text($$->text); 
+            erm_h($1); 
+        }
+     | func_declaration { 
+            print_grammar_rule("unit","func_declaration"); 
+
+            $$ = new Helper();
+            $$->text = $1->text;
+
+            print_log_text($1->text);  
+            erm_h($1); 
+        }
+     | func_definition { 
+            print_grammar_rule("unit","func_definition");
+
+            $$ = new Helper();
+            $$->text = $1->text;
+
+            print_log_text($1->text); 
+            erm_h($1); 
+        }
      ;
      
 func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON { 
@@ -313,6 +357,8 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
 
                 // clear param_info
                 function_params.clear();
+
+                erm_h($1); erm_s($2) ; erm_h($4);
     
         }
         | type_specifier ID LPAREN parameter_list error RPAREN SEMICOLON { 
@@ -359,6 +405,8 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
 
                 // clear param_info
                 function_params.clear();
+
+                erm_h($1); erm_s($2) ; erm_h($4);
     
         }
 		| type_specifier ID LPAREN RPAREN SEMICOLON { 
@@ -392,6 +440,8 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
                 print_log_text($$->text);
 
                 function_params.clear();
+
+                erm_h($1); erm_s($2) ; 
             }
         | type_specifier ID LPAREN error RPAREN SEMICOLON { 
 
@@ -429,6 +479,8 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
                 print_log_text($$->text);
 
                 function_params.clear();
+
+                erm_h($1); erm_s($2) ; 
             }
 		;
 
@@ -453,6 +505,8 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_no
                 is_function_now = false;
                 function_params.clear();
 
+                erm_h($1); erm_h($4); erm_h($7);
+                erm_s($2);
             }
         | type_specifier ID LPAREN parameter_list error RPAREN { is_function_now = true;insert_function_to_global($2,$1->text);} compound_statement { 
                 
@@ -480,6 +534,8 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_no
                 is_function_now = false;
                 function_params.clear();
 
+                erm_h($1); erm_h($4); erm_h($8);
+                erm_s($2);
         }
 		|   type_specifier ID LPAREN RPAREN {is_function_now = true;insert_function_to_global($2,$1->text);} compound_statement { 
                 print_grammar_rule("func_definition","type_specifier ID LPAREN RPAREN compound_statement");
@@ -504,6 +560,9 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_no
                 // clear temp function params
                 is_function_now = false;
                 function_params.clear();
+
+                erm_h($1); erm_h($6);
+                erm_s($2);
             }
         |  type_specifier ID LPAREN error RPAREN { is_function_now = true;insert_function_to_global($2,$1->text);} compound_statement {
                 
@@ -521,7 +580,6 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_no
                 $$->text += " ";
                 $$->text += $2->key;
                 $$->text += "(";
-                // $$->text += $4->text;
                 $$->text += ")";
                 $$->text += $7->text; 
 
@@ -533,6 +591,9 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_no
 
                 yyclearin;
                 yyerrok;
+
+                erm_h($1); erm_h($7);
+                erm_s($2);
         }
  		;				
 
@@ -556,6 +617,8 @@ parameter_list: parameter_list COMMA type_specifier ID {
 
                 print_log_text($$->text);
 
+                erm_h($1); erm_h($3);
+                erm_s($4);
             }
         | parameter_list error COMMA type_specifier ID {
 
@@ -581,6 +644,8 @@ parameter_list: parameter_list COMMA type_specifier ID {
 
                 print_log_text($$->text);
 
+                erm_h($1); erm_h($4);
+                erm_s($5);
         }
         | parameter_list COMMA type_specifier {
              print_grammar_rule("parameter_list","parameter_list COMMA type_specifier");
@@ -598,6 +663,8 @@ parameter_list: parameter_list COMMA type_specifier ID {
                 function_params.push_back(temp_s);
 
                 print_log_text($$->text);
+
+                erm_h($1); erm_h($3);
         }
         | parameter_list error COMMA type_specifier {
 
@@ -621,6 +688,8 @@ parameter_list: parameter_list COMMA type_specifier ID {
                 function_params.push_back(temp_s);
 
                 print_log_text($$->text);
+
+                erm_h($1); erm_h($4);
         }
  		| type_specifier ID  { 
                 print_grammar_rule("parameter_list","type_specifier ID");
@@ -637,6 +706,8 @@ parameter_list: parameter_list COMMA type_specifier ID {
                 function_params.push_back(*$2);
 
                 print_log_text($$->text);
+
+                erm_h($1); erm_s($2);
         }
 		| type_specifier {
             print_grammar_rule("parameter_list","type_specifier");
@@ -652,6 +723,8 @@ parameter_list: parameter_list COMMA type_specifier ID {
             function_params.push_back(temp_s);
 
             print_log_text($$->text);
+
+            erm_h($1);
         }
  		;
  		
@@ -670,6 +743,8 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
                 // EXIT
                 sym_tab->print_all_scope();
                 sym_tab->exit_scope();
+
+                erm_h($3);
 
              }
  		    | LCURL dummy_scope_function RCURL {
@@ -735,6 +810,8 @@ var_declaration: type_specifier declaration_list SEMICOLON {
             }
 
             print_log_text($$->text);
+
+            erm_h($1); erm_h($2);
         }
         | type_specifier declaration_list error SEMICOLON { 
 
@@ -769,12 +846,41 @@ var_declaration: type_specifier declaration_list SEMICOLON {
             }
 
             print_log_text($$->text);
+
+            erm_h($1); erm_h($2);
         }
  		;
  		 
-type_specifier: INT  { print_grammar_rule("type_specifier","INT"); cout<<$1->key<<"\n"<<endl; $$->text = $1->key; }
- 		| FLOAT { print_grammar_rule("type_specifier","FLOAT"); cout<<$1->key<<"\n"<<endl; $$->text = $1->key; }
- 		| VOID { print_grammar_rule("type_specifier","VOID"); cout<<$1->key<<"\n"<<endl; $$->text = $1->key;}
+type_specifier: INT  { 
+                    print_grammar_rule("type_specifier","INT"); 
+
+                    $$ = new Helper();
+                    $$->text = $1->key; 
+
+                    print_log_text($$->text);
+
+                    erm_s($1);
+                }
+ 		| FLOAT { 
+                    print_grammar_rule("type_specifier","FLOAT"); 
+
+                    $$ = new Helper();
+                    $$->text = $1->key; 
+
+                    print_log_text($$->text);
+
+                    erm_s($1);
+                }
+ 		| VOID { 
+                    print_grammar_rule("type_specifier","VOID"); 
+
+                    $$ = new Helper();
+                    $$->text = $1->key;
+
+                    print_log_text($$->text);
+
+                    erm_s($1);
+                }
  		;
  		
 declaration_list: declaration_list COMMA ID { 
@@ -796,6 +902,9 @@ declaration_list: declaration_list COMMA ID {
                     // $$->print();
 
                     print_log_text($$->text);
+
+                    erm_h($1); 
+                    // erm_s($3); // can't delete this as we will need it later to insert
             }
             | declaration_list error COMMA ID {
 
@@ -822,6 +931,9 @@ declaration_list: declaration_list COMMA ID {
                 // $$->print();
 
                 print_log_text($$->text);
+
+                erm_h($1); 
+                // erm_s($4);
             }
  		    | declaration_list COMMA ID LTHIRD CONST_INT RTHIRD {
                print_grammar_rule("declaration_list","declaration_list COMMA ID LTHIRD CONST_INT RTHIRD");
@@ -846,6 +958,10 @@ declaration_list: declaration_list COMMA ID {
                 // $$->print();
 
                 print_log_text($$->text);
+
+                erm_h($1); 
+                // erm_s($3); 
+                erm_s($5);
            }
            | declaration_list error COMMA ID LTHIRD CONST_INT RTHIRD {
 
@@ -876,6 +992,10 @@ declaration_list: declaration_list COMMA ID {
                 // $$->print();
 
                 print_log_text($$->text);
+
+                erm_h($1); 
+                // erm_s($4); 
+                erm_s($6);
            }
            | declaration_list COMMA ID LTHIRD CONST_FLOAT RTHIRD {
 
@@ -907,6 +1027,10 @@ declaration_list: declaration_list COMMA ID {
                 error_array_size_float();
 
                 print_log_text($$->text);
+
+                erm_h($1); 
+                // erm_s($3); 
+                erm_s($5);
            
             }
             | declaration_list error COMMA ID LTHIRD CONST_FLOAT RTHIRD {
@@ -943,6 +1067,10 @@ declaration_list: declaration_list COMMA ID {
                 error_array_size_float();
 
                 print_log_text($$->text);
+
+                erm_h($1); 
+                // erm_s($4); 
+                erm_s($6);
            
             }
  		    | ID {     
@@ -958,6 +1086,7 @@ declaration_list: declaration_list COMMA ID {
 
                     print_log_text($$->text);
 
+                    // erm_s($1);
             }
  		    | ID LTHIRD CONST_INT RTHIRD {
 
@@ -978,6 +1107,9 @@ declaration_list: declaration_list COMMA ID {
                     // $$->print();
 
                     print_log_text($$->text);
+
+                    // erm_s($1); 
+                    erm_s($3);
             }
             | ID LTHIRD CONST_FLOAT RTHIRD {
 
@@ -1002,7 +1134,8 @@ declaration_list: declaration_list COMMA ID {
 
                     print_log_text($$->text);
 
-
+                    // erm_s($1); 
+                    erm_s($3);
            }
  		  ;
  		  
@@ -1011,7 +1144,10 @@ statements: statement {
             
             $$ = new Helper();
             $$->text = $1->text;
-            print_log_text($$->text); 
+
+            print_log_text($$->text);
+
+            erm_h($1);  
         }
 	   | statements statement {
             print_grammar_rule("statements","statements statement");
@@ -1021,28 +1157,41 @@ statements: statement {
             $$->text += "\n";
             $$->text += $2->text;
 
-            print_log_text($$->text); 
+            print_log_text($$->text);
+
+            erm_h($1);  erm_h($2);   
         }
 	   ;
 	   
 statement: var_declaration {
             print_grammar_rule("statement","var_declaration");
+
             $$ = new Helper();
             $$->text = $1->text;
+
             print_log_text($$->text);
+
+            erm_h($1);
         }
 	  | expression_statement {
             print_grammar_rule("statement","expression_statement");
+
             $$ = new Helper();
             $$->text = $1->text;
+
             print_log_text($$->text);
+
+            erm_h($1);
         }
 	  | compound_statement {
             print_grammar_rule("statement","compound_statement");
+
             $$ = new Helper();
             $$->text = $1->text;
+
             print_log_text($$->text);
 
+            erm_h($1);
         }
 	  | FOR LPAREN expression_statement expression_statement expression RPAREN statement {
             print_grammar_rule("statement","FOR LPAREN expression_statement expression_statement expression RPAREN statement");
@@ -1058,6 +1207,8 @@ statement: var_declaration {
             $$->text += $7->text;
             
             print_log_text($$->text);
+
+            erm_h($3); erm_h($4); erm_h($5); erm_h($7);
         }
 	  | IF LPAREN expression RPAREN statement %prec LOWER_THAN_ELSE { 
             print_grammar_rule("statement","IF LPAREN expression RPAREN statement");
@@ -1071,6 +1222,8 @@ statement: var_declaration {
             $$->text += $5->text;
 
             print_log_text($$->text);
+
+            erm_h($3); erm_h($5); 
         }
 	  | IF LPAREN expression RPAREN statement ELSE statement {
 
@@ -1087,6 +1240,8 @@ statement: var_declaration {
             $$->text += $7->text;
 
             print_log_text($$->text);
+
+            erm_h($3); erm_h($5); erm_h($7);
         
         }
 	  | WHILE LPAREN expression RPAREN statement {
@@ -1101,6 +1256,8 @@ statement: var_declaration {
             $$->text += $5->text;
 
             print_log_text($$->text);
+
+            erm_h($3); erm_h($5); 
         }
 	  | PRINTLN LPAREN ID RPAREN SEMICOLON {
             print_grammar_rule("statement","PRINTLN LPAREN ID RPAREN SEMICOLON");
@@ -1115,6 +1272,8 @@ statement: var_declaration {
             $$->text += ";";
 
             print_log_text($$->text);
+
+            erm_h($2); 
         }
         | RETURN SEMICOLON {
 
@@ -1150,6 +1309,8 @@ expression_statement: SEMICOLON	{
                     $$->text += ";";
 
                     print_log_text($$->text);
+
+                    erm_h($1);
                 }
 			;
 	  
@@ -1180,6 +1341,8 @@ variable: ID {
             }
 
             print_log_text($$->text);
+
+            erm_s($1);
         }		
 	 | ID LTHIRD expression RTHIRD {
             print_grammar_rule("variable","ID LTHIRD expression RTHIRD");
@@ -1217,6 +1380,9 @@ variable: ID {
             }
 
             print_log_text($$->text);
+
+            erm_h($3);
+            erm_s($1);
          }
 	 ;
 	 
@@ -1230,6 +1396,8 @@ variable: ID {
                 $$->HelperType = $1->HelperType;
 
                 print_log_text($$->text);
+
+                erm_h($1);
             }
 	   | variable ASSIGNOP logic_expression {
                 print_grammar_rule("expression","variable ASSIGNOP logic_expression");
@@ -1249,6 +1417,8 @@ variable: ID {
                 }
 
                 print_log_text($$->text);
+
+                erm_h($1); erm_h($3);
             }	
 	   ;
 
@@ -1264,6 +1434,8 @@ logic_expression: rel_expression {
                 $$->HelperType = $1->HelperType;
 
                 print_log_text($$->text);
+
+                erm_h($1); 
             }	
 		 | rel_expression LOGICOP rel_expression {
                 print_grammar_rule("logic_expression","rel_expression LOGICOP rel_expression");
@@ -1281,6 +1453,9 @@ logic_expression: rel_expression {
                 cout<<"Implicit Typecast : "<<$$->HelperType<<"\n"<<endl;
                 
                 print_log_text($$->text);
+
+                erm_h($1); erm_h($3);
+                erm_s($2);
             }	
 		 ;
 			
@@ -1294,6 +1469,8 @@ rel_expression: simple_expression {
                 $$->HelperType = $1->HelperType;
 
                 print_log_text($$->text);
+
+                erm_h($1);
             }
 		| simple_expression RELOP simple_expression	{
                 print_grammar_rule("rel_expression","simple_expression RELOP simple_expression");
@@ -1311,6 +1488,9 @@ rel_expression: simple_expression {
                 cout<<"Implicit Typecast : "<<$$->HelperType<<"\n"<<endl;
 
                 print_log_text($$->text);
+
+                erm_h($1); erm_h($3);
+                erm_s($2);
             }
 		;
 				
@@ -1325,6 +1505,8 @@ simple_expression: term {
                     $$->HelperType = $1->HelperType;
 
                     print_log_text($$->text);
+
+                    erm_h($1);
             }
 		    |   simple_expression ADDOP term {
                     print_grammar_rule("simple_expression","simple_expression ADDOP term");
@@ -1342,6 +1524,9 @@ simple_expression: term {
                     cout<<"Implicit Typecast : "<<$$->HelperType<<"\n"<<endl;
 
                     print_log_text($$->text);
+
+                    erm_h($1); erm_h($3);
+                    erm_s($2);
             }
 		    ;
 					
@@ -1356,6 +1541,8 @@ term:	unary_expression {
             $$->HelperType = $1->HelperType;
 
             print_log_text($$->text);
+
+            erm_h($1);
     }
     |  term MULOP unary_expression {
 
@@ -1389,6 +1576,9 @@ term:	unary_expression {
             }
 
             print_log_text($$->text);
+
+            erm_h($1); erm_h($3);
+            erm_s($2);
     }
     ;
 
@@ -1403,6 +1593,9 @@ unary_expression: ADDOP unary_expression  {
                 $$->HelperType = $2->HelperType;
 
                 print_log_text($$->text);
+
+                erm_h($2);
+                erm_s($1);
             }
 		    | NOT unary_expression {
                 print_grammar_rule("unary_expression","NOT unary_expression");
@@ -1415,6 +1608,8 @@ unary_expression: ADDOP unary_expression  {
                 $$->HelperType = $2->HelperType;
 
                 print_log_text($$->text);
+
+                erm_h($2);
             }
 		    | factor  { 
                 print_grammar_rule("unary_expression","factor");
@@ -1426,6 +1621,8 @@ unary_expression: ADDOP unary_expression  {
                 $$->HelperType = $1->HelperType;
 
                 print_log_text($$->text);
+
+                erm_h($1);
             }
 		 ;
 	
@@ -1440,6 +1637,8 @@ factor: variable {
             $$->HelperType = $1->HelperType;
 
             print_log_text($$->text);
+
+            erm_h($1);
         }
 	| ID LPAREN argument_list RPAREN {
 
@@ -1511,6 +1710,9 @@ factor: variable {
             }
 
             print_log_text($$->text);
+
+            erm_h($3);
+            erm_s($1);
         }
 	| LPAREN expression RPAREN {
 
@@ -1525,6 +1727,8 @@ factor: variable {
             $$->HelperType = $2->HelperType;
 
             print_log_text($$->text);
+
+            erm_h($2);
         
         }
 	| CONST_INT  { 
@@ -1538,6 +1742,8 @@ factor: variable {
             $$->setHelperType("int");
 
             print_log_text($$->text);
+
+            erm_s($1);
         }
 	| CONST_FLOAT  { 
             print_grammar_rule("factor","CONST_FLOAT");
@@ -1549,6 +1755,8 @@ factor: variable {
             $$->setHelperType("float");
 
             print_log_text($$->text);
+
+            erm_s($1);
         }
 	| variable INCOP {
             print_grammar_rule("factor","variable INCOP");
@@ -1558,6 +1766,8 @@ factor: variable {
             $$->text += "++";
 
             print_log_text($$->text);
+
+            erm_h($1);
         }
 	| variable DECOP {
             print_grammar_rule("factor","variable DECOP");
@@ -1567,6 +1777,8 @@ factor: variable {
             $$->text += "--";
 
             print_log_text($$->text);
+
+            erm_h($1);
         }
 	;
 	
@@ -1580,6 +1792,8 @@ argument_list: arguments {
                     $$->param_v = $1->param_v; 
 
                     print_log_text($$->text);
+
+                    erm_h($1);
                 }
 			| {
                 print_grammar_rule("argument_list","");
@@ -1601,6 +1815,8 @@ arguments: arguments COMMA logic_expression {
                 $$->param_v.push_back($3->HelperType);
 
                 print_log_text($$->text);
+
+                erm_h($1); erm_h($3);
             }
 	    | logic_expression {
 
@@ -1618,6 +1834,7 @@ arguments: arguments COMMA logic_expression {
 
                 print_log_text($$->text);
 
+                erm_h($1);
             }
 	    ;
 
