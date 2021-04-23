@@ -31,8 +31,8 @@ a.out: l.o y.o ${COMMON_HEADER_OBJECT_FILES}
 	${CC} ${CPPFLAGS} y.o l.o ${COMMON_HEADER_OBJECT_FILES} -lfl
 
 run:
-	# valgrind --leak-check=full --show-leak-kinds=all  -v ./a.out demo.txt > demo_out.txt
-	valgrind --tool=memcheck --leak-check=yes ./a.out demo.txt > demo_out.txt
+	# valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -v ./a.out demo.txt > demo_out.txt
+	# valgrind --tool=memcheck --leak-check=yes ./a.out demo.txt > demo_out.txt
 	./a.out demo.txt > demo_out.txt
 
 clean: 

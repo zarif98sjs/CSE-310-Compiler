@@ -240,17 +240,20 @@ void erm_h(Helper* h) // erase memory of Helper pointer
     // double dval;
 }
 
+
 %token IF ELSE LOWER_THAN_ELSE FOR WHILE DO BREAK CHAR DOUBLE RETURN SWITCH CASE DEFAULT CONTINUE PRINTLN INCOP DECOP ASSIGNOP NOT LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON
 %token <symbol_info> ID INT FLOAT VOID ADDOP MULOP RELOP LOGICOP CONST_INT CONST_FLOAT
 // %token <ival> CONST_INT
 // %token <dval> CONST_FLOAT
 
-%type < helper > start program unit variable var_declaration type_specifier func_declaration func_definition parameter_list
+%type <helper> start program unit variable var_declaration type_specifier func_declaration func_definition parameter_list
 // %type < temp_str > expression logic_expression rel_expression simple_expression term  factor argument_list arguments
-%type < helper > expression factor unary_expression term simple_expression rel_expression statement statements compound_statement logic_expression expression_statement
-%type < helper > arguments argument_list
-%type < helper > declaration_list
+%type <helper> expression factor unary_expression term simple_expression rel_expression statement statements compound_statement logic_expression expression_statement
+%type <helper> arguments argument_list
+%type <helper> declaration_list
 
+%destructor { erm_h($$); cout<<"Destructor Helper"<<endl; } <helper>
+%destructor { erm_s($$); cout<<"Destructor SymbolInfo"<<endl; } <symbol_info>
 
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
@@ -262,6 +265,15 @@ void erm_h(Helper* h) // erase memory of Helper pointer
 start: program
 	{
 		//write your code in this block in all the similar blocks below
+
+        print_grammar_rule("start","program");
+
+        $$ = new Helper();
+        $$->text = $1->text;
+
+        print_log_text($$->text);
+        
+        erm_h($1);
 	}
 	;
 
@@ -1261,6 +1273,17 @@ statement: var_declaration {
         }
 	  | PRINTLN LPAREN ID RPAREN SEMICOLON {
             print_grammar_rule("statement","PRINTLN LPAREN ID RPAREN SEMICOLON");
+
+            $$ = new Helper();
+            $$->text = "printf";
+            $$->text += "(";
+            $$->text += $3->key;
+            $$->text += ")";
+            $$->text += ";";
+
+            print_log_text($$->text);
+            
+            erm_s($3);
         }
 	  | RETURN expression SEMICOLON {
             print_grammar_rule("statement","RETURN expression SEMICOLON");
