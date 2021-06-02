@@ -492,9 +492,181 @@ Here, we are using a dummy token `LOWER_THAN_ELSE` and putting it before `ELSE`,
 
 ## **Freeing Memory : Part 1**
 
+In `C` or `C++`, if you dynamically allocate memory, it is your job to free it yourself. `Bison` has no reasonable obligation to clean-up your mess :)  
+
+Unfortunately most people somehow think that the `bison` (or `flex`) will take care of memory they allocate in the parser, but unfortunately that's not the case.
+
+Let's see an example to demonstrate this. Here is an example rule from the grammar :
+
+```c++
+unary_expression: ADDOP unary_expression  {
+
+    print_grammar_rule("unary_expression","ADDOP unary_expression");
+    
+    $$ = new Helper();
+    // update text
+    $$->text = $1->key;
+    $$->text += $2->text;
+    // implicit typecast
+    $$->HelperType = $2->HelperType;
+
+    print_log_text($$->text);
+}
+```
+
+But this implementation is not correct. `$1` represents a `SymbolInfo` pointer which was dynamically allocated in the lex file :
+
+```c++
+"+"|"-" { 
+            SymbolInfo *s= new  SymbolInfo(yytext, "ADDOP"); 
+            yylval.symbol_info = s; 
+            return ADDOP;
+        }
+```
+
+and for `$2` , it was also dynamically allocated in the parser in this rule :
+
+```c++
+unary_expression: factor  { 
+
+    print_grammar_rule("unary_expression","factor");
+    
+    $$ = new Helper();
+    // update text
+    $$->text = $1->text;
+    // implicit typecast
+    $$->HelperType = $1->HelperType;
+
+    print_log_text($$->text);
+}
+```
+
+As mentioned before, if something is dynamically allocated, it's your job to clean that up. So, we need to free `$1` and `$2` when we are done with them.
+
+So, the correct way to write this would be :
+
+```c++
+unary_expression: ADDOP unary_expression  {
+
+    print_grammar_rule("unary_expression","ADDOP unary_expression");
+    
+    $$ = new Helper();
+    // update text
+    $$->text = $1->key;
+    $$->text += $2->text;
+    // implicit typecast
+    $$->HelperType = $2->HelperType;
+
+    print_log_text($$->text);
+
+    free($1) ; free($2); // freeing dynamically allocated memory
+}
+```
+
+### **Caution**
+
+But, you need to be careful when you are freeing memory. Imagine inside a rule you have done something like this :
+
+```c++
+$$ = $1;
+free($1);
+```
+
+Here both are pointers. So, what you are essentially doing is making `$$` point to `$1` and freeing `$1` (so, freeing `$$`). Next time you are trying to access `$$`, you will get _**core dumped**_.
+
+Its also handy to write a cleanup function like the following so that we don't accidentally free the ones that have already been freed.
+
+```c++
+void eraseMemory_S(SymbolInfo* s) // erase memory of SymbolInfo pointer
+{
+    if(s!=NULL) free(s);
+}
+
+void eraseMemory_H(Helper* h) // erase memory of Helper pointer
+{
+    if(h!=NULL) free(h);
+}
+
+```
+
+# Part 4 : `Error Recovery`
+
+During the shift reduce parser phase things _**can**_ and _**will**_ go wrong. This can happen when the parser is unable to match with any of the rules. Under default conditions our parser will terminate after seeing the first error, these are called **`fail-fast parsers`**, but nobody actually wants them ... (except maybe lazy students). This means that if our input has more than one mistake we would only detect the first and exit! This process would get quite tedious as _**repeated compilations would be required**_ in order to detect and fix all errors instead of reporting all errors in our source at the first parse.
+
+Thankfully bison has error recovery capabilities! They are also quite simple to define and explain but require a lot of skill, practice and a hellish insight in order to be used correctly. Otherwise you will add one rule to recover error and get 30-40 shift reduce errors :p So you have to have proper insight about your grammar and handle errors that way. 
+
+One more thing, there is no limit to handling cases. Your user can do mistakes you can never think of. So, it boils down to how many cases you can think of and correct them by adding grammar rules.
+
+For example, your user has written code like this :
+
+```c++
+int x-y,z;
+```
+
+probably the user wanted to give a `COMMA` but added a `MINUS` instead. If you try to run this with your parser, your parser will immediately stop after encountering this error. Because your parser can't associate to any rule of this type. What you can do is handle the error using the bison `error` token. It is already defined in bison, you don't have to define it. 
+
+We can add a rule to recover from this error :
+
+```c++
+declaration_list: declaration_list COMMA ID {
+                    // regular rule
+                }   
+                | declaration_list error COMMA ID {
+                    /**
+                        To handle errors like :
+                            int x-y,z;
+                    **/ 
+                }
+```
+
+The previous `lookahead` token is reanalyzed immediately after an error. If this is unacceptable, then the macro `yyclearin` may be used to clear this token. Write the statement `yyclearin;` in the error rule’s action.
+
+Additionally, after encountering an error it's likely that this fact will then create much more consecutive errors; to avoid this console spam `bison` *suppresses* error messages until 3 consecutive `tokens` have been parsed and shifted successfully. If you don't like (or want) this behavior by default you can put `yyerrok;` inside the `error` rule.
+
+```c++
+declaration_list: declaration_list COMMA ID {
+                    // regular rule
+                }   
+                | declaration_list error COMMA ID {
+                    /**
+                        To handle errors like :
+                            int x-y,z;
+                    **/ 
+
+                    yyclearin;
+                    yyerrok;
+                }
+```
+
+Just like this, you have to thoroughly think of the corner cases that can happen and handle accordingly.
 
 ## **Freeing Memory : Part 2**
 
+So far we have only handled only one part of the memory de-allocation process. As we have seen in the error recovery process, things can go wrong during parsing and we have to account for that. Thankfully `bison` has the ability to clean its own stuff when something does go wrong, but what about *our* dynamically allocated symbols. Thankfully, `bison` has a facility that can help us free-up own resources by calling a `destructor` on each of the discarded symbols, but what does `bison` consider as a *discarded symbol*? The following list is mostly an extract from `bison`'s manual which defines that `bison` considers as ***discarded symbols*** :
 
+Valid ***discarded symbols*** are the symbols that fall into *at least* one of the following categories:
 
-# Part 4 : `Error Recovery`
+- stacked symbols popped during the first phase of **error recovery**
+- incoming terminals during the second phase of **error recovery**
+- the current lookahead and the entire stack (except the current right-hand side symbols) in the case the parser is *fail-fast*
+- the current lookahead and the entire stack (including the current right-hand side symbols) when the `C++` parser catches an exception in `parse`
+- the start symbol when the parser succeeds
+
+Here's how we can do that in our grammar :
+
+```c++
+%union{
+    SymbolInfo* symbol_info;
+    Helper* helper;
+}
+
+// specific destructor for <helper> 
+%destructor { eraseMemory_H($$); } <helper> 
+
+// specific destructor for <symbol_info> 
+%destructor { eraseMemory_S($$); } <symbol_info>
+
+%destructor { /* tagless symbol destructor */ } <>
+```
+
+Notice the `tag`-less destructor, which is called on _**every symbol that is present**_. This might raise the question on how to select which destructor to call since there might be more than one. Should `bison` detects that there is a `tag`-specific destructor for a discarded symbol _**it will call that and ignore the more generic one**_, so in case of discarding a symbol that has a semantic value of `<symbol_info>` then only the destructor for `<symbol_info>` will be called.

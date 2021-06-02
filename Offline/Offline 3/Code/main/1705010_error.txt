@@ -1,0 +1,4 @@
+Error at line 2: Undeclared variable y
+
+Error at line 5: 1th argument mismatch in function func
+

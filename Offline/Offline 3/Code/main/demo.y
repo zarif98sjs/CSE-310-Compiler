@@ -12,18 +12,26 @@ using namespace std;
 #include "ScopeTable.h"
 #include "Helper.h"
 
+ofstream logout;
+ofstream errout;
+
+extern int line_count;
+int err_count = 0;
+
 // #define YYSTYPE SymbolInfo*
 
 extern FILE *yyin;
 
 void yyerror(string s){
-	cout<<s<<"\n"<<endl;
+	cout<<"Error at line "<<line_count<<": "<<s<<"\n"<<endl;
+	errout<<"Error at line "<<line_count<<": "<<s<<"\n"<<endl;
+    err_count++;
 }
 
 int yyparse(void);
 int yylex(void);
 
-extern int line_count;
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////// SYMBOL TABLE //////////////////////////////////////////////////
@@ -52,44 +60,44 @@ vector<SymbolInfo>function_params;
 
 string do_implicit_typecast(string left_op,string right_op)
 {
+    if(left_op == "NULL" || right_op == "NULL") return "NULL"; // already reported , now supressing more errors
+
     if(left_op == "void" || right_op == "void") return "error";
 
-    if(left_op == "float" && right_op == "float") return "float";
-    if(left_op == "float" && right_op == "int") return "float";
-    if(left_op == "int" && right_op == "float") return "float";
-    if(left_op == "int" && right_op == "int") return "int";
+    if((left_op == "float" || left_op == "float_array") && (right_op == "float" || right_op == "float_array")) return "float";
+    if((left_op == "float" || left_op == "float_array") && (right_op == "int" || right_op == "int_array")) return "float";
+    if((left_op == "int" || left_op=="int_array") && (right_op == "float" || right_op == "float_array")) return "float";
+    if((left_op == "int" || left_op=="int_array") && (right_op == "int" || right_op == "int_array")) return "int";
 
     return "error";
 }
 
 bool is_param_typecast_ok(string og_p,string pass_p)
 {
+    if(pass_p == "NULL") return true; // already error reported and converted to NULL , this is made true to supress more error
+
     if(og_p == "void") return pass_p == "void";
-    if(og_p == "int") return pass_p == "int";
+    if(og_p == "int") return (pass_p == "int" || pass_p == "int_array");
     if(og_p == "float") return pass_p != "void";
 }
 
 bool check_assignop(string left_op,string right_op)
 {
+    if(left_op == "NULL" || right_op == "NULL") return true; // already error reported and converted to NULL , this is made true to supress more error
 
     if(left_op == "void" || right_op == "void") return false;
-    if(left_op == "NULL" || right_op == "NULL") return false;
     if(left_op == "" || right_op == "") return false;
 
-    if(left_op == "int" && right_op =="int_array") return true;
-    if(left_op == "int_array" && right_op =="int") return true;
+    if((left_op == "int" || left_op == "int_array") && (right_op == "int" || right_op == "int_array") ) return true;
+    
+    if((left_op == "float" || left_op == "float_array") && (right_op != "void") )return true;
 
-    if(left_op == "float" && right_op =="float_array") return true;
-    if(left_op == "float_array" && right_op =="float") return true;
-
-    if(left_op == "int" && right_op !="int") return false;
-
-    return true;
+    return false;
 }
 
 void print_grammar_rule(string left_part,string right_part)
 {
-    cout<<"At line no: "<<line_count<<" "<<left_part<<" : "<<right_part<<"\n"<<endl; 
+    cout<<"Line "<<line_count<<": "<<left_part<<" : "<<right_part<<"\n"<<endl; 
 }
 
 void print_log_text(string log_text)
@@ -99,63 +107,122 @@ void print_log_text(string log_text)
 
 void error_multiple_declaration(string error_symbol)
 {
-    cout<<"Error at Line "<<line_count<<": Multiple Declaration of "<<error_symbol<<"\n"<<endl;
+    cout<<"Error at line "<<line_count<<": Multiple declaration of "<<error_symbol<<"\n"<<endl;
+    errout<<"Error at line "<<line_count<<": Multiple declaration of "<<error_symbol<<"\n"<<endl;
+    err_count++;
 }
 
 void error_array_size_float()
 {
-    cout<<"Error at Line "<<line_count<<": Non-integer Array Size\n"<<endl;
+    cout<<"Error at line "<<line_count<<": Non-integer Array Size\n"<<endl;
+    errout<<"Error at line "<<line_count<<": Non-integer Array Size\n"<<endl;
+    err_count++;
 }
 
 void error_array_index_invalid()
 {
-    cout<<"Error at Line "<<line_count<<": Non-integer Array Index\n"<<endl;
+    cout<<"Error at line "<<line_count<<": Expression inside third brackets not an integer\n"<<endl;
+    errout<<"Error at line "<<line_count<<": Expression inside third brackets not an integer\n"<<endl;
+    err_count++;
 }
 
 void error_type_cast()
 {
-    cout<<"Error at Line "<<line_count<<": Incompatible Operand\n"<<endl;
+    cout<<"Error at line "<<line_count<<": Incompatible Operand\n"<<endl;
+    errout<<"Error at line "<<line_count<<": Incompatible Operand\n"<<endl;
+    err_count++;
 }
 
 void error_type_cast_mod()
 {
-    cout<<"Error at Line "<<line_count<<": non-integer operand on modulus operator\n"<<endl;
+    cout<<"Error at line "<<line_count<<": Non-Integer operand on modulus operator\n"<<endl;
+    errout<<"Error at line "<<line_count<<": Non-Integer operand on modulus operator\n"<<endl;
+    err_count++;
 }
 
 void error_undeclared_variable(string var_name)
 {
-    cout<<"Error at Line "<<line_count<<": Undeclared Variable: "<<var_name<<"\n"<<endl;
+    cout<<"Error at line "<<line_count<<": Undeclared variable "<<var_name<<"\n"<<endl;
+    errout<<"Error at line "<<line_count<<": Undeclared variable "<<var_name<<"\n"<<endl;
+    err_count++;
 }
 
-void error_type_mismatch()
+void error_undeclared_function(string var_name)
 {
-    cout<<"Error at Line "<<line_count<<": Type Mismatch\n"<<endl;
+    cout<<"Error at line "<<line_count<<": Undeclared function "<<var_name<<"\n"<<endl;
+    errout<<"Error at line "<<line_count<<": Undeclared function "<<var_name<<"\n"<<endl;
+    err_count++;
 }
 
-void error_function_parameter_type(string extra_s="")
+void error_type_mismatch(string msg="")
 {
-    cout<<"Error at Line "<<line_count<<": Parameter Type Mismactch "<<extra_s<<"\n"<<endl;
+    cout<<"Error at line "<<line_count<<": Type Mismatch "<<msg<<"\n"<<endl;
+    errout<<"Error at line "<<line_count<<": Type Mismatch "<<msg<<"\n"<<endl;
+    err_count++;
 }
 
-void error_function_parameter_number(string extra_s="")
+void error_function_parameter_type(int param_id,string extra_s="")
 {
-    cout<<"Error at Line "<<line_count<<": Parameter Number Mismactch\n"<<extra_s<<"\n"<<endl;
+    cout<<"Error at line "<<line_count<<": "<<param_id<<"th argument mismatch in function "<<extra_s<<"\n"<<endl;
+    errout<<"Error at line "<<line_count<<": "<<param_id<<"th argument mismatch in function "<<extra_s<<"\n"<<endl;
+    err_count++;
+}
+
+void error_function_parameter_number(string name,bool declaration_definition_clash = false)
+{
+    if(declaration_definition_clash){
+        cout<<"Error at line "<<line_count<<": Total number of arguments mismatch with declaration in function "<<name<<"\n"<<endl;
+        errout<<"Error at line "<<line_count<<": Total number of arguments mismatch with declaration in function "<<name<<"\n"<<endl;
+    }
+    else{
+        cout<<"Error at line "<<line_count<<": Total number of arguments mismatch in function "<<name<<"\n"<<endl;
+        errout<<"Error at line "<<line_count<<": Total number of arguments mismatch in function "<<name<<"\n"<<endl;
+    }
+
+    err_count++;
 }
 
 void error_function_not_implemented()
 {
-    cout<<"Error at Line "<<line_count<<": Function not implemented\n"<<endl;
+    cout<<"Error at line "<<line_count<<": Function not implemented\n"<<endl;
+    errout<<"Error at line "<<line_count<<": Function not implemented\n"<<endl;
+    err_count++;
 }
 
-void error_function_return_condflict()
+void error_function_return_condflict(string name)
 {
-    cout<<"Error at Line "<<line_count<<": Function return type mismatch\n"<<endl;
+    cout<<"Error at line "<<line_count<<": Return type mismatch with function declaration in function "<<name<<"\n"<<endl;
+    errout<<"Error at line "<<line_count<<": Return type mismatch with function declaration in function "<<name<< "\n"<<endl;
+    err_count++;
 }
 
 
 void error_not_function(string f_name)
 {
-    cout<<"Error at Line "<<line_count<<": "<<f_name<<" not a function\n"<<endl;
+    cout<<"Error at line "<<line_count<<": "<<f_name<<" not a function\n"<<endl;
+    errout<<"Error at line "<<line_count<<": "<<f_name<<" not a function\n"<<endl;
+    err_count++;
+}
+
+void error_var_type()
+{
+    cout<<"Error at line "<<line_count<<": Variable type cannot be void\n"<<endl;
+    errout<<"Error at line "<<line_count<<": Variable type cannot be void\n"<<endl;
+    err_count++;
+}
+
+void error_not_array(string name)
+{
+    cout<<"Error at line "<<line_count<<": "<<name<<" not an array\n"<<endl;
+    errout<<"Error at line "<<line_count<<": "<<name<<" not an array\n"<<endl;
+    err_count++;
+}
+
+void error_parameter_name_missing(int param_id,string func_name)
+{
+    cout<<"Error at line "<<line_count<<": "<<param_id<<"th parameter's name not given in function definition of "<<func_name<<"\n"<<endl;
+    errout<<"Error at line "<<line_count<<": "<<param_id<<"th parameter's name not given in function definition of "<<func_name<<"\n"<<endl;
+    err_count++;
 }
 
 ///////////////////////////////////////////
@@ -166,7 +233,7 @@ void insert_function_to_global(SymbolInfo* temp_s,string var_type)
     temp_s->setVarType(var_type);
     temp_s->isFunction = true;
 
-    // update parrameter type
+    // update parameter type
     for(auto temp_p : function_params)
     {
         temp_s->param_v.push_back(temp_p.var_type);
@@ -187,19 +254,19 @@ void insert_function_to_global(SymbolInfo* temp_s,string var_type)
 
             if(ret_symbol->var_type != temp_s->var_type)
             {
-                error_function_return_condflict();
+                error_function_return_condflict(temp_s->key);
             }
 
             if(ret_symbol->param_v.size() != temp_s->param_v.size())
             {
-                error_function_parameter_number("(Declaration vs Definition)");
+                error_function_parameter_number(temp_s->key,true);
             }
             else
             {
                 for(int i=0;i<ret_symbol->param_v.size();i++)
                 {
                     if(ret_symbol->param_v[i] != temp_s->param_v[i]){
-                        error_function_parameter_type("(Declaration vs Definition)");
+                        error_function_parameter_type(i+1,temp_s->key);
                         break;
                     }
                 }
@@ -208,6 +275,23 @@ void insert_function_to_global(SymbolInfo* temp_s,string var_type)
             // the following line is commented out because in case of clash , use the declaration info 
             // ret_symbol->param_v = $2->param_v;
             ret_symbol->isFunctionDeclaration = false; // declaration + 
+        }
+
+        // cout<<"Dec -> "<<ret_symbol->key<<" :: "<<ret_symbol->isFunctionDeclaration<<endl;
+    }
+    else{
+
+        // Finalizing Definition
+
+        SymbolInfo* ret_symbol = sym_tab->lookup(temp_s->key);
+        ret_symbol->isFunctionDeclaration = false;
+        // cout<<"Dec ->> "<<ret_symbol->key<<" :: "<<ret_symbol->isFunctionDeclaration<<endl;
+
+        for(int i=0;i<function_params.size();i++)
+        {
+            if(function_params[i].key == "dummy_key"){
+                error_parameter_name_missing(i+1,ret_symbol->key);
+            }
         }
     }
 }
@@ -242,7 +326,7 @@ void erm_h(Helper* h) // erase memory of Helper pointer
 
 
 %token IF ELSE LOWER_THAN_ELSE FOR WHILE DO BREAK CHAR DOUBLE RETURN SWITCH CASE DEFAULT CONTINUE PRINTLN INCOP DECOP ASSIGNOP NOT LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON
-%token <symbol_info> ID INT FLOAT VOID ADDOP MULOP RELOP LOGICOP CONST_INT CONST_FLOAT
+%token <symbol_info> ID INT FLOAT VOID ADDOP MULOP RELOP LOGICOP CONST_INT CONST_FLOAT ERROR_FLOAT
 // %token <ival> CONST_INT
 // %token <dval> CONST_FLOAT
 
@@ -252,8 +336,8 @@ void erm_h(Helper* h) // erase memory of Helper pointer
 %type <helper> arguments argument_list
 %type <helper> declaration_list
 
-%destructor { erm_h($$); cout<<"Destructor Helper"<<endl; } <helper>
-%destructor { erm_s($$); cout<<"Destructor SymbolInfo"<<endl; } <symbol_info>
+%destructor { erm_h($$);  } <helper>
+%destructor { erm_s($$);  } <symbol_info>
 
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
@@ -271,7 +355,7 @@ start: program
         $$ = new Helper();
         $$->text = $1->text;
 
-        print_log_text($$->text);
+        // print_log_text($$->text);
         
         erm_h($1);
 	}
@@ -758,15 +842,16 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
 
                 erm_h($3);
 
-             }
- 		    | LCURL dummy_scope_function RCURL {
-                print_grammar_rule("compound_statement","LCURL statements RCURL");
+            }
+            | LCURL dummy_scope_function RCURL {
+
+                print_grammar_rule("compound_statement","LCURL RCURL");
 
                 $$ = new Helper();
 
                 // update text
-                $$->text = "{\n";  
-                $$->text += "\n}"; 
+                $$->text = "{";  
+                $$->text += "}"; 
 
                 print_log_text($$->text);
 
@@ -778,6 +863,57 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
                 // is_function_now = false;
                 // function_params.clear();
              }
+            | LCURL dummy_scope_function statements error RCURL {
+                print_grammar_rule("compound_statement","LCURL statements error RCURL");
+                
+                $$ = new Helper();
+
+                // update text
+                $$->text = "{\n"; 
+                $$->text += $3->text; 
+                $$->text += "\n}"; 
+
+                print_log_text($$->text);
+
+                // EXIT
+                sym_tab->print_all_scope();
+                sym_tab->exit_scope();
+
+                erm_h($3);
+
+            }
+            | LCURL dummy_scope_function error statements RCURL {
+                print_grammar_rule("compound_statement","LCURL error statements RCURL");
+                
+                $$ = new Helper();
+
+                // update text
+                $$->text = "{\n"; 
+                $$->text += $4->text; 
+                $$->text += "\n}"; 
+
+                print_log_text($$->text);
+
+                // EXIT
+                sym_tab->print_all_scope();
+                sym_tab->exit_scope();
+
+                erm_h($4);
+
+            }
+             | LCURL dummy_scope_function error RCURL {
+                
+                print_grammar_rule("compound_statement","LCURL error RCURL");
+
+                $$ = new Helper();
+
+                 // update text
+                $$->text = "{";  
+                $$->text += "}";
+
+                print_log_text($$->text); 
+
+             }
  		    ;
 
 dummy_scope_function:  {
@@ -788,9 +924,14 @@ dummy_scope_function:  {
                     {
                         for(auto el:function_params)
                         {
+
+                            if(el.key == "dummy_key") continue;
                             // insert ID
                             // cout<<"INSIDE FUNCTIONNN"<<endl;
-                            sym_tab->insert_symbol(el);
+                            if(!sym_tab->insert_symbol(el)) // already present in current scope
+                            {
+                                error_multiple_declaration(el.key);
+                            }
                         }
                     }
                 }
@@ -808,17 +949,22 @@ var_declaration: type_specifier declaration_list SEMICOLON {
             $$->text += $2->text;
             $$->text += ";";
 
-            // insert all declaration_list ID to SymbolTable with VAR_TYPE
-            for(auto el:$2->v)
-            {
-                if(el->var_type == "array") el->setVarType($1->text + "_array") ; 
-                else el->setVarType($1->text); 
-                
-                if(!sym_tab->insert_symbol(*el)) // already present in current scope
+            if($1->text == "void"){
+                error_var_type();
+            }
+            else{
+                // insert all declaration_list ID to SymbolTable with VAR_TYPE
+                for(auto el:$2->v)
                 {
-                    error_multiple_declaration(el->key);
-                }
+                    if(el->var_type == "array") el->setVarType($1->text + "_array") ; 
+                    else el->setVarType($1->text); 
+                    
+                    if(!sym_tab->insert_symbol(*el)) // already present in current scope
+                    {
+                        error_multiple_declaration(el->key);
+                    }
 
+                }
             }
 
             print_log_text($$->text);
@@ -1173,6 +1319,19 @@ statements: statement {
 
             erm_h($1);  erm_h($2);   
         }
+        | statements error statement {
+            print_grammar_rule("statements","statements error statement");
+        
+            $$ = new Helper();
+            $$->text = $1->text;
+            $$->text += "\n";
+            $$->text += $3->text;
+
+            print_log_text($$->text);
+
+            erm_h($1);  erm_h($3);   
+        }
+        
 	   ;
 	   
 statement: var_declaration {
@@ -1185,6 +1344,26 @@ statement: var_declaration {
 
             erm_h($1);
         }
+    //   | func_definition {
+    //       print_grammar_rule("statement","func_definition");
+
+    //         $$ = new Helper();
+    //         // $$->text = $1->text;
+
+    //         print_log_text($$->text);
+
+    //         erm_h($1);
+    //   }
+    //   | func_declaration {
+    //       print_grammar_rule("statement","func_declaration");
+
+    //         $$ = new Helper();
+    //         // $$->text = $1->text;
+
+    //         print_log_text($$->text);
+
+    //         erm_h($1);
+    //   }
 	  | expression_statement {
             print_grammar_rule("statement","expression_statement");
 
@@ -1356,11 +1535,13 @@ variable: ID {
             {
                 if(ret_symbol->var_type == "int_array" || ret_symbol->var_type == "float_array")
                 {
-                   error_type_mismatch(); // should i change this to indexing
+                    error_type_mismatch(ret_symbol->key + " is an array"); // should i change this to indexing
+                    $$->setHelperType("NULL");
                 }
-
-                 $$->setHelperType(ret_symbol->var_type);
-                 cout<<"Helper : "<<$$->HelperType<<endl;
+                else{
+                    $$->setHelperType(ret_symbol->var_type);
+                }
+                //  cout<<"Helper : "<<$$->HelperType<<endl;
             }
 
             print_log_text($$->text);
@@ -1390,10 +1571,12 @@ variable: ID {
             {
                 if(ret_symbol->var_type == "int" || ret_symbol->var_type == "float")
                 {
-                   error_type_mismatch();
+                    error_not_array(ret_symbol->key);
+                    $$->setHelperType("NULL");
                 }
-
-                $$->setHelperType(ret_symbol->var_type);
+                else{
+                    $$->setHelperType(ret_symbol->var_type);
+                }
                 // cout<<"HelperType : "<<$$->HelperType<<endl;
             }
 
@@ -1471,10 +1654,18 @@ logic_expression: rel_expression {
 
                 // do implicit typecast
                 string typecast_ret = do_implicit_typecast($1->HelperType,$3->HelperType);
-                if(typecast_ret != "error") $$->setHelperType("int"); // ALWAYS INT
-                else error_type_cast();
-                cout<<"Implicit Typecast : "<<$$->HelperType<<"\n"<<endl;
-                
+
+                if(typecast_ret != "NULL")
+                {
+                    if(typecast_ret != "error") $$->setHelperType("int"); // ALWAYS INT
+                    else error_type_cast() , $$->setHelperType("NULL");
+                    cout<<"Implicit Typecast : "<<$$->HelperType<<"\n"<<endl;
+                }
+                else
+                {
+                    $$->setHelperType("NULL");
+                }
+
                 print_log_text($$->text);
 
                 erm_h($1); erm_h($3);
@@ -1506,9 +1697,17 @@ rel_expression: simple_expression {
 
                 // do implicit typecast
                 string typecast_ret = do_implicit_typecast($1->HelperType,$3->HelperType);
-                if(typecast_ret != "error") $$->setHelperType("int"); // ALWAYS INT
-                else error_type_cast();
-                cout<<"Implicit Typecast : "<<$$->HelperType<<"\n"<<endl;
+
+                if(typecast_ret != "NULL")
+                {
+                    if(typecast_ret != "error") $$->setHelperType("int"); // ALWAYS INT
+                    else error_type_cast() , $$->setHelperType("NULL");
+                    cout<<"Implicit Typecast : "<<$$->HelperType<<"\n"<<endl;
+                }
+                else
+                {
+                    $$->setHelperType("NULL");
+                }
 
                 print_log_text($$->text);
 
@@ -1542,9 +1741,17 @@ simple_expression: term {
                     // do implicit typecast
                     cout<<$1->HelperType<<" --- "<<$3->HelperType<<endl;
                     string typecast_ret = do_implicit_typecast($1->HelperType,$3->HelperType);
-                    if(typecast_ret != "error") $$->setHelperType(typecast_ret);
-                    else error_type_cast();
-                    cout<<"Implicit Typecast : "<<$$->HelperType<<"\n"<<endl;
+
+                    if(typecast_ret != "NULL")
+                    {
+                        if(typecast_ret != "error") $$->setHelperType(typecast_ret);
+                        else error_type_cast() , $$->setHelperType("NULL");
+                        cout<<"Implicit Typecast : "<<$$->HelperType<<"\n"<<endl;
+                    }
+                    else
+                    {
+                        $$->setHelperType("NULL");
+                    }
 
                     print_log_text($$->text);
 
@@ -1593,9 +1800,16 @@ term:	unary_expression {
             }
             else
             {
-                if(typecast_ret != "error") $$->setHelperType(typecast_ret);
-                else error_type_cast();
-                cout<<"Implicit Typecast : "<<$$->HelperType<<"\n"<<endl;
+                if(typecast_ret != "NULL")
+                {
+                    if(typecast_ret != "error") $$->setHelperType(typecast_ret);
+                    else error_type_cast() , $$->setHelperType("NULL");
+                    cout<<"Implicit Typecast : "<<$$->HelperType<<"\n"<<endl;
+                }
+                else
+                {
+                    $$->setHelperType("NULL");
+                }
             }
 
             print_log_text($$->text);
@@ -1670,16 +1884,16 @@ factor: variable {
             $$ = new Helper();
             // update text
             $$->text = $1->key;
-            $$->text += "( ";
+            $$->text += "(";
             $$->text += $3->text;
-            $$->text += " )";
+            $$->text += ")";
 
             // check error
             SymbolInfo* ret_symbol = sym_tab->lookup($1->key);
 
             if(ret_symbol == NULL)
             {
-                error_undeclared_variable($1->key);
+                error_undeclared_function($1->key);
                 $$->setHelperType("NULL");
             }
             else
@@ -1717,14 +1931,14 @@ factor: variable {
 
                     if(ret_symbol->param_v.size() != $3->param_v.size())
                     {
-                        error_function_parameter_number();
+                        error_function_parameter_number(ret_symbol->key);
                     }
                     else
                     {
                         for(int i=0;i<ret_symbol->param_v.size();i++)
                         {
                             if(!is_param_typecast_ok(ret_symbol->param_v[i],$3->param_v[i])){
-                                error_function_parameter_type();
+                                error_function_parameter_type(i+1,ret_symbol->key);
                                 break;
                             }
                         }
@@ -1781,6 +1995,19 @@ factor: variable {
 
             erm_s($1);
         }
+    | ERROR_FLOAT  { 
+            print_grammar_rule("factor","ERROR_FLOAT");
+
+            $$ = new Helper();
+            // update text
+            $$->text = $1->key;
+            // pass up
+            $$->setHelperType("NULL");
+
+            print_log_text($$->text);
+
+            erm_s($1);
+        }
 	| variable INCOP {
             print_grammar_rule("factor","variable INCOP");
 
@@ -1830,7 +2057,7 @@ arguments: arguments COMMA logic_expression {
                 
                 $$ = new Helper();
                 $$->text = $1->text; 
-                $$->text += " , "; 
+                $$->text += ","; 
                 $$->text += $3->text;
 
                 // update vector
@@ -1851,7 +2078,7 @@ arguments: arguments COMMA logic_expression {
                 $$->text = $1->text; 
                 // update helper type
                 $$->HelperType = $1->HelperType;
-                cout<<"Logic Helper : "<<$$->HelperType<<endl;
+                // cout<<"Logic Helper : "<<$$->HelperType<<endl;
                 // init vector
                 $$->param_v.push_back($1->HelperType);
 
@@ -1876,14 +2103,21 @@ main(int argc,char *argv[])
 		return 0;
 	}
 
+    logout.open("1705010_token.txt");
+	errout.open("1705010_error.txt");
+
     yyin=fin;
 	yyparse();
 
     sym_tab->print_all_scope();
 
-    cout<<"Total Lines : "<<line_count<<endl;
+    cout<<"Total lines: "<<line_count<<endl;
+    cout<<"Total errors: "<<err_count<<endl;
 
     fclose(yyin);
+
+    logout.close();
+	errout.close();
 
     exit(0);
 }

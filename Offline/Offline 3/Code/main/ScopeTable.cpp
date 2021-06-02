@@ -165,8 +165,8 @@ void ScopeTable::print()
         
         while(now != NULL)
         {
-            // cout<<"< "<<now->key <<" : "<<now->val<<" > ";
-            cout<<"< "<<now->key <<" : "<<now->val<<" > ("<<now->var_type<<")";
+            cout<<"< "<<now->key <<" , "<<now->val<<" > ";
+            // cout<<"< "<<now->key <<" , "<<now->val<<" > ("<<now->var_type<<")";
             now = now->nxt;
         }
         cout<<endl;

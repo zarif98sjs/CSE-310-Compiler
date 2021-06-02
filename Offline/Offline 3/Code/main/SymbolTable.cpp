@@ -30,16 +30,16 @@ void SymbolTable::enter_scope() /// enter scope  = push : create and push a new 
         st->set_id(st->parentScope->get_id()+"."+to_str(st->parentScope->get_counter()));
     }
 
-    cout<<"New ScopeTable with id "<<st->get_id()<<" created"<<endl;
-    cout<<endl;
+    // cout<<"New ScopeTable with id "<<st->get_id()<<" created"<<endl;
+    // cout<<endl;
 }
 
 void SymbolTable::exit_scope() /// exit scope  = pop : remove the current ScopeTable
 {
     if(cur != NULL)
     {
-        cout<<"ScopeTable with id "<<getCurScopeTableId()<<" removed"<<endl;
-        cout<<endl;
+        // cout<<"ScopeTable with id "<<getCurScopeTableId()<<" removed"<<endl;
+        // cout<<endl;
 
         ScopeTable* temp = cur;
         cur = cur->parentScope;
@@ -56,7 +56,7 @@ bool SymbolTable::insert_symbol(SymbolInfo si)
     if(temp != NULL) /// can't insert
     {
         // cout<<"<"<<temp->key<<","<<temp->val<<">"<<" already exists in current ScopeTable"<<endl;
-        cout<<endl;
+        // cout<<endl;
         return false;
     }
 
@@ -99,7 +99,7 @@ SymbolInfo* SymbolTable::lookup(string key)
         if(ret != NULL)
         {
             // cout<<"Found in ScopeTable# "<<now->get_id()<<" at position "<<ret->bucket<<","<<ret->bucket_pos<<endl;
-            cout<<endl;
+            // cout<<endl;
             return ret;
         }
 

@@ -33,12 +33,43 @@ extern YYSTYPE yylval;
 extern SymbolTable *sym_tab;
 void yyerror(char *);
 
+extern ofstream logout;
+extern ofstream errout;
+extern int err_count;
+
 int line_count = 1;
 int error_count = 0;
 int nl_inside = 0;
 
-string cur_id;
 string cur_type;
+
+void error_unrecognized(string s)
+{
+	cout<<"Error at line "<<line_count<<": "<<"Unrecognized character "<<s<<"\n"<<endl;
+	errout<<"Error at line "<<line_count<<": "<<"Unrecognized character "<<s<<"\n"<<endl;
+	err_count++;
+}
+
+void error_decimal_point(string s)
+{
+	cout<<"Error at line "<<line_count<<": "<<"Too many decimal points "<<s<<"\n"<<endl;
+	errout<<"Error at line "<<line_count<<": "<<"Too many decimal points "<<s<<"\n"<<endl;
+	err_count++;
+}
+
+void error_ill_formed(string s)
+{
+	cout<<"Error at line "<<line_count<<": "<<"Ill formed number "<<s<<"\n"<<endl;
+	errout<<"Error at line "<<line_count<<": "<<"Ill formed number "<<s<<"\n"<<endl;
+	err_count++;
+}
+
+void error_id(string s)
+{
+	cout<<"Error at line "<<line_count<<": "<<"Invalid prefix on ID or invalid suffix on Number "<<s<<"\n"<<endl;
+	errout<<"Error at line "<<line_count<<": "<<"Invalid prefix on ID or invalid suffix on Number "<<s<<"\n"<<endl;
+	err_count++;
+}
 
 %}
 
@@ -74,6 +105,12 @@ ALL_EXCEPT_BACKSLASH [^\\]
 "continue" {return CONTINUE;}
 "printf"	{return PRINTLN;}
 
+{LETTER}{ALNUM}*	{
+		SymbolInfo *s= new  SymbolInfo(yytext, "ID");
+		yylval.symbol_info = s;
+		return ID;
+}
+
 {DIGIT}+	{
 				SymbolInfo *s= new  SymbolInfo(yytext, "CONST_INT");
 				yylval.symbol_info = s;
@@ -87,26 +124,31 @@ ALL_EXCEPT_BACKSLASH [^\\]
 			}
 
 {DIGIT}*(\.{DIGIT}+)\.[0-9\.Ee+-]*(\.)* {
-	error_count++;
-	cout<<"Error at line no "<< line_count <<": Too many decimal points "<<yytext<<"\n"<<endl;
+	error_decimal_point(yytext);
+
+	SymbolInfo *s= new  SymbolInfo(yytext, "ERROR_FLOAT");
+	yylval.symbol_info = s;
+	return ERROR_FLOAT;
 }
 
 ([0-9]*(\.[0-9]*)?[Ee][+-]?[0-9]*[0-9\.Ee+-]*(\.)*)|([0-9]+\.) {
-	error_count++;
-	cout<<"Error at line no "<< line_count <<": Ill formed number "<<yytext<<"\n"<<endl;
+
+	error_ill_formed(yytext);
+
+	SymbolInfo *s= new  SymbolInfo(yytext, "ERROR_FLOAT");
+	yylval.symbol_info = s;
+	return ERROR_FLOAT;
 }
 
-{LETTER}{ALNUM}*	{
-		SymbolInfo *s= new  SymbolInfo(yytext, "ID");
-		yylval.symbol_info = s;
-		// cout<<"ID -------------------------->"<<yytext<<endl;
-		cur_id = yytext;
-		return ID;
-}
+
 
 {DIGIT}*(\.{DIGIT}+)?(E[+-]?{DIGIT}+)?{LETTER}{ALNUM}* {
-	error_count++;
-	cout<<"Error at line no "<< line_count <<": Invalid prefix on ID or invalid suffix on Number "<<yytext<<"\n"<<endl;
+	
+	error_id(yytext);
+
+	SymbolInfo *s= new  SymbolInfo(yytext, "ID");
+	yylval.symbol_info = s;
+	return ID;
 }
 
 "+"|"-" { SymbolInfo *s= new  SymbolInfo(yytext, "ADDOP"); yylval.symbol_info = s; return ADDOP;}
@@ -335,7 +377,7 @@ ALL_EXCEPT_BACKSLASH [^\\]
 <D_COMMENT_STATE>.            { comment += yytext[0];} 
 
 . {
-	error_count++;
+	error_unrecognized(yytext);
 }
 
 
