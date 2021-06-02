@@ -185,6 +185,76 @@ Lexical analysis is the process of scanning the source program as a sequence of 
 
 Here we will use the tool `flex` to do the lexical analysis. Regex is written to do the lexical analysis with flex.
 
+Here is a basic structure of a `lex` file
+
+```
+%{
+    user code section 1
+%}
+    definition section
+%%
+    rules section
+%%
+    user code section 2
+```
+
+Regular Expression is a very powerful tool which we will use in this section to identify the tokens. To check what can be done using regular expression in flex, check [this](https://www.cs.virginia.edu/~cr4bd/flex-manual/Patterns.html) for the rules available in flex. You can also use [regexr.com](https://regexr.com/) to test if your regex performs exactly how you want it to be.
+
+## **`flex` definition**
+
+This is the required syntax for definition :
+
+```
+definition_name definition
+```
+
+So, we can define things like this :
+
+```c
+WHITESPACE [ \t\f\r\v]+ 
+LETTER [a-zA-Z_]
+DIGIT [0-9]
+NEWLINE [\r]?\n
+ALNUM [A-Za-z_0-9]
+ALL_EXCEPT_BACKSLASH [^\\]
+```
+
+## **`flex` rule**
+
+The part that is currently matched can be found in the string `yytext`.
+
+We can write rules using the definitions already defined
+
+```c
+{LETTER}{ALNUM}*	{
+		cout<<"ID , "<<yytext<<endl;
+}
+```
+
+or we can completely use new ones
+
+```c
+"<"|"<="|">"|">="|"=="|"!="	{
+		cout<<"RELOP , "<<yytext<<endl;
+}
+```
+
+## **`flex` states**
+
+Sometimes it is easy to handle rules for different things separately. Like our life will be much easier if we handle things like `char` `string` or `comment` separately.
+
+To do this we can enter a state by using `BEGIN STATE_NAME` and exit using `BEGIN INITIAL`.
+
+## **`flex` errors**
+
+We can also write regex to identify common errors like "Too many decimal points" , "Ill formed number" or "Invalid ID" etc.
+
+For example a regex for "Too many decimal points" can be something like this
+
+```c
+{DIGIT}*(\.{DIGIT}+)\.[0-9\.Ee+-]*(\.)*
+```
+
 
 
 # Part 3 : `Parser(Syntax Analysis) & Semantic Analysis`
