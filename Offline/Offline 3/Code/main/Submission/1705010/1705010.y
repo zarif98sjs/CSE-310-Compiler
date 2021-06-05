@@ -1099,6 +1099,10 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
 
                 print_log_text($$->text); 
 
+                // EXIT
+                sym_tab->print_all_scope(logout);
+                sym_tab->exit_scope();
+
              }
  		    ;
 
@@ -1112,6 +1116,11 @@ dummy_scope_function:  {
                         {
 
                             if(el.key == "dummy_key") continue;
+                            if(el.var_type == "void")
+                            {
+                                error_var_type();
+                                el.var_type = "NULL";
+                            }
                             // insert ID
                             // cout<<"INSIDE FUNCTIONNN"<<endl;
                             if(!sym_tab->insert_symbol(el)) // already present in current scope

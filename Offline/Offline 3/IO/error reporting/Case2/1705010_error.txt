@@ -1,0 +1,8 @@
+Error at line 8: Multiple declaration of foo
+
+Error at line 15: Multiple declaration of f
+
+Error at line 18: Multiple declaration of f
+
+Error at line 25: Total number of arguments mismatch in function f
+

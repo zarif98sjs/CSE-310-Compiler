@@ -1,0 +1,4 @@
+Error at line 3: A function is defined inside a function
+
+Error at line 10: A function is defined inside a function
+

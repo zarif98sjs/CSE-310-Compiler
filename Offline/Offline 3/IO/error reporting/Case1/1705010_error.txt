@@ -1,0 +1,16 @@
+Error at line 2: Variable type cannot be void
+
+Error at line 4: Undeclared variable x
+
+Error at line 11: Non-Integer operand on modulus operator
+
+Error at line 12: Type mismatch 
+
+Error at line 14: b not an array
+
+Error at line 14: Expression inside third brackets not an integer
+
+Error at line 15: Total number of arguments mismatch in function foo
+
+Error at line 15: Void function used in expression
+

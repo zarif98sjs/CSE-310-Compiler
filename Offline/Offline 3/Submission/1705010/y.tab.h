@@ -40,7 +40,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 1 "demo.y" /* yacc.c:1909  */
+#line 1 "1705010.y" /* yacc.c:1909  */
 
     #include <bits/stdc++.h>
 
@@ -136,7 +136,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 338 "demo.y" /* yacc.c:1909  */
+#line 338 "1705010.y" /* yacc.c:1909  */
 
     SymbolInfo* symbol_info;
     // SymbolInfo* symbol_info_vec[100];

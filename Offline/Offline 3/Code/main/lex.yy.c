@@ -666,28 +666,28 @@ string cur_type;
 
 void error_unrecognized(string s)
 {
-	cout<<"Error at line "<<line_count<<": "<<"Unrecognized character "<<s<<"\n"<<endl;
+	logout<<"Error at line "<<line_count<<": "<<"Unrecognized character "<<s<<"\n"<<endl;
 	errout<<"Error at line "<<line_count<<": "<<"Unrecognized character "<<s<<"\n"<<endl;
 	err_count++;
 }
 
 void error_decimal_point(string s)
 {
-	cout<<"Error at line "<<line_count<<": "<<"Too many decimal points "<<s<<"\n"<<endl;
+	logout<<"Error at line "<<line_count<<": "<<"Too many decimal points "<<s<<"\n"<<endl;
 	errout<<"Error at line "<<line_count<<": "<<"Too many decimal points "<<s<<"\n"<<endl;
 	err_count++;
 }
 
 void error_ill_formed(string s)
 {
-	cout<<"Error at line "<<line_count<<": "<<"Ill formed number "<<s<<"\n"<<endl;
+	logout<<"Error at line "<<line_count<<": "<<"Ill formed number "<<s<<"\n"<<endl;
 	errout<<"Error at line "<<line_count<<": "<<"Ill formed number "<<s<<"\n"<<endl;
 	err_count++;
 }
 
 void error_id(string s)
 {
-	cout<<"Error at line "<<line_count<<": "<<"Invalid prefix on ID or invalid suffix on Number "<<s<<"\n"<<endl;
+	logout<<"Error at line "<<line_count<<": "<<"Invalid prefix on ID or invalid suffix on Number "<<s<<"\n"<<endl;
 	errout<<"Error at line "<<line_count<<": "<<"Invalid prefix on ID or invalid suffix on Number "<<s<<"\n"<<endl;
 	err_count++;
 }

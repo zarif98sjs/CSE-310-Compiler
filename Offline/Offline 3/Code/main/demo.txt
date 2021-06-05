@@ -1,7 +1,10 @@
-int func(void b, int a){
-  y = 5;
-}
-int main() {
-    func(5, 6);
-    return 0;
+void foo()
+{
+  int x;
+  float y;
+  x = 5.5.5.5.5.5.190;
+
+  int 1x1x1;
+
+  y = 123e123123.123.12.3.12;
 }
