@@ -1,7 +1,7 @@
 CC = g++
 LEX = flex
 YACC = yacc
-CPPFLAGS = -w
+CPPFLAGS = -w -static -g
 COMMON_HEADER_FILES = SymbolInfo.h ScopeTable.h SymbolTable.h Helper.h
 COMMON_HEADER_OBJECT_FILES = SymbolInfo.o ScopeTable.o SymbolTable.o Helper.o
 
@@ -31,7 +31,8 @@ a.out: l.o y.o ${COMMON_HEADER_OBJECT_FILES}
 	${CC} ${CPPFLAGS} y.o l.o ${COMMON_HEADER_OBJECT_FILES} -lfl
 
 run:
-#valgrind --leak-check=full -s --show-leak-kinds=all ./a.out input.txt log.txt error.txt
+	# valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -v ./a.out demo.txt > demo_out.txt
+	# valgrind --tool=memcheck --leak-check=yes ./a.out demo.txt > demo_out.txt
 	./a.out demo.txt > demo_out.txt
 
 clean: 

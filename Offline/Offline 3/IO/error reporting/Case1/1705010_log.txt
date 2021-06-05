@@ -1,0 +1,673 @@
+Line 1: type_specifier : VOID
+
+void
+
+Line 2: type_specifier : VOID
+
+void
+
+Line 2: declaration_list : ID
+
+x
+
+Line 2: declaration_list : declaration_list COMMA ID
+
+x,y
+
+Line 2: declaration_list : declaration_list COMMA ID
+
+x,y,z
+
+Line 2: var_declaration : type_specifier declaration_list SEMICOLON
+
+Error at line 2: Variable type cannot be void
+
+void x,y,z;
+
+Line 2: statement : var_declaration
+
+void x,y,z;
+
+Line 2: statements : statement
+
+void x,y,z;
+
+Line 3: type_specifier : INT
+
+int
+
+Line 3: declaration_list : ID
+
+y
+
+Line 3: var_declaration : type_specifier declaration_list SEMICOLON
+
+int y;
+
+Line 3: statement : var_declaration
+
+int y;
+
+Line 3: statements : statements statement
+
+void x,y,z;
+int y;
+
+Line 4: variable : ID
+
+y
+
+Line 4: variable : ID
+
+Error at line 4: Undeclared variable x
+
+x
+
+Line 4: factor : variable
+
+x
+
+Line 4: unary_expression : factor
+
+x
+
+Line 4: term : unary_expression
+
+x
+
+Line 4: simple_expression : term
+
+x
+
+Line 4: rel_expression : simple_expression
+
+x
+
+Line 4: logic_expression : rel_expression
+
+x
+
+Line 4: expression : variable ASSIGNOP logic_expression
+
+y=x
+
+Line 4: expression_statement : expression SEMICOLON
+
+y=x;
+
+Line 4: statement : expression_statement
+
+y=x;
+
+Line 4: statements : statements statement
+
+void x,y,z;
+int y;
+y=x;
+
+Line 5: compound_statement : LCURL statements RCURL
+
+{
+void x,y,z;
+int y;
+y=x;
+}
+
+ScopeTable # 1.1
+1 --> < y , ID > 
+
+ScopeTable # 1
+24 --> < foo , ID > 
+
+Line 5: func_definition : type_specifier ID LPAREN RPAREN compound_statement
+
+void foo(){
+void x,y,z;
+int y;
+y=x;
+}
+
+Line 5: unit : func_definition
+
+void foo(){
+void x,y,z;
+int y;
+y=x;
+}
+
+Line 5: program : unit
+
+void foo(){
+void x,y,z;
+int y;
+y=x;
+}
+
+Line 7: type_specifier : INT
+
+int
+
+Line 9: type_specifier : INT
+
+int
+
+Line 9: declaration_list : ID
+
+x
+
+Line 9: declaration_list : declaration_list COMMA ID
+
+x,y
+
+Line 9: declaration_list : declaration_list COMMA ID
+
+x,y,z
+
+Line 9: var_declaration : type_specifier declaration_list SEMICOLON
+
+int x,y,z;
+
+Line 9: statement : var_declaration
+
+int x,y,z;
+
+Line 9: statements : statement
+
+int x,y,z;
+
+Line 10: type_specifier : FLOAT
+
+float
+
+Line 10: declaration_list : ID
+
+b
+
+Line 10: var_declaration : type_specifier declaration_list SEMICOLON
+
+float b;
+
+Line 10: statement : var_declaration
+
+float b;
+
+Line 10: statements : statements statement
+
+int x,y,z;
+float b;
+
+Line 11: variable : ID
+
+y
+
+Line 11: factor : CONST_FLOAT
+
+2.0
+
+Line 11: unary_expression : factor
+
+2.0
+
+Line 11: term : unary_expression
+
+2.0
+
+Line 11: simple_expression : term
+
+2.0
+
+Line 11: factor : CONST_FLOAT
+
+5.0
+
+Line 11: unary_expression : factor
+
+5.0
+
+Line 11: term : unary_expression
+
+5.0
+
+Line 11: factor : CONST_FLOAT
+
+1.0
+
+Line 11: unary_expression : factor
+
+1.0
+
+Line 11: term : term MULOP unary_expression
+
+Error at line 11: Non-Integer operand on modulus operator
+
+5.0%1.0
+
+Line 11: simple_expression : simple_expression ADDOP term
+
+2.0+5.0%1.0
+
+Line 11: rel_expression : simple_expression
+
+2.0+5.0%1.0
+
+Line 11: logic_expression : rel_expression
+
+2.0+5.0%1.0
+
+Line 11: expression : variable ASSIGNOP logic_expression
+
+y=2.0+5.0%1.0
+
+Line 11: expression_statement : expression SEMICOLON
+
+y=2.0+5.0%1.0;
+
+Line 11: statement : expression_statement
+
+y=2.0+5.0%1.0;
+
+Line 11: statements : statements statement
+
+int x,y,z;
+float b;
+y=2.0+5.0%1.0;
+
+Line 12: variable : ID
+
+z
+
+Line 12: factor : CONST_FLOAT
+
+5.5669695
+
+Line 12: unary_expression : factor
+
+5.5669695
+
+Line 12: term : unary_expression
+
+5.5669695
+
+Line 12: simple_expression : term
+
+5.5669695
+
+Line 12: rel_expression : simple_expression
+
+5.5669695
+
+Line 12: logic_expression : rel_expression
+
+5.5669695
+
+Line 12: expression : variable ASSIGNOP logic_expression
+
+Error at line 12: Type mismatch 
+
+z=5.5669695
+
+Line 12: expression_statement : expression SEMICOLON
+
+z=5.5669695;
+
+Line 12: statement : expression_statement
+
+z=5.5669695;
+
+Line 12: statements : statements statement
+
+int x,y,z;
+float b;
+y=2.0+5.0%1.0;
+z=5.5669695;
+
+Line 13: variable : ID
+
+b
+
+Line 13: factor : CONST_INT
+
+5
+
+Line 13: unary_expression : factor
+
+5
+
+Line 13: term : unary_expression
+
+5
+
+Line 13: factor : CONST_INT
+
+2
+
+Line 13: unary_expression : factor
+
+2
+
+Line 13: term : term MULOP unary_expression
+
+5*2
+
+Line 13: simple_expression : term
+
+5*2
+
+Line 13: factor : CONST_INT
+
+40
+
+Line 13: unary_expression : factor
+
+40
+
+Line 13: term : unary_expression
+
+40
+
+Line 13: simple_expression : simple_expression ADDOP term
+
+5*2+40
+
+Line 13: rel_expression : simple_expression
+
+5*2+40
+
+Line 13: logic_expression : rel_expression
+
+5*2+40
+
+Line 13: expression : variable ASSIGNOP logic_expression
+
+b=5*2+40
+
+Line 13: expression_statement : expression SEMICOLON
+
+b=5*2+40;
+
+Line 13: statement : expression_statement
+
+b=5*2+40;
+
+Line 13: statements : statements statement
+
+int x,y,z;
+float b;
+y=2.0+5.0%1.0;
+z=5.5669695;
+b=5*2+40;
+
+Line 14: factor : CONST_FLOAT
+
+2.32
+
+Line 14: unary_expression : factor
+
+2.32
+
+Line 14: term : unary_expression
+
+2.32
+
+Line 14: simple_expression : term
+
+2.32
+
+Line 14: rel_expression : simple_expression
+
+2.32
+
+Line 14: logic_expression : rel_expression
+
+2.32
+
+Line 14: expression : logic_expression
+
+2.32
+
+Line 14: variable : ID LTHIRD expression RTHIRD
+
+Error at line 14: b not an array
+
+Error at line 14: Expression inside third brackets not an integer
+
+b[2.32]
+
+Line 14: factor : CONST_FLOAT
+
+10.5
+
+Line 14: unary_expression : factor
+
+10.5
+
+Line 14: term : unary_expression
+
+10.5
+
+Line 14: simple_expression : term
+
+10.5
+
+Line 14: rel_expression : simple_expression
+
+10.5
+
+Line 14: logic_expression : rel_expression
+
+10.5
+
+Line 14: expression : variable ASSIGNOP logic_expression
+
+b[2.32]=10.5
+
+Line 14: expression_statement : expression SEMICOLON
+
+b[2.32]=10.5;
+
+Line 14: statement : expression_statement
+
+b[2.32]=10.5;
+
+Line 14: statements : statements statement
+
+int x,y,z;
+float b;
+y=2.0+5.0%1.0;
+z=5.5669695;
+b=5*2+40;
+b[2.32]=10.5;
+
+Line 15: variable : ID
+
+z
+
+Line 15: variable : ID
+
+b
+
+Line 15: factor : variable
+
+b
+
+Line 15: unary_expression : factor
+
+b
+
+Line 15: term : unary_expression
+
+b
+
+Line 15: simple_expression : term
+
+b
+
+Line 15: rel_expression : simple_expression
+
+b
+
+Line 15: logic_expression : rel_expression
+
+b
+
+Line 15: arguments : logic_expression
+
+b
+
+Line 15: variable : ID
+
+z
+
+Line 15: factor : variable
+
+z
+
+Line 15: unary_expression : factor
+
+z
+
+Line 15: term : unary_expression
+
+z
+
+Line 15: simple_expression : term
+
+z
+
+Line 15: rel_expression : simple_expression
+
+z
+
+Line 15: logic_expression : rel_expression
+
+z
+
+Line 15: arguments : arguments COMMA logic_expression
+
+b,z
+
+Line 15: argument_list : arguments
+
+b,z
+
+Line 15: factor : ID LPAREN argument_list RPAREN
+
+Error at line 15: Total number of arguments mismatch in function foo
+
+foo(b,z)
+
+Line 15: unary_expression : factor
+
+foo(b,z)
+
+Line 15: term : unary_expression
+
+foo(b,z)
+
+Line 15: simple_expression : term
+
+foo(b,z)
+
+Line 15: rel_expression : simple_expression
+
+foo(b,z)
+
+Line 15: logic_expression : rel_expression
+
+foo(b,z)
+
+Line 15: expression : variable ASSIGNOP logic_expression
+
+Error at line 15: Void function used in expression
+
+z=foo(b,z)
+
+Line 15: expression_statement : expression SEMICOLON
+
+z=foo(b,z);
+
+Line 15: statement : expression_statement
+
+z=foo(b,z);
+
+Line 15: statements : statements statement
+
+int x,y,z;
+float b;
+y=2.0+5.0%1.0;
+z=5.5669695;
+b=5*2+40;
+b[2.32]=10.5;
+z=foo(b,z);
+
+Line 16: compound_statement : LCURL statements RCURL
+
+{
+int x,y,z;
+float b;
+y=2.0+5.0%1.0;
+z=5.5669695;
+b=5*2+40;
+b[2.32]=10.5;
+z=foo(b,z);
+}
+
+ScopeTable # 1.2
+0 --> < x , ID > 
+1 --> < y , ID > 
+2 --> < z , ID > 
+8 --> < b , ID > 
+
+ScopeTable # 1
+1 --> < main , ID > 
+24 --> < foo , ID > 
+
+Line 16: func_definition : type_specifier ID LPAREN RPAREN compound_statement
+
+int main(){
+int x,y,z;
+float b;
+y=2.0+5.0%1.0;
+z=5.5669695;
+b=5*2+40;
+b[2.32]=10.5;
+z=foo(b,z);
+}
+
+Line 16: unit : func_definition
+
+int main(){
+int x,y,z;
+float b;
+y=2.0+5.0%1.0;
+z=5.5669695;
+b=5*2+40;
+b[2.32]=10.5;
+z=foo(b,z);
+}
+
+Line 16: program : program unit
+
+void foo(){
+void x,y,z;
+int y;
+y=x;
+}
+int main(){
+int x,y,z;
+float b;
+y=2.0+5.0%1.0;
+z=5.5669695;
+b=5*2+40;
+b[2.32]=10.5;
+z=foo(b,z);
+}
+
+Line 16: start : program
+
+ScopeTable # 1
+1 --> < main , ID > 
+24 --> < foo , ID > 
+
+Total lines: 16
+Total errors: 8

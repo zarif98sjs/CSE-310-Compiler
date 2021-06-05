@@ -87,7 +87,8 @@ extern int yydebug;
     RELOP = 291,
     LOGICOP = 292,
     CONST_INT = 293,
-    CONST_FLOAT = 294
+    CONST_FLOAT = 294,
+    ERROR_FLOAT = 295
   };
 #endif
 /* Tokens.  */
@@ -128,13 +129,14 @@ extern int yydebug;
 #define LOGICOP 292
 #define CONST_INT 293
 #define CONST_FLOAT 294
+#define ERROR_FLOAT 295
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 220 "demo.y" /* yacc.c:1909  */
+#line 338 "demo.y" /* yacc.c:1909  */
 
     SymbolInfo* symbol_info;
     // SymbolInfo* symbol_info_vec[100];
@@ -144,7 +146,7 @@ union YYSTYPE
     // int ival;
     // double dval;
 
-#line 148 "y.tab.h" /* yacc.c:1909  */
+#line 150 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

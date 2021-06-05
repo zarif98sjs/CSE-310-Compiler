@@ -1,0 +1,11 @@
+void f()
+{
+  void f_f();
+}
+
+void foo()
+{
+  void foo_foo(){
+    int x;
+  }
+}

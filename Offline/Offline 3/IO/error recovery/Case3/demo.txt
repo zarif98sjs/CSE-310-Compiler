@@ -1,0 +1,45 @@
+void fooooo(-------);
+
+void foo()
+{
+  int x-yo;
+  int x-yo
+  int z-yo;
+  int ret;
+}
+
+void f1()
+{
+  -
+}
+
+void f2()
+{
+  --
+  int y;
+  int z;
+}
+
+void f3()
+{
+  int y;
+  int z;
+  ---
+}
+
+void f4()
+{
+  int x-y
+  int zz;
+}
+
+void fooooooo()
+{
+  return;
+}
+
+int main()
+{
+  int x-y,z[10];
+  int x1-y1,z1[10.5];
+}

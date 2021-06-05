@@ -1,0 +1,26 @@
+void foo();
+
+void foo()
+{
+  int x;
+}
+
+void foo();
+
+void f()
+{
+  int y;
+}
+
+void f(int z);
+
+void f(int z)
+{
+  z = 101010;
+}
+
+int main()
+{
+  int z;
+  f(z);
+}

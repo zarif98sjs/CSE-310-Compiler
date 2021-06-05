@@ -1,0 +1,26 @@
+Error at line 1: syntax error, unexpected ADDOP, expecting RPAREN or INT or FLOAT or VOID
+
+Error at line 3: syntax error, unexpected ADDOP, expecting RPAREN or COMMA
+
+Error at line 5: syntax error, unexpected ADDOP, expecting RPAREN or COMMA
+
+Error at line 7: syntax error, unexpected ADDOP, expecting RPAREN or COMMA
+
+Error at line 9: syntax error, unexpected ADDOP, expecting RPAREN or COMMA
+
+Error at line 13: syntax error, unexpected VOID, expecting LCURL or SEMICOLON
+
+Error at line 13: syntax error, unexpected ADDOP, expecting RPAREN or COMMA
+
+Error at line 19: syntax error, unexpected VOID, expecting LCURL or SEMICOLON
+
+Error at line 19: syntax error, unexpected ADDOP, expecting RPAREN or INT or FLOAT or VOID
+
+Error at line 21: syntax error, unexpected ADDOP, expecting RPAREN or COMMA
+
+Error at line 23: syntax error, unexpected ADDOP, expecting RPAREN or COMMA
+
+Error at line 25: syntax error, unexpected ADDOP, expecting RPAREN or COMMA
+
+Error at line 27: syntax error, unexpected ADDOP, expecting RPAREN or COMMA
+

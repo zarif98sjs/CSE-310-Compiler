@@ -367,27 +367,27 @@ static const flex_int16_t yy_accept[210] =
     {   0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
        87,   85,    1,    2,    1,   33,   43,   27,   85,   42,
-       34,   35,   26,   40,   26,   85,   27,   20,   41,   30,
-       31,   30,   24,   23,   38,   39,   24,   24,   24,   23,
-       24,   24,   24,   24,   24,   24,   24,   36,   85,   37,
+       34,   35,   26,   40,   26,   85,   27,   21,   41,   30,
+       31,   30,   20,   20,   38,   39,   20,   20,   20,   20,
+       20,   20,   20,   20,   20,   20,   20,   36,   85,   37,
        59,   58,   59,   57,   59,   75,   73,   75,   74,   75,
        80,   78,   80,   79,   84,   83,   82,   84,    1,    2,
-       30,   32,   28,   29,    0,   23,   45,   44,   23,   20,
-       25,   23,   23,   24,   23,   23,   23,   23,   24,   24,
-       24,   24,   24,    7,   23,   23,   24,   24,   24,    3,
+       30,   32,   28,   29,    0,   24,   45,   44,   24,   21,
+       25,   24,   24,   20,   24,   24,   20,   20,   20,   20,
+       20,   20,   20,    7,   24,   20,   20,   20,   20,    3,
 
-       24,   24,   24,   24,   24,   24,   58,   48,   47,   56,
+       20,   20,   20,   20,   20,   20,   58,   48,   47,   56,
        46,   49,   50,   51,   52,   53,   54,   55,   73,   72,
         0,   62,   61,   70,   60,   63,   64,   65,   66,   67,
-       68,   69,   78,   77,    0,   81,   22,   23,   23,   23,
-       23,   21,   25,   23,   21,   23,   23,   21,   23,   24,
-       23,   24,   24,   24,   24,   24,   24,   24,   24,    5,
-        9,   24,   24,   24,   24,   24,   71,   76,   22,   22,
-       23,   23,   21,   25,   23,   21,   23,   24,   16,   10,
-       24,   24,   24,    4,   24,   24,   24,   24,   13,   24,
-        8,   24,   24,   24,   11,   24,   24,   24,    6,   24,
+       68,   69,   78,   77,    0,   81,   23,   24,   24,   24,
+       24,   22,   25,   24,   22,   24,   24,   22,   24,   20,
+       20,   20,   20,   20,   20,   20,   20,   20,   20,    5,
+        9,   20,   20,   20,   20,   20,   71,   76,   23,   23,
+       24,   24,   22,   25,   24,   22,   24,   20,   16,   10,
+       20,   20,   20,    4,   20,   20,   20,   20,   13,   20,
+        8,   20,   20,   20,   11,   20,   20,   20,    6,   20,
 
-       24,   12,   19,   14,   15,   24,   17,   18,    0
+       20,   12,   19,   14,   15,   20,   17,   18,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -654,15 +654,46 @@ extern YYSTYPE yylval;
 extern SymbolTable *sym_tab;
 void yyerror(char *);
 
+extern ofstream logout;
+extern ofstream errout;
+extern int err_count;
+
 int line_count = 1;
 int error_count = 0;
 int nl_inside = 0;
 
-string cur_id;
 string cur_type;
 
-#line 665 "lex.yy.c"
-#line 666 "lex.yy.c"
+void error_unrecognized(string s)
+{
+	logout<<"Error at line "<<line_count<<": "<<"Unrecognized character "<<s<<"\n"<<endl;
+	errout<<"Error at line "<<line_count<<": "<<"Unrecognized character "<<s<<"\n"<<endl;
+	err_count++;
+}
+
+void error_decimal_point(string s)
+{
+	logout<<"Error at line "<<line_count<<": "<<"Too many decimal points "<<s<<"\n"<<endl;
+	errout<<"Error at line "<<line_count<<": "<<"Too many decimal points "<<s<<"\n"<<endl;
+	err_count++;
+}
+
+void error_ill_formed(string s)
+{
+	logout<<"Error at line "<<line_count<<": "<<"Ill formed number "<<s<<"\n"<<endl;
+	errout<<"Error at line "<<line_count<<": "<<"Ill formed number "<<s<<"\n"<<endl;
+	err_count++;
+}
+
+void error_id(string s)
+{
+	logout<<"Error at line "<<line_count<<": "<<"Invalid prefix on ID or invalid suffix on Number "<<s<<"\n"<<endl;
+	errout<<"Error at line "<<line_count<<": "<<"Invalid prefix on ID or invalid suffix on Number "<<s<<"\n"<<endl;
+	err_count++;
+}
+
+#line 696 "lex.yy.c"
+#line 697 "lex.yy.c"
 
 #define INITIAL 0
 #define CHAR_STATE 1
@@ -883,10 +914,10 @@ YY_DECL
 		}
 
 	{
-#line 53 "demo.l"
+#line 84 "demo.l"
 
 
-#line 890 "lex.yy.c"
+#line 921 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -945,236 +976,245 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 55 "demo.l"
+#line 86 "demo.l"
 {}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 57 "demo.l"
+#line 88 "demo.l"
 {line_count++;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 59 "demo.l"
+#line 90 "demo.l"
 {return IF;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 60 "demo.l"
+#line 91 "demo.l"
 {return ELSE;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 61 "demo.l"
+#line 92 "demo.l"
 {return FOR;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 62 "demo.l"
+#line 93 "demo.l"
 {return WHILE;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 63 "demo.l"
+#line 94 "demo.l"
 {return DO;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 64 "demo.l"
+#line 95 "demo.l"
 {return BREAK;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 65 "demo.l"
+#line 96 "demo.l"
 { SymbolInfo *s= new  SymbolInfo(yytext, "INT"); yylval.symbol_info = s; return INT;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 66 "demo.l"
+#line 97 "demo.l"
 {return CHAR;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 67 "demo.l"
+#line 98 "demo.l"
 { SymbolInfo *s= new  SymbolInfo(yytext, "FLOAT"); yylval.symbol_info = s; return FLOAT;} 
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 68 "demo.l"
+#line 99 "demo.l"
 {return DOUBLE;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 69 "demo.l"
+#line 100 "demo.l"
 { SymbolInfo *s= new  SymbolInfo(yytext, "VOID"); yylval.symbol_info = s; return VOID;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 70 "demo.l"
+#line 101 "demo.l"
 {return RETURN;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 71 "demo.l"
+#line 102 "demo.l"
 {return SWITCH;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 72 "demo.l"
+#line 103 "demo.l"
 {return CASE;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 73 "demo.l"
+#line 104 "demo.l"
 {return DEFAULT;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 74 "demo.l"
+#line 105 "demo.l"
 {return CONTINUE;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 75 "demo.l"
+#line 106 "demo.l"
 {return PRINTLN;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 77 "demo.l"
+#line 108 "demo.l"
+{
+		SymbolInfo *s= new  SymbolInfo(yytext, "ID");
+		yylval.symbol_info = s;
+		return ID;
+}
+	YY_BREAK
+case 21:
+YY_RULE_SETUP
+#line 114 "demo.l"
 {
 				SymbolInfo *s= new  SymbolInfo(yytext, "CONST_INT");
 				yylval.symbol_info = s;
 				return CONST_INT;
 			}
 	YY_BREAK
-case 21:
+case 22:
 YY_RULE_SETUP
-#line 83 "demo.l"
+#line 120 "demo.l"
 {
 				SymbolInfo *s= new  SymbolInfo(yytext, "CONST_FLOAT");
 				yylval.symbol_info = s;
 				return CONST_FLOAT;
 			}
 	YY_BREAK
-case 22:
-YY_RULE_SETUP
-#line 89 "demo.l"
-{
-	error_count++;
-	cout<<"Error at line no "<< line_count <<": Too many decimal points "<<yytext<<"\n"<<endl;
-}
-	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 94 "demo.l"
+#line 126 "demo.l"
 {
-	error_count++;
-	cout<<"Error at line no "<< line_count <<": Ill formed number "<<yytext<<"\n"<<endl;
+	error_decimal_point(yytext);
+
+	SymbolInfo *s= new  SymbolInfo(yytext, "ERROR_FLOAT");
+	yylval.symbol_info = s;
+	return ERROR_FLOAT;
 }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 99 "demo.l"
+#line 134 "demo.l"
 {
-		SymbolInfo *s= new  SymbolInfo(yytext, "ID");
-		yylval.symbol_info = s;
-		// cout<<"ID -------------------------->"<<yytext<<endl;
-		cur_id = yytext;
-		return ID;
+
+	error_ill_formed(yytext);
+
+	SymbolInfo *s= new  SymbolInfo(yytext, "ERROR_FLOAT");
+	yylval.symbol_info = s;
+	return ERROR_FLOAT;
 }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 107 "demo.l"
+#line 145 "demo.l"
 {
-	error_count++;
-	cout<<"Error at line no "<< line_count <<": Invalid prefix on ID or invalid suffix on Number "<<yytext<<"\n"<<endl;
+	
+	error_id(yytext);
+
+	SymbolInfo *s= new  SymbolInfo(yytext, "ID");
+	yylval.symbol_info = s;
+	return ID;
 }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 112 "demo.l"
+#line 154 "demo.l"
 { SymbolInfo *s= new  SymbolInfo(yytext, "ADDOP"); yylval.symbol_info = s; return ADDOP;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 113 "demo.l"
+#line 155 "demo.l"
 { SymbolInfo *s= new  SymbolInfo(yytext, "MULOP"); yylval.symbol_info = s; return MULOP;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 114 "demo.l"
+#line 156 "demo.l"
 {return INCOP;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 115 "demo.l"
+#line 157 "demo.l"
 {return DECOP;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 117 "demo.l"
+#line 159 "demo.l"
 { SymbolInfo *s= new  SymbolInfo(yytext, "RELOP"); yylval.symbol_info = s; return RELOP;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 118 "demo.l"
+#line 160 "demo.l"
 {return ASSIGNOP;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 119 "demo.l"
+#line 161 "demo.l"
 { SymbolInfo *s= new  SymbolInfo(yytext, "LOGICOP"); yylval.symbol_info = s; return LOGICOP;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 120 "demo.l"
+#line 162 "demo.l"
 {return NOT;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 122 "demo.l"
+#line 164 "demo.l"
 {return LPAREN;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 123 "demo.l"
+#line 165 "demo.l"
 {return RPAREN;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 124 "demo.l"
+#line 166 "demo.l"
 {return LCURL;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 125 "demo.l"
+#line 167 "demo.l"
 {return RCURL;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 126 "demo.l"
+#line 168 "demo.l"
 {return LTHIRD;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 127 "demo.l"
+#line 169 "demo.l"
 {return RTHIRD;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 129 "demo.l"
+#line 171 "demo.l"
 {return COMMA;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 130 "demo.l"
+#line 172 "demo.l"
 {return SEMICOLON;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 132 "demo.l"
+#line 174 "demo.l"
 {
 	ans_char.clear();
 	ans_char_plain.clear();
@@ -1184,7 +1224,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 140 "demo.l"
+#line 182 "demo.l"
 {
 	res.clear();
 	res_plain.clear();
@@ -1196,7 +1236,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 149 "demo.l"
+#line 191 "demo.l"
 {
 	comment.clear();
 	comment += "//";
@@ -1208,7 +1248,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 158 "demo.l"
+#line 200 "demo.l"
 {
 	comment.clear();
 	comment += "/*";
@@ -1220,61 +1260,61 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 167 "demo.l"
+#line 209 "demo.l"
 ans_char += "\\", ans_char_plain +="\\\\";
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 168 "demo.l"
+#line 210 "demo.l"
 ans_char += "\'", ans_char_plain +="\\\'";
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 169 "demo.l"
+#line 211 "demo.l"
 ans_char += "\"", ans_char_plain +="\\\"";
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 170 "demo.l"
+#line 212 "demo.l"
 ans_char += "\a", ans_char_plain +="\\a";
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 171 "demo.l"
+#line 213 "demo.l"
 ans_char += "\b", ans_char_plain +="\\b";
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 172 "demo.l"
+#line 214 "demo.l"
 ans_char += "\f", ans_char_plain +="\\f";
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 173 "demo.l"
+#line 215 "demo.l"
 ans_char += "\n", ans_char_plain +="\\n";
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 174 "demo.l"
+#line 216 "demo.l"
 ans_char += "\r", ans_char_plain +="\\r";
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 175 "demo.l"
+#line 217 "demo.l"
 ans_char += "\t", ans_char_plain +="\\t";
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 176 "demo.l"
+#line 218 "demo.l"
 ans_char += "\v", ans_char_plain +="\\v";
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 177 "demo.l"
+#line 219 "demo.l"
 ans_char += "\0", ans_char_plain +="\\0";
 	YY_BREAK
 case YY_STATE_EOF(CHAR_STATE):
-#line 180 "demo.l"
+#line 222 "demo.l"
 {
 	string for_print = "'"; 
 	for_print += ans_char_plain;
@@ -1286,7 +1326,7 @@ case YY_STATE_EOF(CHAR_STATE):
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 189 "demo.l"
+#line 231 "demo.l"
 {
 
 	string for_print = "'"; 
@@ -1320,7 +1360,7 @@ YY_RULE_SETUP
 case 58:
 /* rule 58 can match eol */
 YY_RULE_SETUP
-#line 219 "demo.l"
+#line 261 "demo.l"
 {
 
 	string for_print = "'"; 
@@ -1334,68 +1374,68 @@ YY_RULE_SETUP
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 230 "demo.l"
+#line 272 "demo.l"
 ans_char += yytext[0] , ans_char_plain += yytext[0];
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 233 "demo.l"
+#line 275 "demo.l"
 res += "\\", res_plain +="\\\\";
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 234 "demo.l"
+#line 276 "demo.l"
 res += "\'", res_plain +="\\\'";
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 235 "demo.l"
+#line 277 "demo.l"
 res += "\"", res_plain +="\\\"";
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 236 "demo.l"
+#line 278 "demo.l"
 res += "\a", res_plain +="\\a";
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 237 "demo.l"
+#line 279 "demo.l"
 res += "\b", res_plain +="\\b";
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 238 "demo.l"
+#line 280 "demo.l"
 res += "\f", res_plain +="\\f";
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 239 "demo.l"
+#line 281 "demo.l"
 res += "\n", res_plain +="\\n";
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 240 "demo.l"
+#line 282 "demo.l"
 res += "\r", res_plain +="\\r";
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 241 "demo.l"
+#line 283 "demo.l"
 res += "\t", res_plain +="\\t";
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 242 "demo.l"
+#line 284 "demo.l"
 res += "\v", res_plain +="\\v";
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 243 "demo.l"
+#line 285 "demo.l"
 res += "\0", res_plain +="\\0";
 	YY_BREAK
 case 71:
 /* rule 71 can match eol */
 YY_RULE_SETUP
-#line 245 "demo.l"
+#line 287 "demo.l"
 { 
 	nl_inside++;
 	res_plain += "\\\r\n" ;
@@ -1404,7 +1444,7 @@ YY_RULE_SETUP
 case 72:
 /* rule 72 can match eol */
 YY_RULE_SETUP
-#line 249 "demo.l"
+#line 291 "demo.l"
 { 
 	nl_inside++;
 	res_plain += "\\\n" ;
@@ -1413,7 +1453,7 @@ YY_RULE_SETUP
 case 73:
 /* rule 73 can match eol */
 YY_RULE_SETUP
-#line 253 "demo.l"
+#line 295 "demo.l"
 { 
 		nl_inside++;
 		error_count++;
@@ -1425,7 +1465,7 @@ YY_RULE_SETUP
 	}
 	YY_BREAK
 case YY_STATE_EOF(STR_STATE):
-#line 262 "demo.l"
+#line 304 "demo.l"
 { 
 		error_count++;
 
@@ -1437,7 +1477,7 @@ case YY_STATE_EOF(STR_STATE):
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 271 "demo.l"
+#line 313 "demo.l"
 {
 							string for_print = "\"";
 							for_print += res_plain;
@@ -1452,13 +1492,13 @@ YY_RULE_SETUP
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 283 "demo.l"
+#line 325 "demo.l"
 {res += yytext[0]; res_plain+= yytext[0];}
 	YY_BREAK
 case 76:
 /* rule 76 can match eol */
 YY_RULE_SETUP
-#line 285 "demo.l"
+#line 327 "demo.l"
 { 
 	nl_inside++;
 	comment += "\\\r\n";
@@ -1467,7 +1507,7 @@ YY_RULE_SETUP
 case 77:
 /* rule 77 can match eol */
 YY_RULE_SETUP
-#line 290 "demo.l"
+#line 332 "demo.l"
 { 
 	nl_inside++;
 	comment += "\\\n";
@@ -1476,7 +1516,7 @@ YY_RULE_SETUP
 case 78:
 /* rule 78 can match eol */
 YY_RULE_SETUP
-#line 295 "demo.l"
+#line 337 "demo.l"
 { 
 		
 		nl_inside++;
@@ -1488,7 +1528,7 @@ YY_RULE_SETUP
 	}
 	YY_BREAK
 case YY_STATE_EOF(S_COMMENT_STATE):
-#line 304 "demo.l"
+#line 346 "demo.l"
 { 
 
 		line_count += nl_inside;
@@ -1499,17 +1539,17 @@ case YY_STATE_EOF(S_COMMENT_STATE):
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 312 "demo.l"
+#line 354 "demo.l"
 { comment += "\\";}
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 313 "demo.l"
+#line 355 "demo.l"
 { comment += yytext[0];} 
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 316 "demo.l"
+#line 358 "demo.l"
 { 
 		comment += "*/";
 		
@@ -1520,7 +1560,7 @@ YY_RULE_SETUP
 	}
 	YY_BREAK
 case YY_STATE_EOF(D_COMMENT_STATE):
-#line 325 "demo.l"
+#line 367 "demo.l"
 { 
 
 		line_count += nl_inside;
@@ -1531,33 +1571,33 @@ case YY_STATE_EOF(D_COMMENT_STATE):
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 333 "demo.l"
+#line 375 "demo.l"
 { comment += "\r";} 
 	YY_BREAK
 case 83:
 /* rule 83 can match eol */
 YY_RULE_SETUP
-#line 334 "demo.l"
+#line 376 "demo.l"
 { nl_inside++; comment += "\n";} 
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 335 "demo.l"
+#line 377 "demo.l"
 { comment += yytext[0];} 
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 337 "demo.l"
+#line 379 "demo.l"
 {
-	error_count++;
+	error_unrecognized(yytext);
 }
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 342 "demo.l"
+#line 384 "demo.l"
 ECHO;
 	YY_BREAK
-#line 1561 "lex.yy.c"
+#line 1601 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2562,5 +2602,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 342 "demo.l"
+#line 384 "demo.l"
 
