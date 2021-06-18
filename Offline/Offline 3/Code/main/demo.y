@@ -2163,48 +2163,51 @@ factor: variable {
                 {
                     $$->setHelperType("NULL");
                     error_not_function($1->key);
-                    break;
                 }
-
-                $$->setHelperType(ret_symbol->var_type);
-
-                if(ret_symbol->isFunctionDeclaration) // only declared , no definition
+                else
                 {
-                    error_function_not_implemented();
-                }
-                else // other errors
-                {
-                    // printing function param_list
-                    // cout<<"OG Param : ";
-                    // for(auto s:ret_symbol->param_v)
-                    // {
-                    //     cout<<s<<" , ";
-                    // }
-                    // cout<<endl;
+                    $$->setHelperType(ret_symbol->var_type);
 
-                    // // printing argument_list
-                    // cout<<"Called Args : ";
-                    // for(auto s:$3->param_v)
-                    // {
-                    //     cout<<s<<" , ";
-                    // }
-                    // cout<<endl;
-
-                    if(ret_symbol->param_v.size() != $3->param_v.size())
+                    if(ret_symbol->isFunctionDeclaration) // only declared , no definition
                     {
-                        error_function_parameter_number(ret_symbol->key);
+                        error_function_not_implemented();
                     }
-                    else
+                    else // other errors
                     {
-                        for(int i=0;i<ret_symbol->param_v.size();i++)
+                        // printing function param_list
+                        // cout<<"OG Param : ";
+                        // for(auto s:ret_symbol->param_v)
+                        // {
+                        //     cout<<s<<" , ";
+                        // }
+                        // cout<<endl;
+
+                        // // printing argument_list
+                        // cout<<"Called Args : ";
+                        // for(auto s:$3->param_v)
+                        // {
+                        //     cout<<s<<" , ";
+                        // }
+                        // cout<<endl;
+
+                        if(ret_symbol->param_v.size() != $3->param_v.size())
                         {
-                            if(!is_param_typecast_ok(ret_symbol->param_v[i],$3->param_v[i])){
-                                error_function_parameter_type(i+1,ret_symbol->key);
-                                break;
+                            error_function_parameter_number(ret_symbol->key);
+                        }
+                        else
+                        {
+                            for(int i=0;i<ret_symbol->param_v.size();i++)
+                            {
+                                if(!is_param_typecast_ok(ret_symbol->param_v[i],$3->param_v[i])){
+                                    error_function_parameter_type(i+1,ret_symbol->key);
+                                    break;
+                                }
                             }
                         }
                     }
                 }
+
+ 
             }
 
             print_log_text($$->text);

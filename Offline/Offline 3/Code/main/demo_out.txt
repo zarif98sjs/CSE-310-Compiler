@@ -1,2 +1,0 @@
-int ---- NULL
-float ---- NULL
