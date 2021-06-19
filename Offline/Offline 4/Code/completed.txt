@@ -1,0 +1,7 @@
+1. variable declaration (witout array) :: declaration_list
+2. variable assignment (witout array) :: ASSIGNOP
+3. + - :: ADDOP
+4. * / % :: MULOP
+5. < <= > >= == != :: RELOP
+6. && || :: LOGICOP
+__. printf

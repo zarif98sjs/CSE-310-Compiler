@@ -1,30 +1,38 @@
 Line 1: type_specifier : INT
 Line 1: parameters : 
-Line 3: type_specifier : INT
-Line 3: declaration_list : ID
+Line 2: type_specifier : INT
+Line 2: declaration_list : ID
 x
-Line 3: var_declaration : type_specifier declaration_list SEMICOLON
-Line 3: statement : var_declaration
-Line 3: statements : statement
-Line 4: variable : ID
+Line 2: declaration_list : declaration_list COMMA ID
+y
+Line 2: declaration_list : declaration_list COMMA ID
+z
+Line 2: var_declaration : type_specifier declaration_list SEMICOLON
+Line 2: statement : var_declaration
+Line 2: statements : statement
+Line 3: variable : ID
 x
-Line 4: factor : CONST_INT
-10
-Line 4: unary_expression : factor
-Line 4: term : unary_expression
-Line 4: simple_expression : term
-Line 4: factor : CONST_INT
-10
-Line 4: unary_expression : factor
-Line 4: term : unary_expression
-Line 4: simple_expression : simple_expression ADDOP term
-Line 4: rel_expression : simple_expression
-Line 4: logic_expression : rel_expression
-Line 4: expression : variable ASSIGNOP logic_expression
+Line 3: factor : CONST_INT
+2
+Line 3: unary_expression : factor
+Line 3: term : unary_expression
+Line 3: simple_expression : term
+Line 3: rel_expression : simple_expression
+Line 3: logic_expression : rel_expression
+Line 3: factor : CONST_INT
+3
+Line 3: unary_expression : factor
+Line 3: term : unary_expression
+Line 3: simple_expression : term
+Line 3: rel_expression : simple_expression
+Line 3: logic_expression : rel_expression LOGICOP rel_expression
+Line 3: expression : variable ASSIGNOP logic_expression
 
 
 ScopeTable # 2
- 0 --> < x , ID , 20>
+ 0 --> < x , ID , 1>
+ 1 --> < y , ID , -1>
+ 2 --> < z , ID , -1>
 
 
 
@@ -32,14 +40,19 @@ ScopeTable # 1
  26 --> < main , ID>
 
 
-Line 4: expression_statement : expression SEMICOLON
-Line 4: statement : expression_statement
+Line 3: expression_statement : expression SEMICOLON
+Line 3: statement : expression_statement
+Line 3: statements : statements statement
+Line 4: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+x
 Line 4: statements : statements statement
 Line 5: compound_statement : LCURL statements RCURL
 
 
 ScopeTable # 2
- 0 --> < x , ID , 20>
+ 0 --> < x , ID , 1>
+ 1 --> < y , ID , -1>
+ 2 --> < z , ID , -1>
 
 
 

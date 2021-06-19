@@ -385,6 +385,15 @@ char *newTemp()
 }
 
 
+string getJumpText(string relop)
+{
+    if(relop=="<") return "jl";
+    if(relop=="<=") return "jle";
+    if(relop==">") return "jg";
+    if(relop==">=") return "jge";
+    if(relop=="==") return "je";
+    if(relop=="==") return "jne";
+}
 
 
 %}
@@ -1688,7 +1697,8 @@ statement: var_declaration {
 
             print_log_text($$->text);
 
-            $$->code = $1->code;
+            $$->code = "; "+$$->text+"\n";
+            $$->code += $1->code;
 
             erm_h($1);
         }
@@ -1791,7 +1801,8 @@ statement: var_declaration {
                 $$->setHelperType("NULL");
             }
 
-            $$->code = "MOV AX,"+$3->key+"\n";
+            $$->code = "\n; "+$$->text+"\n";
+            $$->code += "MOV AX,"+$3->key+"\n";
             $$->code += "MOV FOR_PRINT,AX\n";
             $$->code += "CALL OUTPUT";
             
@@ -1936,6 +1947,9 @@ variable: ID {
                 // update vector : push up
                 $$->HelperType = $1->HelperType;
 
+                $$->code = $1->code;
+                $$->tempVar = $1->tempVar;
+
                 print_log_text($$->text);
 
                 erm_h($1);
@@ -2031,6 +2045,61 @@ logic_expression: rel_expression {
 
                 print_log_text($$->text);
 
+                if($2->key == "&&")
+                {
+                    // code for &&
+                    $$->code = $1->code+"\n";
+                    $$->code += $3->code+"\n";
+                    $$->code += "CMP "+$1->tempVar+",0\n";
+
+                    string tempL1 = newLabel();
+                    string tempL2 = newLabel();
+
+                    $$->code += "JE "+tempL1+"\n";
+
+                    $$->code += "CMP "+$3->tempVar+",0\n";
+                    $$->code += "JE "+tempL1+"\n";
+
+                    string tempVar = newTemp();
+
+                    $$->code += "MOV "+tempVar+",1\n";
+                    $$->code += "JMP "+tempL2+"\n";
+                    $$->code += tempL1+":\n";
+
+                    $$->code += "MOV "+tempVar+",0\n";
+                    $$->code += tempL2+":\n";
+
+
+                    $$->tempVar = tempVar;
+                }
+                else if($2->key == "||")
+                {
+                    // code for ||
+                    $$->code = $1->code+"\n";
+                    $$->code += $3->code+"\n";
+                    $$->code += "CMP "+$1->tempVar+",0\n";
+
+                    string tempL1 = newLabel();
+                    string tempL2 = newLabel();
+
+                    $$->code += "JNE "+tempL1+"\n";
+
+                    $$->code += "CMP "+$3->tempVar+",0\n";
+                    $$->code += "JNE "+tempL1+"\n";
+
+                    string tempVar = newTemp();
+
+                    $$->code += "MOV "+tempVar+",0\n";
+                    $$->code += "JMP "+tempL2+"\n";
+                    $$->code += tempL1+":\n";
+
+                    $$->code += "MOV "+tempVar+",1\n";
+                    $$->code += tempL2+":\n";
+
+
+                    $$->tempVar = tempVar;
+                }
+
                 erm_h($1); erm_h($3);
                 erm_s($2);
             }	
@@ -2086,6 +2155,27 @@ rel_expression: simple_expression {
                 {
                     $$->setHelperType("NULL");
                 }
+
+                string jumpText = getJumpText($2->key);
+
+                // code 
+                $$->code = $1->code+"\n";
+                $$->code += $3->code+"\n";
+                $$->code += "MOV AX,"+$1->tempVar+"\n";
+                $$->code += "CMP AX,"+$3->tempVar+"\n";
+
+                string tempVar = newTemp();
+                string tempL1 = newLabel();
+                string tempL2 = newLabel();
+
+                $$->code += jumpText+" "+tempL1+"\n";
+                $$->code += "MOV "+tempVar+",0"+"\n";
+                $$->code += "JMP "+tempL2+"\n";
+                $$->code += tempL1+":\n";
+                $$->code += "MOV "+tempVar+",1"+"\n";
+                $$->code += tempL2+":\n";
+
+                $$->tempVar = tempVar;
 
                 print_log_text($$->text);
 
@@ -2148,16 +2238,34 @@ simple_expression: term {
 
                     print_log_text($$->text);
 
-                    // code
-                    $$->code = $1->code+"\n";
-                    $$->code += $3->code+"\n";
-                    $$->code += "MOV AX,"+$1->tempVar+"\n";
-                    $$->code += "ADD AX,"+$3->tempVar+"\n";
+                    if($2->key=="+")
+                    {
+                        // code for +
+                        $$->code = $1->code+"\n";
+                        $$->code += $3->code+"\n";
+                        $$->code += "MOV AX,"+$1->tempVar+"\n";
+                        $$->code += "ADD AX,"+$3->tempVar+"\n";
 
-                    string tempVar = newTemp();
+                        string tempVar = newTemp();
 
-                    $$->code += "MOV "+tempVar+",AX";
-                    $$->tempVar = tempVar;
+                        $$->code += "MOV "+tempVar+",AX";
+                        $$->tempVar = tempVar;
+                    }
+                    else
+                    {
+                        // code for -
+                        $$->code = $1->code+"\n";
+                        $$->code += $3->code+"\n";
+                        $$->code += "MOV AX,"+$1->tempVar+"\n";
+                        $$->code += "SUB AX,"+$3->tempVar+"\n";
+
+                        string tempVar = newTemp();
+
+                        $$->code += "MOV "+tempVar+",AX";
+                        $$->tempVar = tempVar;
+                    }
+
+                    
 
                     erm_h($1); erm_h($3);
                     erm_s($2);
@@ -2210,6 +2318,19 @@ term:	unary_expression {
                     else{
                         $$->setHelperType("int");
                         // cout<<"HERERE"<<endl;
+
+                        // code
+                        $$->code = $1->code+"\n";
+                        $$->code += $3->code+"\n";
+                        $$->code += "MOV AX,"+$1->tempVar+"\n";
+                        $$->code += "CWD\n";
+                        $$->code += "IDIV "+$3->tempVar+"\n";
+
+                        string tempVar = newTemp();
+
+                        $$->code += "MOV "+tempVar+",DX";
+                        $$->tempVar = tempVar;
+
                     }
                 }
             }
@@ -2237,6 +2358,17 @@ term:	unary_expression {
                 {
                     $$->setHelperType("NULL");
                 }
+
+                // code
+                $$->code = $1->code+"\n";
+                $$->code += $3->code+"\n";
+                $$->code += "MOV AX,"+$1->tempVar+"\n";
+                $$->code += "IMUL "+$3->tempVar+"\n";
+
+                string tempVar = newTemp();
+
+                $$->code += "MOV "+tempVar+",AX";
+                $$->tempVar = tempVar;
             }
 
             print_log_text($$->text);
@@ -2392,6 +2524,9 @@ factor: variable {
             $$->text += ")";
 
             $$->HelperType = $2->HelperType;
+
+            $$->code = $2->code;
+            $$->tempVar = $2->tempVar;
 
             print_log_text($$->text);
 

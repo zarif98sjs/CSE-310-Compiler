@@ -36,60 +36,64 @@ x
 
 Line 3: factor : CONST_INT
 
-102
+3
 
 Line 3: unary_expression : factor
 
-102
+3
 
 Line 3: term : unary_expression
 
-102
+3
 
 Line 3: simple_expression : term
 
-102
-
-Line 3: factor : CONST_INT
-
-12
-
-Line 3: unary_expression : factor
-
-12
-
-Line 3: term : unary_expression
-
-12
-
-Line 3: simple_expression : simple_expression ADDOP term
-
-102+12
+3
 
 Line 3: rel_expression : simple_expression
 
-102+12
+3
 
-Line 3: logic_expression : rel_expression
+Line 3: factor : CONST_INT
 
-102+12
+4
+
+Line 3: unary_expression : factor
+
+4
+
+Line 3: term : unary_expression
+
+4
+
+Line 3: simple_expression : term
+
+4
+
+Line 3: rel_expression : simple_expression
+
+4
+
+Line 3: logic_expression : rel_expression LOGICOP rel_expression
+
+3&&4
 
 Line 3: expression : variable ASSIGNOP logic_expression
 
-x=102+12
+x=3&&4
 
 Line 3: expression_statement : expression SEMICOLON
 
-x=102+12;
+x=3&&4;
 
 Line 3: statement : expression_statement
 
-x=102+12;
+x=3&&4;
 
 Line 3: statements : statements statement
 
 int x,y,z;
-x=102+12;
+x=3&&4;
 
 Line 4: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
 
@@ -98,14 +102,14 @@ printf(x);
 Line 4: statements : statements statement
 
 int x,y,z;
-x=102+12;
+x=3&&4;
 printf(x);
 
 Line 5: compound_statement : LCURL statements RCURL
 
 {
 int x,y,z;
-x=102+12;
+x=3&&4;
 printf(x);
 }
 
@@ -121,7 +125,7 @@ Line 5: func_definition : type_specifier ID LPAREN RPAREN compound_statement
 
 int main(){
 int x,y,z;
-x=102+12;
+x=3&&4;
 printf(x);
 }
 
@@ -129,7 +133,7 @@ Line 5: unit : func_definition
 
 int main(){
 int x,y,z;
-x=102+12;
+x=3&&4;
 printf(x);
 }
 
@@ -137,7 +141,7 @@ Line 5: program : unit
 
 int main(){
 int x,y,z;
-x=102+12;
+x=3&&4;
 printf(x);
 }
 

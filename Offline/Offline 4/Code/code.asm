@@ -17,15 +17,27 @@ t2 dw ?
 
 .CODE
 MAIN PROC
+MOV AX, @DATA 
+MOV DS, AX
 
 
-MOV t0,102
-MOV t1,12
-MOV AX,t0
-ADD AX,t1
-MOV t2,AX
+; x=3&&4;
+MOV t0,3
+MOV t1,4
+CMP t0,0
+JE L0
+CMP t1,0
+JE L0
+MOV t2,1
+JMP L1
+L0:
+MOV t2,0
+L1:
+
 MOV AX,t2
 MOV x,AX
+
+; printf(x);
 MOV AX,x
 MOV FOR_PRINT,AX
 CALL OUTPUT

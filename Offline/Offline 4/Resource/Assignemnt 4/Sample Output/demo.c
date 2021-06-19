@@ -1,5 +1,5 @@
-int main()
-{
-    int x;
-    x = 10+10;
+int main(){
+	int x,y,z;
+	x = 2||3;
+	println(x);
 }

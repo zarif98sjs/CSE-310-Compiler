@@ -1,5 +1,5 @@
 int main(){
 	int x,y,z;
-	x = 102+12;
+	x = 3&&4;
 	printf(x);
 }

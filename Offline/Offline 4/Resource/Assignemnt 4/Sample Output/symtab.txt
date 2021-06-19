@@ -1,7 +1,9 @@
 Line no 5
 
 ScopeTable # 2
- 0 --> < x , ID , 20>
+ 0 --> < x , ID , 1>
+ 1 --> < y , ID , -1>
+ 2 --> < z , ID , -1>
 
 
 
