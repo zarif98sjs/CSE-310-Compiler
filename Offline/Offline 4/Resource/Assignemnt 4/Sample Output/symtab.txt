@@ -1,0 +1,11 @@
+Line no 5
+
+ScopeTable # 2
+ 0 --> < x , ID , 20>
+
+
+
+ScopeTable # 1
+ 26 --> < main , ID>
+
+

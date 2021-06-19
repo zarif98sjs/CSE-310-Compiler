@@ -1,0 +1,8 @@
+
+
+ScopeTable # 1
+ 26 --> < main , ID>
+
+
+Total lines: 4
+Total errors: 0
