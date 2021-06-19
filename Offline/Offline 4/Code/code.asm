@@ -21,21 +21,37 @@ MOV AX, @DATA
 MOV DS, AX
 
 
-; x=3&&4;
-MOV t0,3
-MOV t1,4
-CMP t0,0
-JE L0
-CMP t1,0
-JE L0
-MOV t2,1
+; x=4;
+MOV t0,4
+MOV AX,t0
+MOV x,AX
+; while(x>0){printf(x);x--;}
+L2:
+; x>0
+
+MOV t1,0
+MOV AX,x
+CMP AX,t1
+jg L0
+MOV t2,0
 JMP L1
 L0:
-MOV t2,0
+MOV t2,1
 L1:
 
-MOV AX,t2
-MOV x,AX
+; check while loop condition
+CMP t2,0
+JE L3
+
+; printf(x);
+MOV AX,x
+MOV FOR_PRINT,AX
+CALL OUTPUT
+; x--;
+DEC x
+JMP L2
+L3:
+
 
 ; printf(x);
 MOV AX,x

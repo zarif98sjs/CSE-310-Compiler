@@ -13,19 +13,24 @@ main proc
 mov ax,@data
 mov ds,ax
 
-mov t0,2
-mov t1,3
-cmp t0,0
-jne L1
-cmp t1,0
-jne L1
+mov t0,4
+mov ax,t0
+mov x2,ax
+L3:
+mov t1,0
+mov ax, x2
+cmp ax, t1
+jg L1
 mov t2,0
 jmp L2
 L1:
 mov t2,1
 L2:
-mov ax,t2
-mov x2,ax
+cmp t2,0
+je L4
+dec x2
+jmp L3
+L4:
 mov ax,x2
 call OUTDEC
 L0:

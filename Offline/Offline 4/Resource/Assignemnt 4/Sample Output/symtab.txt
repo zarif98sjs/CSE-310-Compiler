@@ -1,7 +1,24 @@
-Line no 5
+Line no 7
+
+ScopeTable # 3
+
+
 
 ScopeTable # 2
- 0 --> < x , ID , 1>
+ 0 --> < x , ID , 3>
+ 1 --> < y , ID , -1>
+ 2 --> < z , ID , -1>
+
+
+
+ScopeTable # 1
+ 26 --> < main , ID>
+
+
+Line no 9
+
+ScopeTable # 2
+ 0 --> < x , ID , 3>
  1 --> < y , ID , -1>
  2 --> < z , ID , -1>
 

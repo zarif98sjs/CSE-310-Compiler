@@ -476,7 +476,8 @@ program: program unit  {
             print_log_text($$->text);
 
             // code
-            $$->code = $1->code; 
+            $$->code = $1->code;
+            $$->tempVar = $1->tempVar;
 
             erm_h($1); erm_h($2);
         }
@@ -490,6 +491,7 @@ program: program unit  {
 
             // code
             $$->code = $1->code;
+            $$->tempVar = $1->tempVar;
 
             erm_h($1);
         }
@@ -505,6 +507,7 @@ unit: var_declaration {
 
             // code
             $$->code = $1->code;
+            $$->tempVar = $1->tempVar;
 
             erm_h($1); 
         }
@@ -518,6 +521,7 @@ unit: var_declaration {
 
             // code
             $$->code = $1->code;
+            $$->tempVar = $1->tempVar;
 
             erm_h($1); 
         }
@@ -531,6 +535,7 @@ unit: var_declaration {
 
             // code
             $$->code = $1->code;
+            $$->tempVar = $1->tempVar;
 
             erm_h($1); 
         }
@@ -1130,6 +1135,7 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
 
                 // code
                 $$->code = $3->code;
+                $$->tempVar = $3->tempVar;
 
                 // EXIT
                 sym_tab->print_all_scope(logout);
@@ -1618,6 +1624,7 @@ statements: statement {
             print_log_text($$->text);
 
             $$->code = $1->code;
+            $$->tempVar = $1->tempVar;
 
             erm_h($1);  
         }
@@ -1660,6 +1667,7 @@ statement: var_declaration {
             print_log_text($$->text);
 
             $$->code = $1->code;
+            $$->tempVar = $1->tempVar;
 
             erm_h($1);
         }
@@ -1673,6 +1681,7 @@ statement: var_declaration {
             error_nested_function();
 
             $$->code = $1->code;
+            $$->tempVar = $1->tempVar;
 
             erm_h($1);
       }
@@ -1686,6 +1695,7 @@ statement: var_declaration {
             error_nested_function();
 
             $$->code = $1->code;
+            $$->tempVar = $1->tempVar;
 
             erm_h($1);
       }
@@ -1700,6 +1710,8 @@ statement: var_declaration {
             $$->code = "; "+$$->text+"\n";
             $$->code += $1->code;
 
+            $$->tempVar = $1->tempVar;
+
             erm_h($1);
         }
 	  | compound_statement {
@@ -1711,6 +1723,7 @@ statement: var_declaration {
             print_log_text($$->text);
 
             $$->code = $1->code;
+            $$->tempVar = $1->tempVar;
 
             erm_h($1);
         }
@@ -1777,6 +1790,28 @@ statement: var_declaration {
             $$->text += $5->text;
 
             print_log_text($$->text);
+
+            string tempL1 = newLabel();
+            string tempL2 = newLabel();
+
+            string to_print = $$->text;
+            to_print.erase(remove(to_print.begin(), to_print.end(), '\n'), to_print.end());
+
+            $$->code = "; "+to_print+"\n";
+
+            $$->code += tempL1+":\n"; // loop starting label
+
+            $$->code += "; "+$3->text+"\n";
+            $$->code += $3->code+"\n"; // eval expression
+
+            $$->code += "; check while loop condition\n";
+            $$->code += "CMP "+$3->tempVar+",0\n"; // check if need to exit
+            $$->code += "JE "+tempL2+"\n"; // check if need to exit
+
+            $$->code += $5->code+"\n";  // exec statement
+
+            $$->code += "JMP "+tempL1+"\n"; // loop
+            $$->code += tempL2+":\n"; // loop ending label
 
             erm_h($3); erm_h($5); 
         }
@@ -1857,6 +1892,7 @@ expression_statement: SEMICOLON	{
                     print_log_text($$->text);
 
                     $$->code = $1->code;
+                    $$->tempVar = $1->tempVar;
 
                     erm_h($1);
                 }
@@ -2437,6 +2473,9 @@ factor: variable {
 
             print_log_text($$->text);
 
+            $$->code = $1->code;
+            $$->tempVar = $1->text; // no operation , so tempVar is realVar
+
             erm_h($1);
         }
 	| ID LPAREN argument_list RPAREN {
@@ -2587,6 +2626,8 @@ factor: variable {
 
             print_log_text($$->text);
 
+            $$->code = "INC "+$1->text;
+
             erm_h($1);
         }
 	| variable DECOP {
@@ -2597,6 +2638,8 @@ factor: variable {
             $$->text += "--";
 
             print_log_text($$->text);
+
+            $$->code = "DEC "+$1->text;
 
             erm_h($1);
         }
@@ -2612,6 +2655,9 @@ argument_list: arguments {
                     $$->param_v = $1->param_v; 
 
                     print_log_text($$->text);
+
+                    $$->code = $1->code;
+                    $$->tempVar = $1->tempVar;
 
                     erm_h($1);
                 }
@@ -2653,6 +2699,9 @@ arguments: arguments COMMA logic_expression {
                 $$->param_v.push_back($1->HelperType);
 
                 print_log_text($$->text);
+
+                $$->code = $1->code;
+                $$->tempVar = $1->tempVar;
 
                 erm_h($1);
             }

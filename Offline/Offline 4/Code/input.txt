@@ -1,5 +1,10 @@
 int main(){
 	int x,y,z;
-	x = 3&&4;
+	x = 4;
+    while (x>0)
+    {
+		printf(x);
+        x--;
+    }
 	printf(x);
 }
