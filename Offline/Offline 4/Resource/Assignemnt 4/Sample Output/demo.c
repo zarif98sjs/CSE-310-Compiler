@@ -1,9 +1,14 @@
 int main(){
-	int x,y,z;
-    x = 4;
-    while (x>0)
-    {
-        x--;
+    int a,b,c,i;
+    b=0;
+	c=1;
+    for(i=0;i<4;i++){
+        a=3;
+        while(a--){
+            b++;
+        }
     }
-	println(x);
+    println(a);
+    println(b);
+    println(c);
 }

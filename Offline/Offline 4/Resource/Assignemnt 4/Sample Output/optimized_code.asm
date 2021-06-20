@@ -1,37 +1,61 @@
 .MODEL small
 .stack 100H
 .DATA
-x2 dw ?
-y2 dw ?
-z2 dw ?
+a2 dw ?
+b2 dw ?
+c2 dw ?
+i2 dw ?
 t0 dw ?
 t1 dw ?
 t2 dw ?
+t3 dw ?
+t4 dw ?
+t5 dw ?
 
 .CODE
 main proc
 mov ax,@data
 mov ds,ax
 
-mov t0,4
+mov t0,0
 mov ax,t0
-mov x2,ax
-L3:
-mov t1,0
-mov ax, x2
-cmp ax, t1
-jg L1
+mov b2,ax
+mov t1,1
+mov ax,t1
+mov c2,ax
 mov t2,0
+mov ax,t2
+mov i2,ax
+L5:
+mov t3,4
+mov ax, i2
+cmp ax, t3
+jl L1
+mov t4,0
 jmp L2
 L1:
-mov t2,1
+mov t4,1
 L2:
-cmp t2,0
+cmp t4,0
+je L6
+mov t5,3
+mov ax,t5
+mov a2,ax
+L3:
+dec a2
+cmp a2,0
 je L4
-dec x2
+inc b2
 jmp L3
 L4:
-mov ax,x2
+inc i2
+jmp L5
+L6:
+mov ax,a2
+call OUTDEC
+mov ax,b2
+call OUTDEC
+mov ax,c2
 call OUTDEC
 L0:
 

@@ -2,18 +2,20 @@ Line 1: type_specifier : INT
 Line 1: parameters : 
 Line 2: type_specifier : INT
 Line 2: declaration_list : ID
-x
+a
 Line 2: declaration_list : declaration_list COMMA ID
-y
+b
 Line 2: declaration_list : declaration_list COMMA ID
-z
+c
+Line 2: declaration_list : declaration_list COMMA ID
+i
 Line 2: var_declaration : type_specifier declaration_list SEMICOLON
 Line 2: statement : var_declaration
 Line 2: statements : statement
 Line 3: variable : ID
-x
+b
 Line 3: factor : CONST_INT
-4
+0
 Line 3: unary_expression : factor
 Line 3: term : unary_expression
 Line 3: simple_expression : term
@@ -23,9 +25,10 @@ Line 3: expression : variable ASSIGNOP logic_expression
 
 
 ScopeTable # 2
- 0 --> < x , ID , 4>
- 1 --> < y , ID , -1>
- 2 --> < z , ID , -1>
+ 7 --> < a , ID , -1>
+ 8 --> < b , ID , 0>
+ 9 --> < c , ID , -1>
+ 15 --> < i , ID , -1>
 
 
 
@@ -37,32 +40,91 @@ Line 3: expression_statement : expression SEMICOLON
 Line 3: statement : expression_statement
 Line 3: statements : statements statement
 Line 4: variable : ID
-x
-Line 4: factor : variable
-Line 4: unary_expression : factor
-Line 4: term : unary_expression
-Line 4: simple_expression : term
+c
 Line 4: factor : CONST_INT
-0
+1
 Line 4: unary_expression : factor
 Line 4: term : unary_expression
 Line 4: simple_expression : term
-Line 4: rel_expression : simple_expression RELOP simple_expression
+Line 4: rel_expression : simple_expression
 Line 4: logic_expression : rel_expression
-Line 4: expression : logic expression
+Line 4: expression : variable ASSIGNOP logic_expression
+
+
+ScopeTable # 2
+ 7 --> < a , ID , -1>
+ 8 --> < b , ID , 0>
+ 9 --> < c , ID , 1>
+ 15 --> < i , ID , -1>
+
+
+
+ScopeTable # 1
+ 26 --> < main , ID>
+
+
+Line 4: expression_statement : expression SEMICOLON
+Line 4: statement : expression_statement
+Line 4: statements : statements statement
+Line 5: variable : ID
+i
+Line 5: factor : CONST_INT
+0
+Line 5: unary_expression : factor
+Line 5: term : unary_expression
+Line 5: simple_expression : term
+Line 5: rel_expression : simple_expression
+Line 5: logic_expression : rel_expression
+Line 5: expression : variable ASSIGNOP logic_expression
+
+
+ScopeTable # 2
+ 7 --> < a , ID , -1>
+ 8 --> < b , ID , 0>
+ 9 --> < c , ID , 1>
+ 15 --> < i , ID , 0>
+
+
+
+ScopeTable # 1
+ 26 --> < main , ID>
+
+
+Line 5: expression_statement : expression SEMICOLON
+Line 5: variable : ID
+i
+Line 5: factor : variable
+Line 5: unary_expression : factor
+Line 5: term : unary_expression
+Line 5: simple_expression : term
+Line 5: factor : CONST_INT
+4
+Line 5: unary_expression : factor
+Line 5: term : unary_expression
+Line 5: simple_expression : term
+Line 5: rel_expression : simple_expression RELOP simple_expression
+Line 5: logic_expression : rel_expression
+Line 5: expression : logic expression
+Line 5: expression_statement : expression SEMICOLON
+Line 5: variable : ID
+i
+Line 5: factor : variable INCOP
+Line 5: unary_expression : factor
+Line 5: term : unary_expression
+Line 5: simple_expression : term
+Line 5: rel_expression : simple_expression
+Line 5: logic_expression : rel_expression
+Line 5: expression : logic expression
 Line 6: variable : ID
-x
-Line 6: factor : variable DECOP
+a
+Line 6: factor : CONST_INT
+3
 Line 6: unary_expression : factor
 Line 6: term : unary_expression
 Line 6: simple_expression : term
 Line 6: rel_expression : simple_expression
 Line 6: logic_expression : rel_expression
-Line 6: expression : logic expression
-Line 6: expression_statement : expression SEMICOLON
-Line 6: statement : expression_statement
-Line 6: statements : statement
-Line 7: compound_statement : LCURL statements RCURL
+Line 6: expression : variable ASSIGNOP logic_expression
 
 
 ScopeTable # 3
@@ -70,9 +132,10 @@ ScopeTable # 3
 
 
 ScopeTable # 2
- 0 --> < x , ID , 3>
- 1 --> < y , ID , -1>
- 2 --> < z , ID , -1>
+ 7 --> < a , ID , 3>
+ 8 --> < b , ID , 0>
+ 9 --> < c , ID , 1>
+ 15 --> < i , ID , 1>
 
 
 
@@ -80,19 +143,46 @@ ScopeTable # 1
  26 --> < main , ID>
 
 
-Line 7: statement : compound_statement
-Line 7: statement : WHILE LPAREN expression RPAREN statement
-Line 7: statements : statements statement
-Line 8: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
-x
-Line 8: statements : statements statement
+Line 6: expression_statement : expression SEMICOLON
+Line 6: statement : expression_statement
+Line 6: statements : statement
+Line 7: variable : ID
+a
+Line 7: factor : variable DECOP
+Line 7: unary_expression : factor
+Line 7: term : unary_expression
+Line 7: simple_expression : term
+Line 7: rel_expression : simple_expression
+Line 7: logic_expression : rel_expression
+Line 7: expression : logic expression
+Line 8: variable : ID
+b
+Line 8: factor : variable INCOP
+Line 8: unary_expression : factor
+Line 8: term : unary_expression
+Line 8: simple_expression : term
+Line 8: rel_expression : simple_expression
+Line 8: logic_expression : rel_expression
+Line 8: expression : logic expression
+Line 8: expression_statement : expression SEMICOLON
+Line 8: statement : expression_statement
+Line 8: statements : statement
 Line 9: compound_statement : LCURL statements RCURL
 
 
+ScopeTable # 4
+
+
+
+ScopeTable # 3
+
+
+
 ScopeTable # 2
- 0 --> < x , ID , 3>
- 1 --> < y , ID , -1>
- 2 --> < z , ID , -1>
+ 7 --> < a , ID , 2>
+ 8 --> < b , ID , 1>
+ 9 --> < c , ID , 1>
+ 15 --> < i , ID , 1>
 
 
 
@@ -100,8 +190,57 @@ ScopeTable # 1
  26 --> < main , ID>
 
 
-Line 9: func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
+Line 9: statement : compound_statement
+Line 9: statement : WHILE LPAREN expression RPAREN statement
+Line 9: statements : statements statement
+Line 10: compound_statement : LCURL statements RCURL
+
+
+ScopeTable # 3
+
+
+
+ScopeTable # 2
+ 7 --> < a , ID , 2>
+ 8 --> < b , ID , 1>
+ 9 --> < c , ID , 1>
+ 15 --> < i , ID , 1>
+
+
+
+ScopeTable # 1
+ 26 --> < main , ID>
+
+
+Line 10: statement : compound_statement
+Line 10: statement : FOR LPAREN expression_statement expression_statement expression RPAREN statement
+Line 10: statements : statements statement
+Line 11: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+a
+Line 11: statements : statements statement
+Line 12: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+b
+Line 12: statements : statements statement
+Line 13: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+c
+Line 13: statements : statements statement
+Line 14: compound_statement : LCURL statements RCURL
+
+
+ScopeTable # 2
+ 7 --> < a , ID , 2>
+ 8 --> < b , ID , 1>
+ 9 --> < c , ID , 1>
+ 15 --> < i , ID , 1>
+
+
+
+ScopeTable # 1
+ 26 --> < main , ID>
+
+
+Line 14: func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 main
-Line 9: unit : func_definition
-Line 9: program : unit
-Line 8: start : program
+Line 14: unit : func_definition
+Line 14: program : unit
+Line 14: start : program

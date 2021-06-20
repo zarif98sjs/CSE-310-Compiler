@@ -4,5 +4,5 @@ ScopeTable # 1
  26 --> < main , ID>
 
 
-Total lines: 8
+Total lines: 14
 Total errors: 0

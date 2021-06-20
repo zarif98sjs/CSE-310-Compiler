@@ -1731,6 +1731,7 @@ statement: var_declaration {
             print_grammar_rule("statement","FOR LPAREN expression_statement expression_statement expression RPAREN statement");
 
             $$ = new Helper();
+
             // update text
             $$->text = "for";
             $$->text += "(";
@@ -1741,6 +1742,34 @@ statement: var_declaration {
             $$->text += $7->text;
             
             print_log_text($$->text);
+
+            string tempL1 = newLabel();
+            string tempL2 = newLabel();
+
+            string to_print = $$->text;
+            to_print.erase(remove(to_print.begin(), to_print.end(), '\n'), to_print.end());
+
+            $$->code = "; "+to_print+"\n";
+
+            $$->code += $3->code+"\n";
+
+            $$->code += tempL1+":\n"; // loop starting label
+
+            $$->code += "; "+$4->text+"\n";
+            $$->code += $4->code+"\n"; // eval expression
+
+            $$->code += "; check for loop condition\n";
+            $$->code += "CMP "+$4->tempVar+",0\n"; // check if need to exit
+            $$->code += "JE "+tempL2+"\n"; // check if need to exit
+
+            $$->code += $7->code+"\n";  // exec statement
+
+            $$->code += "; "+$5->text+"\n";  // exec statement
+            $$->code += $5->code+"\n";  // exec statement
+
+            $$->code += "JMP "+tempL1+"\n"; // loop
+            $$->code += tempL2+":\n"; // loop ending label
+
 
             erm_h($3); erm_h($4); erm_h($5); erm_h($7);
         }
@@ -1879,6 +1908,7 @@ expression_statement: SEMICOLON	{
                     $$->text = ";";
 
                     print_log_text($$->text);
+
                 }		
 			| expression SEMICOLON {
                     print_grammar_rule("expression_statement","expression SEMICOLON");
@@ -1927,6 +1957,8 @@ variable: ID {
             }
 
             print_log_text($$->text);
+
+            $$->tempVar = $1->key;
 
             erm_s($1);
         }		
@@ -1983,6 +2015,7 @@ variable: ID {
                 // update vector : push up
                 $$->HelperType = $1->HelperType;
 
+                // $$->code = "; "+$1->text+"\n";
                 $$->code = $1->code;
                 $$->tempVar = $1->tempVar;
 
@@ -2627,6 +2660,7 @@ factor: variable {
             print_log_text($$->text);
 
             $$->code = "INC "+$1->text;
+            $$->tempVar = $1->tempVar;
 
             erm_h($1);
         }
@@ -2640,6 +2674,7 @@ factor: variable {
             print_log_text($$->text);
 
             $$->code = "DEC "+$1->text;
+            $$->tempVar = $1->tempVar;
 
             erm_h($1);
         }

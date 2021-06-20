@@ -1,13 +1,18 @@
-Line no 7
+Line no 9
+
+ScopeTable # 4
+
+
 
 ScopeTable # 3
 
 
 
 ScopeTable # 2
- 0 --> < x , ID , 3>
- 1 --> < y , ID , -1>
- 2 --> < z , ID , -1>
+ 7 --> < a , ID , 2>
+ 8 --> < b , ID , 1>
+ 9 --> < c , ID , 1>
+ 15 --> < i , ID , 1>
 
 
 
@@ -15,12 +20,31 @@ ScopeTable # 1
  26 --> < main , ID>
 
 
-Line no 9
+Line no 10
+
+ScopeTable # 3
+
+
 
 ScopeTable # 2
- 0 --> < x , ID , 3>
- 1 --> < y , ID , -1>
- 2 --> < z , ID , -1>
+ 7 --> < a , ID , 2>
+ 8 --> < b , ID , 1>
+ 9 --> < c , ID , 1>
+ 15 --> < i , ID , 1>
+
+
+
+ScopeTable # 1
+ 26 --> < main , ID>
+
+
+Line no 14
+
+ScopeTable # 2
+ 7 --> < a , ID , 2>
+ 8 --> < b , ID , 1>
+ 9 --> < c , ID , 1>
+ 15 --> < i , ID , 1>
 
 
 

@@ -8,12 +8,16 @@ FOR_PRINT DW ?
 MARKER DW 0DH
 DIV_RES DW ? 
 DIV_REM DW ?
-x dw ?
-y dw ?
-z dw ?
+a dw ?
+b dw ?
+c dw ?
+i dw ?
 t0 dw ?
 t1 dw ?
 t2 dw ?
+t3 dw ?
+t4 dw ?
+t5 dw ?
 
 .CODE
 MAIN PROC
@@ -21,40 +25,68 @@ MOV AX, @DATA
 MOV DS, AX
 
 
-; x=4;
-MOV t0,4
+; b=0;
+MOV t0,0
 MOV AX,t0
-MOV x,AX
-; while(x>0){printf(x);x--;}
-L2:
-; x>0
-
-MOV t1,0
-MOV AX,x
-CMP AX,t1
-jg L0
+MOV b,AX
+; c=1;
+MOV t1,1
+MOV AX,t1
+MOV c,AX
+; for(i=0;i<4;i++){a=3;while(a--){b++;}}
 MOV t2,0
+MOV AX,t2
+MOV i,AX
+L4:
+; i<4;
+
+MOV t3,4
+MOV AX,i
+CMP AX,t3
+jl L0
+MOV t4,0
 JMP L1
 L0:
-MOV t2,1
+MOV t4,1
 L1:
 
+; check for loop condition
+CMP t4,0
+JE L5
+; a=3;
+MOV t5,3
+MOV AX,t5
+MOV a,AX
+; while(a--){b++;}
+L2:
+; a--
+DEC a
 ; check while loop condition
-CMP t2,0
+CMP a,0
 JE L3
-
-; printf(x);
-MOV AX,x
-MOV FOR_PRINT,AX
-CALL OUTPUT
-; x--;
-DEC x
+; b++;
+INC b
 JMP L2
 L3:
 
+; i++
+INC i
+JMP L4
+L5:
 
-; printf(x);
-MOV AX,x
+
+; printf(a);
+MOV AX,a
+MOV FOR_PRINT,AX
+CALL OUTPUT
+
+; printf(b);
+MOV AX,b
+MOV FOR_PRINT,AX
+CALL OUTPUT
+
+; printf(c);
+MOV AX,c
 MOV FOR_PRINT,AX
 CALL OUTPUT
 
