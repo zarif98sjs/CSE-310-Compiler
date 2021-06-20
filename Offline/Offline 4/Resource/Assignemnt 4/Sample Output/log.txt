@@ -1,8 +1,9 @@
 
 
 ScopeTable # 1
+ 12 --> < f , ID>
  26 --> < main , ID>
 
 
-Total lines: 14
+Total lines: 11
 Total errors: 0
