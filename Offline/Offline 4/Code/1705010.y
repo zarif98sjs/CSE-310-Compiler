@@ -361,6 +361,13 @@ int tempCount=0;
 
 vector<string>DATA_vector;
 
+int SP_VAL = 0;
+
+void incSP()
+{
+    SP_VAL += 2;
+}
+
 char *newLabel()
 {
 	char *lb= new char[4];
@@ -380,7 +387,9 @@ char *newTemp()
 	sprintf(b,"%d", tempCount);
 	tempCount++;
 	strcat(t,b);
-    DATA_vector.push_back(newWordVariable(t));
+
+    incSP();
+
 	return t;
 }
 
@@ -392,8 +401,19 @@ string getJumpText(string relop)
     if(relop==">") return "jg";
     if(relop==">=") return "jge";
     if(relop=="==") return "je";
-    if(relop=="==") return "jne";
+    if(relop=="!=") return "jne";
 }
+
+string stk_address(int stk_offset)
+{
+    return "[bp-"+to_string(stk_offset)+"]";
+}
+
+string stk_address_typecast(int stk_offset)
+{
+    return "WORD PTR[bp-"+to_string(stk_offset)+"]";
+}
+
 
 
 %}
@@ -402,22 +422,17 @@ string getJumpText(string relop)
 
 %union{
     SymbolInfo* symbol_info;
-    // SymbolInfo* symbol_info_vec[100];
     string* symbol_info_str;
     string* temp_str;
-    Helper* helper;
-    // int ival;
-    // double dval;
+    Helper* helper;;
 }
 
 
 %token IF ELSE LOWER_THAN_ELSE FOR WHILE DO BREAK CHAR DOUBLE RETURN SWITCH CASE DEFAULT CONTINUE PRINTLN INCOP DECOP ASSIGNOP NOT LPAREN RPAREN LCURL RCURL LTHIRD RTHIRD COMMA SEMICOLON
 %token <symbol_info> ID INT FLOAT VOID ADDOP MULOP RELOP LOGICOP CONST_INT CONST_FLOAT ERROR_FLOAT
-// %token <ival> CONST_INT
-// %token <dval> CONST_FLOAT
+
 
 %type <helper> start program unit variable var_declaration type_specifier func_declaration func_definition parameter_list
-// %type < temp_str > expression logic_expression rel_expression simple_expression term  factor argument_list arguments
 %type <helper> expression factor unary_expression term simple_expression rel_expression statement statements compound_statement logic_expression expression_statement
 %type <helper> arguments argument_list
 %type <helper> declaration_list
@@ -451,15 +466,8 @@ start: program
         codeout<<endl;
 
         codeout<<".CODE"<<endl;
-        codeout<<"MAIN PROC"<<endl;
-        codeout<<"MOV AX, @DATA \nMOV DS, AX"<<endl;
         
-
         codeout<<"\n"<<$$->code<<"\n"<<endl;
-
-        codeout<<"MOV AH,4ch \nINT 21h"<<endl;
-
-        codeout<<"MAIN ENDP"<<endl;
         
         erm_h($1);
 	}
@@ -478,6 +486,7 @@ program: program unit  {
             // code
             $$->code = $1->code;
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
 
             erm_h($1); erm_h($2);
         }
@@ -492,6 +501,7 @@ program: program unit  {
             // code
             $$->code = $1->code;
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
 
             erm_h($1);
         }
@@ -508,6 +518,7 @@ unit: var_declaration {
             // code
             $$->code = $1->code;
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
 
             erm_h($1); 
         }
@@ -521,7 +532,9 @@ unit: var_declaration {
 
             // code
             $$->code = $1->code;
+
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
 
             erm_h($1); 
         }
@@ -536,6 +549,7 @@ unit: var_declaration {
             // code
             $$->code = $1->code;
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
 
             erm_h($1); 
         }
@@ -948,7 +962,22 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_no
                 // code
 
                 // code
-                $$->code = $6->code;
+
+                $$->code = $2->key+" PROC\n";
+
+                if($2->key=="main")
+                {
+                    $$->code += "MOV AX, @DATA\nMOV DS, AX\n";
+                }
+
+                $$->code += $6->code+"\n";
+
+                if($2->key=="main")
+                {
+                    $$->code += "MOV AH,4ch\nINT 21h\n";
+                }
+
+                $$->code += $2->key+" ENDP\n";
             
                 // clear temp function params
                 is_function_now = false;
@@ -1136,6 +1165,7 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
                 // code
                 $$->code = $3->code;
                 $$->tempVar = $3->tempVar;
+                $$->stk_offset = $3->stk_offset;
 
                 // EXIT
                 sym_tab->print_all_scope(logout);
@@ -1269,12 +1299,13 @@ var_declaration: type_specifier declaration_list SEMICOLON {
                     if(el->var_type == "array")
                     {
                         el->setVarType($1->text + "_array") ; 
-                        DATA_vector.push_back(el->key+" dw"+" LENGTH"+" dup ($)");
                     }
                     else 
                     {
                         el->setVarType($1->text); 
-                        DATA_vector.push_back(newWordVariable(el->key));
+
+                        incSP();
+                        el->stk_offset = SP_VAL;
                     }
                     
                     if(!sym_tab->insert_symbol(*el)) // already present in current scope
@@ -1625,6 +1656,7 @@ statements: statement {
 
             $$->code = $1->code;
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
 
             erm_h($1);  
         }
@@ -1668,6 +1700,7 @@ statement: var_declaration {
 
             $$->code = $1->code;
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
 
             erm_h($1);
         }
@@ -1682,6 +1715,7 @@ statement: var_declaration {
 
             $$->code = $1->code;
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
 
             erm_h($1);
       }
@@ -1696,6 +1730,7 @@ statement: var_declaration {
 
             $$->code = $1->code;
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
 
             erm_h($1);
       }
@@ -1711,6 +1746,7 @@ statement: var_declaration {
             $$->code += $1->code;
 
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
 
             erm_h($1);
         }
@@ -1724,6 +1760,7 @@ statement: var_declaration {
 
             $$->code = $1->code;
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
 
             erm_h($1);
         }
@@ -1759,7 +1796,7 @@ statement: var_declaration {
             $$->code += $4->code+"\n"; // eval expression
 
             $$->code += "; check for loop condition\n";
-            $$->code += "CMP "+$4->tempVar+",0\n"; // check if need to exit
+            $$->code += "CMP "+ stk_address($4->stk_offset)+",0\n"; // check if need to exit
             $$->code += "JE "+tempL2+"\n"; // check if need to exit
 
             $$->code += $7->code+"\n";  // exec statement
@@ -1834,7 +1871,7 @@ statement: var_declaration {
             $$->code += $3->code+"\n"; // eval expression
 
             $$->code += "; check while loop condition\n";
-            $$->code += "CMP "+$3->tempVar+",0\n"; // check if need to exit
+            $$->code += "CMP "+ stk_address($3->stk_offset) +",0\n"; // check if need to exit
             $$->code += "JE "+tempL2+"\n"; // check if need to exit
 
             $$->code += $5->code+"\n";  // exec statement
@@ -1866,7 +1903,7 @@ statement: var_declaration {
             }
 
             $$->code = "\n; "+$$->text+"\n";
-            $$->code += "MOV AX,"+$3->key+"\n";
+            $$->code += "MOV AX,[bp-"+to_string(ret_symbol->stk_offset)+"]\n";
             $$->code += "MOV FOR_PRINT,AX\n";
             $$->code += "CALL OUTPUT";
             
@@ -1923,6 +1960,7 @@ expression_statement: SEMICOLON	{
 
                     $$->code = $1->code;
                     $$->tempVar = $1->tempVar;
+                    $$->stk_offset = $1->stk_offset;
 
                     erm_h($1);
                 }
@@ -1959,6 +1997,7 @@ variable: ID {
             print_log_text($$->text);
 
             $$->tempVar = $1->key;
+            $$->stk_offset = ret_symbol->stk_offset;
 
             erm_s($1);
         }		
@@ -2018,6 +2057,7 @@ variable: ID {
                 // $$->code = "; "+$1->text+"\n";
                 $$->code = $1->code;
                 $$->tempVar = $1->tempVar;
+                $$->stk_offset = $1->stk_offset;
 
                 print_log_text($$->text);
 
@@ -2051,8 +2091,9 @@ variable: ID {
 
                 // code
                 $$->code = $3->code+"\n";
-                $$->code += "MOV AX,"+$3->tempVar+"\n";
-                $$->code += "MOV "+$1->text+",AX";
+
+                $$->code += "MOV AX,[bp-"+to_string($3->stk_offset)+"]\n";
+                $$->code += "MOV WORD PTR[bp-"+to_string($1->stk_offset)+"],AX";
 
                 erm_h($1); erm_h($3);
             }	
@@ -2073,6 +2114,7 @@ logic_expression: rel_expression {
 
                 $$->code = $1->code;
                 $$->tempVar = $1->tempVar;
+                $$->stk_offset = $1->stk_offset;
 
                 erm_h($1); 
             }	
@@ -2119,54 +2161,56 @@ logic_expression: rel_expression {
                     // code for &&
                     $$->code = $1->code+"\n";
                     $$->code += $3->code+"\n";
-                    $$->code += "CMP "+$1->tempVar+",0\n";
+                    $$->code += "CMP "+ stk_address($1->stk_offset)+",0\n";
 
                     string tempL1 = newLabel();
                     string tempL2 = newLabel();
 
                     $$->code += "JE "+tempL1+"\n";
 
-                    $$->code += "CMP "+$3->tempVar+",0\n";
+                    $$->code += "CMP "+stk_address($3->stk_offset)+",0\n";
                     $$->code += "JE "+tempL1+"\n";
 
                     string tempVar = newTemp();
 
-                    $$->code += "MOV "+tempVar+",1\n";
+                    $$->tempVar = tempVar;
+                    $$->stk_offset = SP_VAL; // init
+
+                    $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",1\n";
                     $$->code += "JMP "+tempL2+"\n";
                     $$->code += tempL1+":\n";
 
-                    $$->code += "MOV "+tempVar+",0\n";
+                    $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",0\n";
                     $$->code += tempL2+":\n";
-
-
-                    $$->tempVar = tempVar;
+                    
                 }
                 else if($2->key == "||")
                 {
                     // code for ||
                     $$->code = $1->code+"\n";
                     $$->code += $3->code+"\n";
-                    $$->code += "CMP "+$1->tempVar+",0\n";
+                    $$->code += "CMP "+stk_address($1->stk_offset)+",0\n";
 
                     string tempL1 = newLabel();
                     string tempL2 = newLabel();
 
                     $$->code += "JNE "+tempL1+"\n";
 
-                    $$->code += "CMP "+$3->tempVar+",0\n";
+                    $$->code += "CMP "+stk_address($3->stk_offset)+",0\n";
                     $$->code += "JNE "+tempL1+"\n";
 
                     string tempVar = newTemp();
 
-                    $$->code += "MOV "+tempVar+",0\n";
+                    $$->tempVar = tempVar;
+                    $$->stk_offset = SP_VAL; // init
+
+                    $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",0\n";
                     $$->code += "JMP "+tempL2+"\n";
                     $$->code += tempL1+":\n";
 
-                    $$->code += "MOV "+tempVar+",1\n";
+                    $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",1\n";
                     $$->code += tempL2+":\n";
 
-
-                    $$->tempVar = tempVar;
                 }
 
                 erm_h($1); erm_h($3);
@@ -2187,6 +2231,7 @@ rel_expression: simple_expression {
 
                 $$->code = $1->code;
                 $$->tempVar = $1->tempVar;
+                $$->stk_offset = $1->stk_offset;
 
                 erm_h($1);
             }
@@ -2230,21 +2275,22 @@ rel_expression: simple_expression {
                 // code 
                 $$->code = $1->code+"\n";
                 $$->code += $3->code+"\n";
-                $$->code += "MOV AX,"+$1->tempVar+"\n";
-                $$->code += "CMP AX,"+$3->tempVar+"\n";
+                $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
+                $$->code += "CMP AX,"+stk_address($3->stk_offset)+"\n";
 
                 string tempVar = newTemp();
                 string tempL1 = newLabel();
                 string tempL2 = newLabel();
 
+                $$->tempVar = tempVar;
+                $$->stk_offset = SP_VAL;
+
                 $$->code += jumpText+" "+tempL1+"\n";
-                $$->code += "MOV "+tempVar+",0"+"\n";
+                $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",0"+"\n";
                 $$->code += "JMP "+tempL2+"\n";
                 $$->code += tempL1+":\n";
-                $$->code += "MOV "+tempVar+",1"+"\n";
+                $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",1"+"\n";
                 $$->code += tempL2+":\n";
-
-                $$->tempVar = tempVar;
 
                 print_log_text($$->text);
 
@@ -2267,6 +2313,7 @@ simple_expression: term {
 
                     $$->code = $1->code;
                     $$->tempVar = $1->tempVar;
+                    $$->stk_offset = $1->stk_offset;
 
                     erm_h($1);
             }
@@ -2312,26 +2359,30 @@ simple_expression: term {
                         // code for +
                         $$->code = $1->code+"\n";
                         $$->code += $3->code+"\n";
-                        $$->code += "MOV AX,"+$1->tempVar+"\n";
-                        $$->code += "ADD AX,"+$3->tempVar+"\n";
+                        $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
+                        $$->code += "ADD AX,"+stk_address($3->stk_offset)+"\n";
 
                         string tempVar = newTemp();
 
-                        $$->code += "MOV "+tempVar+",AX";
                         $$->tempVar = tempVar;
+                        $$->stk_offset = SP_VAL;
+
+                        $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX";
                     }
                     else
                     {
                         // code for -
                         $$->code = $1->code+"\n";
                         $$->code += $3->code+"\n";
-                        $$->code += "MOV AX,"+$1->tempVar+"\n";
-                        $$->code += "SUB AX,"+$3->tempVar+"\n";
+                        $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
+                        $$->code += "SUB AX,"+stk_address($3->stk_offset)+"\n";
 
                         string tempVar = newTemp();
 
-                        $$->code += "MOV "+tempVar+",AX";
                         $$->tempVar = tempVar;
+                        $$->stk_offset = SP_VAL;
+
+                        $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX";
                     }
 
                     
@@ -2355,6 +2406,7 @@ term:	unary_expression {
 
             $$->code = $1->code;
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
 
             erm_h($1);
     }
@@ -2391,14 +2443,17 @@ term:	unary_expression {
                         // code
                         $$->code = $1->code+"\n";
                         $$->code += $3->code+"\n";
-                        $$->code += "MOV AX,"+$1->tempVar+"\n";
+                        $$->code += "MOV AX,"+ stk_address($1->stk_offset)+"\n";
                         $$->code += "CWD\n";
-                        $$->code += "IDIV "+$3->tempVar+"\n";
+                        $$->code += "IDIV "+stk_address_typecast($3->stk_offset)+"\n";
 
                         string tempVar = newTemp();
 
-                        $$->code += "MOV "+tempVar+",DX";
                         $$->tempVar = tempVar;
+                        $$->stk_offset = SP_VAL;
+
+                        $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",DX";
+                        
 
                     }
                 }
@@ -2428,16 +2483,37 @@ term:	unary_expression {
                     $$->setHelperType("NULL");
                 }
 
-                // code
-                $$->code = $1->code+"\n";
-                $$->code += $3->code+"\n";
-                $$->code += "MOV AX,"+$1->tempVar+"\n";
-                $$->code += "IMUL "+$3->tempVar+"\n";
+                if($2->key == "*")
+                {
+                    // code for *
+                    $$->code = $1->code+"\n";
+                    $$->code += $3->code+"\n";
+                    $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
+                    $$->code += "IMUL "+stk_address_typecast($3->stk_offset)+"\n";
 
-                string tempVar = newTemp();
+                    string tempVar = newTemp();
 
-                $$->code += "MOV "+tempVar+",AX";
-                $$->tempVar = tempVar;
+                    $$->tempVar = tempVar;
+                    $$->stk_offset = SP_VAL;
+
+                    $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX";
+                }
+                else if($2->key == "/")
+                {
+                    // code
+                    $$->code = $1->code+"\n";
+                    $$->code += $3->code+"\n";
+                    $$->code += "MOV AX,"+ stk_address($1->stk_offset)+"\n";
+                    $$->code += "CWD\n";
+                    $$->code += "IDIV "+stk_address_typecast($3->stk_offset)+"\n";
+
+                    string tempVar = newTemp();
+
+                    $$->tempVar = tempVar;
+                    $$->stk_offset = SP_VAL;
+
+                    $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX";
+                }
             }
 
             print_log_text($$->text);
@@ -2489,6 +2565,7 @@ unary_expression: ADDOP unary_expression  {
 
                 $$->code = $1->code;
                 $$->tempVar = $1->tempVar;
+                $$->stk_offset = $1->stk_offset;
 
                 erm_h($1);
             }
@@ -2508,6 +2585,7 @@ factor: variable {
 
             $$->code = $1->code;
             $$->tempVar = $1->text; // no operation , so tempVar is realVar
+            $$->stk_offset = $1->stk_offset;
 
             erm_h($1);
         }
@@ -2599,6 +2677,7 @@ factor: variable {
 
             $$->code = $2->code;
             $$->tempVar = $2->tempVar;
+            $$->stk_offset = $2->stk_offset;
 
             print_log_text($$->text);
 
@@ -2619,8 +2698,11 @@ factor: variable {
 
             // code
             string tempVar = newTemp();
-            $$->code = "MOV " + tempVar + "," +$1->key;
-            $$->tempVar = tempVar;
+            
+            $$->tempVar = tempVar; // init
+            $$->stk_offset = SP_VAL; // init
+
+            $$->code = "MOV WORD PTR[bp-"+to_string($$->stk_offset)+"],"+$1->key;
 
             erm_s($1);
         }
@@ -2659,8 +2741,10 @@ factor: variable {
 
             print_log_text($$->text);
 
-            $$->code = "INC "+$1->text;
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
+
+            $$->code = "INC "+stk_address_typecast($$->stk_offset);
 
             erm_h($1);
         }
@@ -2673,8 +2757,10 @@ factor: variable {
 
             print_log_text($$->text);
 
-            $$->code = "DEC "+$1->text;
             $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
+
+            $$->code = "DEC "+stk_address_typecast($$->stk_offset);
 
             erm_h($1);
         }
@@ -2693,6 +2779,7 @@ argument_list: arguments {
 
                     $$->code = $1->code;
                     $$->tempVar = $1->tempVar;
+                    $$->stk_offset = $1->stk_offset;
 
                     erm_h($1);
                 }
@@ -2737,6 +2824,7 @@ arguments: arguments COMMA logic_expression {
 
                 $$->code = $1->code;
                 $$->tempVar = $1->tempVar;
+                $$->stk_offset = $1->stk_offset;
 
                 erm_h($1);
             }
@@ -2766,6 +2854,7 @@ main(int argc,char *argv[])
     DATA_vector.push_back("FOR_PRINT DW ?");
     DATA_vector.push_back("MARKER DW 0DH");
     DATA_vector.push_back("DIV_RES DW ? \nDIV_REM DW ?");
+    DATA_vector.push_back("CR EQU 0DH\nLF EQU 0AH\nNEWLINE DB CR, LF , '$'");
 
 
     yyin=fin;

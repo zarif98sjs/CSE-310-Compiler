@@ -136,17 +136,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 403 "1705010.y" /* yacc.c:1909  */
+#line 423 "1705010.y" /* yacc.c:1909  */
 
     SymbolInfo* symbol_info;
-    // SymbolInfo* symbol_info_vec[100];
     string* symbol_info_str;
     string* temp_str;
-    Helper* helper;
-    // int ival;
-    // double dval;
+    Helper* helper;;
 
-#line 150 "y.tab.h" /* yacc.c:1909  */
+#line 147 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

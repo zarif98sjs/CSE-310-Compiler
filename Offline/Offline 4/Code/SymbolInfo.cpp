@@ -39,11 +39,12 @@ SymbolInfo::SymbolInfo(string key,string val)
 //     bucket_pos = 0;
 // }
 
-SymbolInfo::SymbolInfo(string key,string val,string var_type,vector<string>param_v,bool isFunctionDeclaration,bool isFunction)
+SymbolInfo::SymbolInfo(string key,string val,string var_type,int stk_offset,vector<string>param_v,bool isFunctionDeclaration,bool isFunction)
 {
     this->key = key;
     this->val = val;
     this->var_type = var_type;
+    this->stk_offset = stk_offset;
     this->param_v = param_v;
     this->isFunctionDeclaration = isFunctionDeclaration;
     this->isFunction = isFunction;
@@ -87,11 +88,12 @@ SymbolInfo::SymbolInfo(string key,string val,string var_type,vector<string>param
 //     this->bucket_pos = bucket_pos;
 // }
 
-SymbolInfo::SymbolInfo(string key,string val,string var_type,vector<string>param_v,bool isFunctionDeclaration,bool isFunction,SymbolInfo* nxt)
+SymbolInfo::SymbolInfo(string key,string val,string var_type,int stk_offset,vector<string>param_v,bool isFunctionDeclaration,bool isFunction,SymbolInfo* nxt)
 {
     this->key = key;
     this->val = val;
     this->var_type = var_type;
+    this->stk_offset = stk_offset;
     this->param_v = param_v;
     this->isFunctionDeclaration = isFunctionDeclaration;
     this->isFunction = isFunction;

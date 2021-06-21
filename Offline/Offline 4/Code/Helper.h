@@ -14,6 +14,7 @@ struct Helper{
     vector<string>param_v;
     string code;
     string tempVar;
+    int stk_offset;
 
     Helper();
     Helper(string text,vector<SymbolInfo*>v);

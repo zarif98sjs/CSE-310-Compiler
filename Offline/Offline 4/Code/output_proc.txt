@@ -69,6 +69,10 @@ OUTPUT PROC
     EXIT_OUTPUT:
     
         ;POP CX 
+
+        LEA DX, NEWLINE
+        MOV AH, 9 
+        INT 21H
     
         RET     
       
