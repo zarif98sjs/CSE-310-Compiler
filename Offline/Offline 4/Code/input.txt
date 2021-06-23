@@ -1,14 +1,14 @@
 int main(){
-    int a,b,c,i;
-    b=0;
-	c=1;
-    for(i=0;i<4;i++){
-        a=3;
-        while(a--){
-            b++;
-        }
+    int ara[11],i;
+    int sum,chk;
+    sum = 0;
+    chk = 0;
+    for(i=1;i<=10;i++)
+    {
+        ara[i] = i;
+        sum = sum + i;
+        chk = chk + ara[i];
     }
-    printf(a);
-    printf(b);
-    printf(c);
+    printf(sum);
+    printf(chk);
 }

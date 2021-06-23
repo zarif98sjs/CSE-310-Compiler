@@ -10,86 +10,27 @@ DIV_RES DW ?
 DIV_REM DW ?
 CR EQU 0DH
 LF EQU 0AH
-NEWLINE DB CR, LF , '$'
+NEWLINE DB CR, LF , '$'  
+temp DW ?
 
 .CODE
 
 main PROC
 MOV AX, @DATA
-MOV DS, AX
+MOV DS, AX 
 
+PUSH BP
+MOV BP,SP
 
-; sum=0;
-MOV WORD PTR[bp-30],0
-MOV AX,[bp-30]
+; a=10;    
+;MOV AX,2
+;MOV WORD PTR[bp-6+AX*2],7   
 
-MOV WORD PTR[bp-26],AX
-; chk=0;
-MOV WORD PTR[bp-32],0
-MOV AX,[bp-32]
+MOV AX,2
+MOV WORD PTR[BP-6+AX*2],7
 
-MOV WORD PTR[bp-28],AX
-; for(i=1;i<=10;i++){ara[i]=i;sum=sum+i;chk=chk+ara[i];}
-MOV WORD PTR[bp-34],1
-MOV AX,[bp-34]
-
-MOV WORD PTR[bp-24],AX
-L2:
-; i<=10;
-
-MOV WORD PTR[bp-36],10
-MOV AX,[bp-24]
-CMP AX,[bp-36]
-jle L0
-MOV WORD PTR[bp-38],0
-JMP L1
-L0:
-MOV WORD PTR[bp-38],1
-L1:
-
-; check for loop condition
-CMP [bp-38],0
-JE L3
-; ara[i]=i;
-
-MOV AX,[bp-24]
-
-MOV SI,[bp-24]
-ADD SI,SI
-MOV WORD PTR[bp-22+SI],AX
-; sum=sum+i;
-
-
-MOV AX,[bp-26]
-ADD AX,[bp-24]
-MOV WORD PTR[bp-40],AX
-MOV AX,[bp-40]
-
-MOV WORD PTR[bp-26],AX
-; chk=chk+ara[i];
-
-
-MOV SI,[bp-24]
-ADD SI,SI
-MOV AX,[bp-28]
-ADD AX,[bp-22+SI]
-MOV WORD PTR[bp-42],AX
-MOV AX,[bp-42]
-
-MOV WORD PTR[bp-28],AX
-; i++
-INC WORD PTR[bp-24]
-JMP L2
-L3:
-
-
-; printf(sum);
-MOV AX,[bp-26]
-MOV FOR_PRINT,AX
-CALL OUTPUT
-
-; printf(chk);
-MOV AX,[bp-28]
+; printf(a);
+MOV AX,[bp-2]
 MOV FOR_PRINT,AX
 CALL OUTPUT
 MOV AH,4ch
@@ -176,3 +117,5 @@ OUTPUT PROC
         RET     
       
 OUTPUT ENDP
+
+

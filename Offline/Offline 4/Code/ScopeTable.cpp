@@ -89,14 +89,15 @@ SymbolInfo* ScopeTable::insert(SymbolInfo si)
     string key = si.key;
     string val = si.val;
     string var_type = si.var_type;
-    int stk_offset = si.stk_offset;
+    string stk_offset = si.stk_offset;
+    int ara_size = si.ara_size;
     vector<string>param_v = si.param_v;
     bool isFunctionDeclaration = si.isFunctionDeclaration;
     bool isFunction = si.isFunction;
 
     int bucket = hash(key);
 
-    SymbolInfo* to_insert = new SymbolInfo(key,val,var_type,stk_offset,param_v,isFunctionDeclaration,isFunction,NULL);
+    SymbolInfo* to_insert = new SymbolInfo(key,val,var_type,stk_offset,ara_size,param_v,isFunctionDeclaration,isFunction,NULL);
     to_insert->bucket = bucket;
 
     assert(bucket<M);

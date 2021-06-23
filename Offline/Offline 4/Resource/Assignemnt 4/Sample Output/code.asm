@@ -1,95 +1,95 @@
 .MODEL small
 .stack 100H
 .DATA
+a2 dw ?
+b2 dw ?
+c2 dw ?
+ara2 dw 10 dup ($)
 t0 dw ?
-ara2 dw 20 dup ($)
 t1 dw ?
 t2 dw ?
-x2 dw ?
-y2 dw ?
-z2 dw ?
-a3 dw ?
-b3 dw ?
-c3 dw ?
-i3 dw ?
-ara3 dw 20 dup ($)
 t3 dw ?
 t4 dw ?
 t5 dw ?
 t6 dw ?
 t7 dw ?
+t8 dw ?
 
 .CODE
-f proc
-push ax
-push bx
-push dx
-push si
-push di
-push x2
-push y2
-push z2
-push t0
-push t1
-push t2
-
-push bp
-mov bp,sp
-mov ax,[bp+26]
-mov x2,ax
-mov ax,[bp+28]
-mov y2,ax
-mov ax,[bp+30]
-mov z2,ax
-
-mov t0,12
-mov ax,t0
-mov z2,ax
-mov t2,131
-mov t1,3
-mov bx, t1
-add bx,bx
-mov ax,t2
-mov ara2[bx],ax
-L0:
-pop bp
-pop t2
-pop t1
-pop t0
-
-pop di
-pop si
-pop dx
-pop bx
-pop ax
-ret
-f endp
-
 main proc
 mov ax,@data
 mov ds,ax
 
-mov t3,12
-mov ax,t3
-mov b3,ax
-mov t4,14
-mov ax,t4
-mov c3,ax
-mov t6,10
-mov t5,2
-mov bx, t5
+mov t1,10
+mov t0,0
+mov bx, t0
 add bx,bx
-mov ax,t6
-mov ara3[bx],ax
-mov ax,b3
-add ax,c3
-mov t7,ax
-mov ax,t7
-mov a3,ax
-L1:
+mov ax,t1
+mov ara2[bx],ax
+mov t3,12
+mov t2,9
+mov bx, t2
+add bx,bx
+mov ax,t3
+mov ara2[bx],ax
+mov ax, ara2[bx]
+mov t5, ax
+mov ax, ara2[bx]
+mov t7, ax
+mov ax,t5
+add ax,t7
+mov t8,ax
+mov ax,t8
+mov a2,ax
+mov ax,a2
+call OUTDEC
+L0:
 
 mov ah,4ch
 int 21h
 main endp
+OUTDEC PROC
+;INPUT AX
+PUSH AX
+PUSH BX
+PUSH CX
+PUSH DX
+OR AX,AX
+JGE END_IF1
+PUSH AX
+MOV DL,'-'
+MOV AH,2
+INT 21H
+POP AX
+NEG AX
+END_IF1:
+XOR CX,CX
+MOV BX,10D
+REPEAT1:
+XOR DX,DX
+DIV BX
+PUSH DX
+INC CX
+OR AX,AX
+JNE REPEAT1
+MOV AH,2
+PRINT_LOOP:
+POP DX
+OR DL,30H
+INT 21H
+LOOP PRINT_LOOP
+
+mov ah,2
+mov dl,0dh
+int 21h
+mov dl,0ah
+int 21h
+
+POP DX
+POP CX
+POP BX
+POP AX
+RET
+OUTDEC ENDP
 end main
 

@@ -10,7 +10,8 @@ struct SymbolInfo
     string key;
     string val;
     string var_type;
-    int stk_offset;
+    string stk_offset;
+    int ara_size;
     vector<string>param_v;
     bool isFunctionDeclaration;
     bool isFunction;
@@ -23,15 +24,10 @@ struct SymbolInfo
     SymbolInfo();
 
     SymbolInfo(string key,string val);
-    // SymbolInfo(string key,string val,string var_type);
-    // SymbolInfo(string key,string val,string var_type,vector<string>param_v);
-    SymbolInfo(string key,string val,string var_type,int stk_offset,vector<string>param_v,bool isFunctionDeclaration,bool isFunction);
 
-    // SymbolInfo(string key,string val,SymbolInfo* nxt);
-    // SymbolInfo(string key,string val,string var_type,SymbolInfo* nxt);
-    // SymbolInfo(string key,string val,string var_type,vector<string>param_v,SymbolInfo* nxt);
-    SymbolInfo(string key,string val,string var_type,int stk_offset,vector<string>param_v,bool isFunctionDeclaration,bool isFunction,SymbolInfo* nxt);
+    SymbolInfo(string key,string val,string var_type,string stk_offset,int ara_size,vector<string>param_v,bool isFunctionDeclaration,bool isFunction);
 
+    SymbolInfo(string key,string val,string var_type,string stk_offset,int ara_size,vector<string>param_v,bool isFunctionDeclaration,bool isFunction,SymbolInfo* nxt);
 
     void setVarType(string var_type);
 };

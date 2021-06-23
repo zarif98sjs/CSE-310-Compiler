@@ -1,18 +1,34 @@
-Line 2: type_specifier : VOID
+Line 1: type_specifier : INT
+Line 1: parameters : 
 Line 2: type_specifier : INT
-Line 2: parameters : type_specifier ID
-x
-Line 2: type_specifier : INT
-Line 2: parameters : parameters COMMA type_specifier ID
-y
-Line 2: type_specifier : INT
-Line 2: parameters : parameters COMMA type_specifier ID
-z
-Line 2: parameter_list : parameters
-Line 4: variable : ID
-z
+Line 2: declaration_list : ID
+a
+Line 2: declaration_list : declaration_list COMMA ID
+b
+Line 2: declaration_list : declaration_list COMMA ID
+c
+Line 2: var_declaration : type_specifier declaration_list SEMICOLON
+Line 2: statement : var_declaration
+Line 2: statements : statement
+Line 3: type_specifier : INT
+Line 3: declaration_list : ID LTHIRD CONST_INT RTHIRD
+ara
+10
+Line 3: var_declaration : type_specifier declaration_list SEMICOLON
+Line 3: statement : var_declaration
+Line 3: statements : statements statement
 Line 4: factor : CONST_INT
-12
+0
+Line 4: unary_expression : factor
+Line 4: term : unary_expression
+Line 4: simple_expression : term
+Line 4: rel_expression : simple_expression
+Line 4: logic_expression : rel_expression
+Line 4: expression : logic expression
+Line 4: variable : ID LTHIRD expression RTHIRD
+ara
+Line 4: factor : CONST_INT
+10
 Line 4: unary_expression : factor
 Line 4: term : unary_expression
 Line 4: simple_expression : term
@@ -22,28 +38,59 @@ Line 4: expression : variable ASSIGNOP logic_expression
 
 
 ScopeTable # 2
- 0 --> < x , ID , -1>
- 1 --> < y , ID , -1>
- 2 --> < z , ID , 12>
+ 7 --> < a , ID , -1>
+ 8 --> < b , ID , -1>
+ 9 --> < c , ID , -1>
+ 17 --> < ara , ID , { 10 -1 -1 -1 -1 -1 -1 -1 -1 -1 } > 
 
 
 
 ScopeTable # 1
- 12 --> < f , ID>
+ 26 --> < main , ID>
 
 
 Line 4: expression_statement : expression SEMICOLON
 Line 4: statement : expression_statement
-Line 4: statements : statement
-Line 5: type_specifier : INT
-Line 5: declaration_list : ID LTHIRD CONST_INT RTHIRD
+Line 4: statements : statements statement
+Line 5: factor : CONST_INT
+9
+Line 5: unary_expression : factor
+Line 5: term : unary_expression
+Line 5: simple_expression : term
+Line 5: rel_expression : simple_expression
+Line 5: logic_expression : rel_expression
+Line 5: expression : logic expression
+Line 5: variable : ID LTHIRD expression RTHIRD
 ara
-20
-Line 5: var_declaration : type_specifier declaration_list SEMICOLON
-Line 5: statement : var_declaration
+Line 5: factor : CONST_INT
+12
+Line 5: unary_expression : factor
+Line 5: term : unary_expression
+Line 5: simple_expression : term
+Line 5: rel_expression : simple_expression
+Line 5: logic_expression : rel_expression
+Line 5: expression : variable ASSIGNOP logic_expression
+
+
+ScopeTable # 2
+ 7 --> < a , ID , -1>
+ 8 --> < b , ID , -1>
+ 9 --> < c , ID , -1>
+ 17 --> < ara , ID , { 10 -1 -1 -1 -1 -1 -1 -1 -1 12 } > 
+
+
+
+ScopeTable # 1
+ 26 --> < main , ID>
+
+
+Line 5: expression_statement : expression SEMICOLON
+Line 5: statement : expression_statement
 Line 5: statements : statements statement
+Line 6: variable : ID
+a
 Line 6: factor : CONST_INT
-3
+0
 Line 6: unary_expression : factor
 Line 6: term : unary_expression
 Line 6: simple_expression : term
@@ -52,221 +99,64 @@ Line 6: logic_expression : rel_expression
 Line 6: expression : logic expression
 Line 6: variable : ID LTHIRD expression RTHIRD
 ara
-Line 6: factor : CONST_INT
-131
+Line 6: factor : variable
 Line 6: unary_expression : factor
 Line 6: term : unary_expression
 Line 6: simple_expression : term
+Line 6: factor : CONST_INT
+9
+Line 6: unary_expression : factor
+Line 6: term : unary_expression
+Line 6: simple_expression : term
+Line 6: rel_expression : simple_expression
+Line 6: logic_expression : rel_expression
+Line 6: expression : logic expression
+Line 6: variable : ID LTHIRD expression RTHIRD
+ara
+Line 6: factor : variable
+Line 6: unary_expression : factor
+Line 6: term : unary_expression
+Line 6: simple_expression : simple_expression ADDOP term
 Line 6: rel_expression : simple_expression
 Line 6: logic_expression : rel_expression
 Line 6: expression : variable ASSIGNOP logic_expression
 
 
 ScopeTable # 2
- 0 --> < x , ID , -1>
- 1 --> < y , ID , -1>
- 2 --> < z , ID , 12>
- 17 --> < ara , ID , { -1 -1 -1 131 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 } > 
+ 7 --> < a , ID , 22>
+ 8 --> < b , ID , -1>
+ 9 --> < c , ID , -1>
+ 17 --> < ara , ID , { 10 -1 -1 -1 -1 -1 -1 -1 -1 12 } > 
 
 
 
 ScopeTable # 1
- 12 --> < f , ID>
+ 26 --> < main , ID>
 
 
 Line 6: expression_statement : expression SEMICOLON
 Line 6: statement : expression_statement
 Line 6: statements : statements statement
-Line 7: compound_statement : LCURL statements RCURL
+Line 7: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+a
+Line 7: statements : statements statement
+Line 8: compound_statement : LCURL statements RCURL
 
 
 ScopeTable # 2
- 0 --> < x , ID , -1>
- 1 --> < y , ID , -1>
- 2 --> < z , ID , 12>
- 17 --> < ara , ID , { -1 -1 -1 131 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 } > 
-
-
-
-ScopeTable # 1
- 12 --> < f , ID>
-
-
-Line 7: func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
-f
-Line 7: unit : func_definition
-Line 7: program : unit
-Line 9: type_specifier : INT
-Line 9: parameters : 
-Line 10: type_specifier : INT
-Line 10: declaration_list : ID
-a
-Line 10: declaration_list : declaration_list COMMA ID
-b
-Line 10: declaration_list : declaration_list COMMA ID
-c
-Line 10: declaration_list : declaration_list COMMA ID
-i
-Line 10: var_declaration : type_specifier declaration_list SEMICOLON
-Line 10: statement : var_declaration
-Line 10: statements : statement
-Line 11: type_specifier : INT
-Line 11: declaration_list : ID LTHIRD CONST_INT RTHIRD
-ara
-20
-Line 11: var_declaration : type_specifier declaration_list SEMICOLON
-Line 11: statement : var_declaration
-Line 11: statements : statements statement
-Line 12: variable : ID
-b
-Line 12: factor : CONST_INT
-12
-Line 12: unary_expression : factor
-Line 12: term : unary_expression
-Line 12: simple_expression : term
-Line 12: rel_expression : simple_expression
-Line 12: logic_expression : rel_expression
-Line 12: expression : variable ASSIGNOP logic_expression
-
-
-ScopeTable # 3
- 7 --> < a , ID , -1>
- 8 --> < b , ID , 12>
+ 7 --> < a , ID , 22>
+ 8 --> < b , ID , -1>
  9 --> < c , ID , -1>
- 15 --> < i , ID , -1>
- 17 --> < ara , ID , { -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 } > 
+ 17 --> < ara , ID , { 10 -1 -1 -1 -1 -1 -1 -1 -1 12 } > 
 
 
 
 ScopeTable # 1
- 12 --> < f , ID>
  26 --> < main , ID>
 
 
-Line 12: expression_statement : expression SEMICOLON
-Line 12: statement : expression_statement
-Line 12: statements : statements statement
-Line 13: variable : ID
-c
-Line 13: factor : CONST_INT
-14
-Line 13: unary_expression : factor
-Line 13: term : unary_expression
-Line 13: simple_expression : term
-Line 13: rel_expression : simple_expression
-Line 13: logic_expression : rel_expression
-Line 13: expression : variable ASSIGNOP logic_expression
-
-
-ScopeTable # 3
- 7 --> < a , ID , -1>
- 8 --> < b , ID , 12>
- 9 --> < c , ID , 14>
- 15 --> < i , ID , -1>
- 17 --> < ara , ID , { -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 } > 
-
-
-
-ScopeTable # 1
- 12 --> < f , ID>
- 26 --> < main , ID>
-
-
-Line 13: expression_statement : expression SEMICOLON
-Line 13: statement : expression_statement
-Line 13: statements : statements statement
-Line 14: factor : CONST_INT
-2
-Line 14: unary_expression : factor
-Line 14: term : unary_expression
-Line 14: simple_expression : term
-Line 14: rel_expression : simple_expression
-Line 14: logic_expression : rel_expression
-Line 14: expression : logic expression
-Line 14: variable : ID LTHIRD expression RTHIRD
-ara
-Line 14: factor : CONST_INT
-10
-Line 14: unary_expression : factor
-Line 14: term : unary_expression
-Line 14: simple_expression : term
-Line 14: rel_expression : simple_expression
-Line 14: logic_expression : rel_expression
-Line 14: expression : variable ASSIGNOP logic_expression
-
-
-ScopeTable # 3
- 7 --> < a , ID , -1>
- 8 --> < b , ID , 12>
- 9 --> < c , ID , 14>
- 15 --> < i , ID , -1>
- 17 --> < ara , ID , { -1 -1 10 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 } > 
-
-
-
-ScopeTable # 1
- 12 --> < f , ID>
- 26 --> < main , ID>
-
-
-Line 14: expression_statement : expression SEMICOLON
-Line 14: statement : expression_statement
-Line 14: statements : statements statement
-Line 15: variable : ID
-a
-Line 15: variable : ID
-b
-Line 15: factor : variable
-Line 15: unary_expression : factor
-Line 15: term : unary_expression
-Line 15: simple_expression : term
-Line 15: variable : ID
-c
-Line 15: factor : variable
-Line 15: unary_expression : factor
-Line 15: term : unary_expression
-Line 15: simple_expression : simple_expression ADDOP term
-Line 15: rel_expression : simple_expression
-Line 15: logic_expression : rel_expression
-Line 15: expression : variable ASSIGNOP logic_expression
-
-
-ScopeTable # 3
- 7 --> < a , ID , 26>
- 8 --> < b , ID , 12>
- 9 --> < c , ID , 14>
- 15 --> < i , ID , -1>
- 17 --> < ara , ID , { -1 -1 10 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 } > 
-
-
-
-ScopeTable # 1
- 12 --> < f , ID>
- 26 --> < main , ID>
-
-
-Line 15: expression_statement : expression SEMICOLON
-Line 15: statement : expression_statement
-Line 15: statements : statements statement
-Line 16: compound_statement : LCURL statements RCURL
-
-
-ScopeTable # 3
- 7 --> < a , ID , 26>
- 8 --> < b , ID , 12>
- 9 --> < c , ID , 14>
- 15 --> < i , ID , -1>
- 17 --> < ara , ID , { -1 -1 10 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 } > 
-
-
-
-ScopeTable # 1
- 12 --> < f , ID>
- 26 --> < main , ID>
-
-
-Line 16: func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
+Line 8: func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 main
-Line 16: unit : func_definition
-Line 16: program : program unit
-Line 16: start : program
+Line 8: unit : func_definition
+Line 8: program : unit
+Line 8: start : program

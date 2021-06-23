@@ -363,9 +363,10 @@ vector<string>DATA_vector;
 
 int SP_VAL = 0;
 
-void incSP()
+void incSP(int ara_size = -1)
 {
-    SP_VAL += 2;
+    if(ara_size == -1) SP_VAL += 2;
+    else SP_VAL += ara_size*2; // 2 for word
 }
 
 char *newLabel()
@@ -404,14 +405,14 @@ string getJumpText(string relop)
     if(relop=="!=") return "jne";
 }
 
-string stk_address(int stk_offset)
+string stk_address(string stk_offset)
 {
-    return "[bp-"+to_string(stk_offset)+"]";
+    return "[bp-"+stk_offset+"]";
 }
 
-string stk_address_typecast(int stk_offset)
+string stk_address_typecast(string stk_offset)
 {
-    return "WORD PTR[bp-"+to_string(stk_offset)+"]";
+    return "WORD PTR[bp-"+stk_offset+"]";
 }
 
 
@@ -1298,14 +1299,16 @@ var_declaration: type_specifier declaration_list SEMICOLON {
                 {
                     if(el->var_type == "array")
                     {
-                        el->setVarType($1->text + "_array") ; 
+                        el->setVarType($1->text + "_array");
+                        incSP(el->ara_size);
+                        el->stk_offset = to_string(SP_VAL);
                     }
                     else 
                     {
                         el->setVarType($1->text); 
 
                         incSP();
-                        el->stk_offset = SP_VAL;
+                        el->stk_offset = to_string(SP_VAL);
                     }
                     
                     if(!sym_tab->insert_symbol(*el)) // already present in current scope
@@ -1461,6 +1464,7 @@ declaration_list: declaration_list COMMA ID {
                 // init & update vector
                 $$->v = $1->v;
                 $3->setVarType("array");
+                $3->ara_size = stoi($5->key);
                 $$->v.push_back($3);
                 // $$->print();
 
@@ -1609,6 +1613,7 @@ declaration_list: declaration_list COMMA ID {
 
                     // init vector
                     $1->setVarType("array");
+                    $1->ara_size = stoi($3->key);
                     $$->v.push_back($1);
                     // cout<<"PRINT"<<endl;
                     // $$->print();
@@ -1903,7 +1908,47 @@ statement: var_declaration {
             }
 
             $$->code = "\n; "+$$->text+"\n";
-            $$->code += "MOV AX,[bp-"+to_string(ret_symbol->stk_offset)+"]\n";
+            $$->code += "MOV AX,"+stk_address(ret_symbol->stk_offset)+"\n";
+            $$->code += "MOV FOR_PRINT,AX\n";
+            $$->code += "CALL OUTPUT";
+            
+            erm_s($3);
+        }
+        | PRINTLN LPAREN ID LTHIRD expression RTHIRD RPAREN SEMICOLON {
+            print_grammar_rule("statement","PRINTLN LPAREN ID RPAREN SEMICOLON");
+
+            $$ = new Helper();
+            $$->text = "printf";
+            $$->text += "(";
+            $$->text += $3->key;
+            $$->text += "[";
+            $$->text += $5->text;
+            $$->text += "]";
+            $$->text += ")";
+            $$->text += ";";
+
+            print_log_text($$->text);
+
+            // check error
+            SymbolInfo* ret_symbol = sym_tab->lookup($3->key);
+
+            if(ret_symbol == NULL)
+            {
+                error_undeclared_variable($3->key);
+                $$->setHelperType("NULL");
+            }
+
+            $$->code = "\n; "+$$->text+"\n";
+
+            // code
+            
+            $$->code += $5->code+"\n";
+            $$->code += "MOV SI,"+stk_address($5->stk_offset)+"\n";
+            $$->code += "ADD SI,SI\n";
+
+            $$->stk_offset = ret_symbol->stk_offset+"+SI";
+
+            $$->code += "MOV AX,"+stk_address($$->stk_offset)+"\n";
             $$->code += "MOV FOR_PRINT,AX\n";
             $$->code += "CALL OUTPUT";
             
@@ -2040,6 +2085,13 @@ variable: ID {
 
             print_log_text($$->text);
 
+            // code
+            
+            $$->code = $3->code+"\n";
+            $$->code += "MOV SI,"+stk_address($3->stk_offset)+"\n";
+            $$->code += "ADD SI,SI";
+            $$->stk_offset = ret_symbol->stk_offset+"+SI";
+            
             erm_h($3);
             erm_s($1);
          }
@@ -2090,10 +2142,12 @@ variable: ID {
                 print_log_text($$->text);
 
                 // code
+                
                 $$->code = $3->code+"\n";
 
-                $$->code += "MOV AX,[bp-"+to_string($3->stk_offset)+"]\n";
-                $$->code += "MOV WORD PTR[bp-"+to_string($1->stk_offset)+"],AX";
+                $$->code += "MOV AX,"+stk_address($3->stk_offset)+"\n";
+                $$->code += $1->code+"\n";
+                $$->code += "MOV "+stk_address_typecast($1->stk_offset)+",AX";
 
                 erm_h($1); erm_h($3);
             }	
@@ -2202,7 +2256,7 @@ logic_expression: rel_expression {
                     string tempVar = newTemp();
 
                     $$->tempVar = tempVar;
-                    $$->stk_offset = SP_VAL; // init
+                    $$->stk_offset = to_string(SP_VAL); // init
 
                     $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",0\n";
                     $$->code += "JMP "+tempL2+"\n";
@@ -2283,7 +2337,7 @@ rel_expression: simple_expression {
                 string tempL2 = newLabel();
 
                 $$->tempVar = tempVar;
-                $$->stk_offset = SP_VAL;
+                $$->stk_offset = to_string(SP_VAL);
 
                 $$->code += jumpText+" "+tempL1+"\n";
                 $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",0"+"\n";
@@ -2365,7 +2419,7 @@ simple_expression: term {
                         string tempVar = newTemp();
 
                         $$->tempVar = tempVar;
-                        $$->stk_offset = SP_VAL;
+                        $$->stk_offset = to_string(SP_VAL);
 
                         $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX";
                     }
@@ -2380,7 +2434,7 @@ simple_expression: term {
                         string tempVar = newTemp();
 
                         $$->tempVar = tempVar;
-                        $$->stk_offset = SP_VAL;
+                        $$->stk_offset = to_string(SP_VAL);
 
                         $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX";
                     }
@@ -2450,7 +2504,7 @@ term:	unary_expression {
                         string tempVar = newTemp();
 
                         $$->tempVar = tempVar;
-                        $$->stk_offset = SP_VAL;
+                        $$->stk_offset = to_string(SP_VAL);
 
                         $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",DX";
                         
@@ -2494,8 +2548,7 @@ term:	unary_expression {
                     string tempVar = newTemp();
 
                     $$->tempVar = tempVar;
-                    $$->stk_offset = SP_VAL;
-
+                    $$->stk_offset = to_string(SP_VAL);
                     $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX";
                 }
                 else if($2->key == "/")
@@ -2510,7 +2563,7 @@ term:	unary_expression {
                     string tempVar = newTemp();
 
                     $$->tempVar = tempVar;
-                    $$->stk_offset = SP_VAL;
+                    $$->stk_offset = to_string(SP_VAL);
 
                     $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX";
                 }
@@ -2700,9 +2753,8 @@ factor: variable {
             string tempVar = newTemp();
             
             $$->tempVar = tempVar; // init
-            $$->stk_offset = SP_VAL; // init
-
-            $$->code = "MOV WORD PTR[bp-"+to_string($$->stk_offset)+"],"+$1->key;
+            $$->stk_offset = to_string(SP_VAL);
+            $$->code = "MOV "+stk_address_typecast($$->stk_offset)+","+$1->key;
 
             erm_s($1);
         }

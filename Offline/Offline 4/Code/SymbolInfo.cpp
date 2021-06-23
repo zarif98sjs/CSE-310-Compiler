@@ -14,37 +14,16 @@ SymbolInfo::SymbolInfo(string key,string val)
 
     bucket = -1;
     bucket_pos = 0;
+    ara_size = 0;
 }
 
-// SymbolInfo::SymbolInfo(string key,string val,string var_type)
-// {
-//     this->key = key;
-//     this->val = val;
-//     this->var_type = var_type;
-//     this->nxt = NULL;
-
-//     bucket = -1;
-//     bucket_pos = 0;
-// }
-
-// SymbolInfo::SymbolInfo(string key,string val,string var_type,vector<string>param_v)
-// {
-//     this->key = key;
-//     this->val = val;
-//     this->var_type = var_type;
-//     this->param_v = param_v;
-//     this->nxt = NULL;
-
-//     bucket = -1;
-//     bucket_pos = 0;
-// }
-
-SymbolInfo::SymbolInfo(string key,string val,string var_type,int stk_offset,vector<string>param_v,bool isFunctionDeclaration,bool isFunction)
+SymbolInfo::SymbolInfo(string key,string val,string var_type,string stk_offset,int ara_size,vector<string>param_v,bool isFunctionDeclaration,bool isFunction)
 {
     this->key = key;
     this->val = val;
     this->var_type = var_type;
     this->stk_offset = stk_offset;
+    this->ara_size = ara_size;
     this->param_v = param_v;
     this->isFunctionDeclaration = isFunctionDeclaration;
     this->isFunction = isFunction;
@@ -57,43 +36,13 @@ SymbolInfo::SymbolInfo(string key,string val,string var_type,int stk_offset,vect
 
 /////////////////////////////////////////////////////////
 
-
-// SymbolInfo::SymbolInfo(string key,string val,SymbolInfo* nxt)
-// {
-//     this->key = key;
-//     this->val = val;
-//     this->nxt = nxt;
-//     this->bucket = bucket;
-//     this->bucket_pos = bucket_pos;
-// }
-
-// SymbolInfo::SymbolInfo(string key,string val,string var_type,SymbolInfo* nxt)
-// {
-//     this->key = key;
-//     this->val = val;
-//     this->var_type = var_type;
-//     this->nxt = nxt;
-//     this->bucket = bucket;
-//     this->bucket_pos = bucket_pos;
-// }
-
-// SymbolInfo::SymbolInfo(string key,string val,string var_type,vector<string>param_v,SymbolInfo* nxt)
-// {
-//     this->key = key;
-//     this->val = val;
-//     this->var_type = var_type;
-//     this->param_v = param_v;
-//     this->nxt = nxt;
-//     this->bucket = bucket;
-//     this->bucket_pos = bucket_pos;
-// }
-
-SymbolInfo::SymbolInfo(string key,string val,string var_type,int stk_offset,vector<string>param_v,bool isFunctionDeclaration,bool isFunction,SymbolInfo* nxt)
+SymbolInfo::SymbolInfo(string key,string val,string var_type,string stk_offset,int ara_size,vector<string>param_v,bool isFunctionDeclaration,bool isFunction,SymbolInfo* nxt)
 {
     this->key = key;
     this->val = val;
     this->var_type = var_type;
     this->stk_offset = stk_offset;
+    this->ara_size = ara_size;
     this->param_v = param_v;
     this->isFunctionDeclaration = isFunctionDeclaration;
     this->isFunction = isFunction;

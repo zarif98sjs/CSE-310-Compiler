@@ -10,5 +10,8 @@ NEW START USING STACK
 7. ++ -- :: INCOP , DECOP
 8. while loop :: WHILE
 9. for loop :: FOR
+10. array (assignment from array,assignment to array,array element print) :: ARRAY
 -----------------
+11. if 
+12. if else
 __. printf

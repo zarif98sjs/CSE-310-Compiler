@@ -1,16 +1,8 @@
-
-void f(int x,int y,int z)
-{
-    z = 12;
-    int ara[20];
-    ara[3] =131;
-}
-
 int main(){
-    int a,b,c,i;
-    int ara[20];
-    b=12;
-	c=14;
-    ara[2] = 10;
-    a = b+c;
+    int a,b,c;
+    int ara[10];
+    ara[0] = 10;
+    ara[9] = 12;
+    a = ara[0] + ara[9];
+    println(a);
 }
