@@ -11,7 +11,9 @@ NEW START USING STACK
 8. while loop :: WHILE
 9. for loop :: FOR
 10. array (assignment from array,assignment to array,array element print) :: ARRAY
+13. simple function
 -----------------
 11. if 
 12. if else
+14. recursive function
 __. printf

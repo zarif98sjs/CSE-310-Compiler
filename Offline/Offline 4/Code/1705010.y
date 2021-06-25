@@ -1929,6 +1929,14 @@ statement: var_declaration {
 
             print_log_text($$->text);
 
+            $$->code = $3->code+"\n";
+            
+            string tempL1 = newLabel();
+            $$->code += "CMP "+stk_address($3->stk_offset)+",0\n";
+            $$->code += "JE "+tempL1+"\n";
+            $$->code += $5->code+"\n";
+            $$->code += tempL1+":";
+
             erm_h($3); erm_h($5); 
         }
 	  | IF LPAREN expression RPAREN statement ELSE statement {
@@ -1946,6 +1954,21 @@ statement: var_declaration {
             $$->text += $7->text;
 
             print_log_text($$->text);
+
+            $$->code = $3->code+"\n";
+            
+            string tempL1 = newLabel();
+            string tempL2 = newLabel();
+
+            $$->code += "CMP "+stk_address($3->stk_offset)+",0\n";
+            $$->code += "JE "+tempL1+"\n";
+
+            $$->code += $5->code+"\n";
+            $$->code += "JMP "+tempL2+"\n";
+            $$->code += tempL1+":";
+
+            $$->code += $7->code+"\n";
+            $$->code += tempL2+":";
 
             erm_h($3); erm_h($5); erm_h($7);
         

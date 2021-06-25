@@ -93,103 +93,92 @@ OUTPUT PROC
       
 OUTPUT ENDP
 
-f PROC
+fib PROC
 PUSH BP
 MOV BP,SP
-SUB SP,8
+SUB SP,22
 
 MOV AX,[bp+4]
-MOV WORD PTR[bp-2],AX
-MOV WORD PTR[bp-4],2
-
-MOV AX,[bp-4]
-IMUL WORD PTR[bp-2]
-MOV WORD PTR[bp-6],AX
-MOV AX,[bp-6]
-JMP L_f
-
-; a=9;
-MOV WORD PTR[bp-8],9
-MOV AX,[bp-8]
-MOV WORD PTR[bp-2],AX
-L_f:
-ADD SP,8
-POP BP
-RET
-f ENDP
-
-g PROC
-PUSH BP
-MOV BP,SP
-SUB SP,12
-
-MOV AX,[bp+4]
-MOV WORD PTR[bp-2],AX
-MOV AX,[bp+6]
 MOV WORD PTR[bp-4],AX
 
-; x=f(a)+a+b;
+MOV WORD PTR[bp-6],1
+MOV AX,[bp-4]
+CMP AX,[bp-6]
+jle L0
+MOV WORD PTR[bp-8],0
+JMP L1
+L0:
+MOV WORD PTR[bp-8],1
+L1:
 
-PUSH [bp-2]
-CALL f
-ADD SP,2
-MOV WORD PTR[bp-8],AX
+CMP [bp-8],0
+JE L2
 
-MOV AX,[bp-8]
-ADD AX,[bp-2]
-MOV WORD PTR[bp-10],AX
+MOV AX,[bp-4]
+JMP L_fib
 
-MOV AX,[bp-10]
-ADD AX,[bp-4]
+L2:
+
+MOV WORD PTR[bp-10],1
+MOV AX,[bp-4]
+SUB AX,[bp-10]
 MOV WORD PTR[bp-12],AX
-MOV AX,[bp-12]
-MOV WORD PTR[bp-6],AX
+PUSH [bp-12]
+CALL fib
+ADD SP,2
+MOV WORD PTR[bp-14],AX
 
-MOV AX,[bp-6]
-JMP L_g
+MOV WORD PTR[bp-16],2
+MOV AX,[bp-4]
+SUB AX,[bp-16]
+MOV WORD PTR[bp-18],AX
+PUSH [bp-18]
+CALL fib
+ADD SP,2
+MOV WORD PTR[bp-20],AX
+MOV AX,[bp-14]
+ADD AX,[bp-20]
+MOV WORD PTR[bp-22],AX
+MOV AX,[bp-22]
+JMP L_fib
 
-L_g:
-ADD SP,12
+L_fib:
+ADD SP,22
 POP BP
 RET
-g ENDP
+fib ENDP
 
 main PROC
 MOV AX, @DATA
 MOV DS, AX
 PUSH BP
 MOV BP,SP
-SUB SP,12
+SUB SP,10
 
-; a=1;
-MOV WORD PTR[bp-6],1
-MOV AX,[bp-6]
+; n=4;
+MOV WORD PTR[bp-4],4
+MOV AX,[bp-4]
 MOV WORD PTR[bp-2],AX
-; b=2;
-MOV WORD PTR[bp-8],2
-MOV AX,[bp-8]
-MOV WORD PTR[bp-4],AX
-; a=g(a,b);
 
-PUSH [bp-4]
+; s=fib(n);
 
 PUSH [bp-2]
-CALL g
-ADD SP,4
-MOV WORD PTR[bp-10],AX
-MOV AX,[bp-10]
-MOV WORD PTR[bp-2],AX
+CALL fib
+ADD SP,2
+MOV WORD PTR[bp-8],AX
+MOV AX,[bp-8]
+MOV WORD PTR[bp-6],AX
 
-; printf(a);
-MOV AX,[bp-2]
+; printf(s);
+MOV AX,[bp-6]
 MOV FOR_PRINT,AX
 CALL OUTPUT
-MOV WORD PTR[bp-12],0
-MOV AX,[bp-12]
+MOV WORD PTR[bp-10],0
+MOV AX,[bp-10]
 JMP L_main
 
 L_main:
-ADD SP,12
+ADD SP,10
 POP BP
 
 ;DOS EXIT

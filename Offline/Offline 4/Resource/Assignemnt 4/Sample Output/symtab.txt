@@ -1,39 +1,44 @@
-Line no 4
-
-ScopeTable # 2
- 7 --> < a , ID , 9>
-
-
-
-ScopeTable # 1
- 12 --> < f , ID>
-
-
-Line no 10
+Line no 8
 
 ScopeTable # 3
- 0 --> < x , ID , -2>
- 7 --> < a , ID , -1>
- 8 --> < b , ID , -1>
 
 
 
-ScopeTable # 1
- 12 --> < f , ID>
- 13 --> < g , ID>
-
-
-Line no 19
-
-ScopeTable # 4
- 7 --> < a , ID , 0>
+ScopeTable # 2
+ 7 --> < a , ID , 2>
  8 --> < b , ID , 2>
 
 
 
 ScopeTable # 1
- 12 --> < f , ID>
- 13 --> < g , ID>
+ 26 --> < main , ID>
+
+
+Line no 11
+
+ScopeTable # 4
+
+
+
+ScopeTable # 2
+ 7 --> < a , ID , 1>
+ 8 --> < b , ID , 2>
+
+
+
+ScopeTable # 1
+ 26 --> < main , ID>
+
+
+Line no 13
+
+ScopeTable # 2
+ 7 --> < a , ID , 1>
+ 8 --> < b , ID , 2>
+
+
+
+ScopeTable # 1
  26 --> < main , ID>
 
 
