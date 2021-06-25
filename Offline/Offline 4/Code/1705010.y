@@ -410,6 +410,12 @@ string stk_address(string stk_offset)
     return "[bp-"+stk_offset+"]";
 }
 
+string stk_address_param(string stk_offset)
+{
+    return "[bp+"+stk_offset+"]";
+}
+
+
 string stk_address_typecast(string stk_offset)
 {
     return "WORD PTR[bp-"+stk_offset+"]";
@@ -436,7 +442,8 @@ string stk_address_typecast(string stk_offset)
 %type <helper> start program unit variable var_declaration type_specifier func_declaration func_definition parameter_list
 %type <helper> expression factor unary_expression term simple_expression rel_expression statement statements compound_statement logic_expression expression_statement
 %type <helper> arguments argument_list
-%type <helper> declaration_list
+%type <helper> declaration_list 
+%type <helper> dummy_scope_function 
 
 %destructor { erm_h($$);  } <helper>
 %destructor { erm_s($$);  } <symbol_info>
@@ -467,6 +474,8 @@ start: program
         codeout<<endl;
 
         codeout<<".CODE"<<endl;
+
+        fileToCode("output_proc.txt");
         
         codeout<<"\n"<<$$->code<<"\n"<<endl;
         
@@ -485,9 +494,11 @@ program: program unit  {
             print_log_text($$->text);
 
             // code
-            $$->code = $1->code;
             $$->tempVar = $1->tempVar;
             $$->stk_offset = $1->stk_offset;
+
+            $$->code = $1->code;
+            $$->code += $2->code;
 
             erm_h($1); erm_h($2);
         }
@@ -537,6 +548,8 @@ unit: var_declaration {
             $$->tempVar = $1->tempVar;
             $$->stk_offset = $1->stk_offset;
 
+            SP_VAL = 0;
+
             erm_h($1); 
         }
      | func_definition { 
@@ -551,6 +564,8 @@ unit: var_declaration {
             $$->code = $1->code;
             $$->tempVar = $1->tempVar;
             $$->stk_offset = $1->stk_offset;
+
+            SP_VAL = 0;
 
             erm_h($1); 
         }
@@ -904,6 +919,31 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_no
 
                 print_log_text($$->text);
 
+                                // code
+                $$->code = $2->key+" PROC\n";
+
+                if($2->key=="main")
+                {
+                    $$->code += "MOV AX, @DATA\nMOV DS, AX\n";
+                }
+
+                $$->code += "PUSH BP\nMOV BP,SP\n";
+
+                $$->code += $4->code+"\n";
+                $$->code += $7->code+"\n";
+
+                $$->code += "POP BP\n";
+
+                if($2->key=="main")
+                {
+                    $$->code += "\n;DOS EXIT\nMOV AH,4ch\nINT 21h\n";
+                }
+                else $$->code += "RET\n";
+
+                $$->code += $2->key+" ENDP\n\n";
+
+                if($2->key=="main") $$->code += "END MAIN\n";
+
                 // clear temp function params
                 is_function_now = false;
                 function_params.clear();
@@ -932,6 +972,8 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_no
                 $$->text += $8->text; 
 
                 print_log_text($$->text);
+
+
 
                 // clear temp function params
                 is_function_now = false;
@@ -975,10 +1017,12 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_no
 
                 if($2->key=="main")
                 {
-                    $$->code += "MOV AH,4ch\nINT 21h\n";
+                    $$->code += "\n;DOS EXIT\nMOV AH,4ch\nINT 21h\n";
                 }
 
                 $$->code += $2->key+" ENDP\n";
+
+                if($2->key=="main") $$->code += "END MAIN\n";
             
                 // clear temp function params
                 is_function_now = false;
@@ -1164,7 +1208,8 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
                 print_log_text($$->text);
 
                 // code
-                $$->code = $3->code;
+                $$->code = $2->code;
+                $$->code += $3->code;
                 $$->tempVar = $3->tempVar;
                 $$->stk_offset = $3->stk_offset;
 
@@ -1187,6 +1232,8 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
 
                 print_log_text($$->text);
 
+                $$->code = $2->code;
+
                 // EXIT
                 sym_tab->print_all_scope(logout);
                 sym_tab->exit_scope();
@@ -1207,6 +1254,9 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
 
                 print_log_text($$->text);
 
+                $$->code = $2->code;
+                $$->code += $3->code;
+
                 // EXIT
                 sym_tab->print_all_scope(logout);
                 sym_tab->exit_scope();
@@ -1226,6 +1276,10 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
 
                 print_log_text($$->text);
 
+                $$->code = $2->code;
+                $$->code += $4->code;
+
+
                 // EXIT
                 sym_tab->print_all_scope(logout);
                 sym_tab->exit_scope();
@@ -1243,7 +1297,9 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
                 $$->text = "{";  
                 $$->text += "}";
 
-                print_log_text($$->text); 
+                print_log_text($$->text);
+
+                $$->code = $2->code;
 
                 // EXIT
                 sym_tab->print_all_scope(logout);
@@ -1254,11 +1310,16 @@ compound_statement: LCURL dummy_scope_function statements RCURL {
 
 dummy_scope_function:  {
 
+                    $$ = new Helper();
+
                     sym_tab->enter_scope(); 
+
+                    $$->code = "";
+                    int PP_Val = 4;
 
                     if(is_function_now)
                     {
-                        for(auto el:function_params)
+                        for(auto &el:function_params)
                         {
 
                             if(el.key == "dummy_key") continue;
@@ -1269,11 +1330,22 @@ dummy_scope_function:  {
                             }
                             // insert ID
                             // cout<<"INSIDE FUNCTIONNN"<<endl;
+
+                            incSP();
+                            el.stk_offset = to_string(SP_VAL);
+
                             if(!sym_tab->insert_symbol(el)) // already present in current scope
                             {
                                 error_multiple_declaration(el.key + " in parameter");
                             }
+
+
+                            $$->code += "MOV AX,"+stk_address_param(to_string(PP_Val))+"\n";
+                            $$->code += "MOV "+stk_address_typecast(el.stk_offset)+",AX\n";
+                            PP_Val+=2;
+
                         }
+
                     }
                 }
                 ;
@@ -1965,6 +2037,9 @@ statement: var_declaration {
 
             print_log_text($$->text);
 
+            $$->code = $2->code+"\n";
+            $$->code += "MOV AX,"+stk_address($2->stk_offset);
+
             erm_h($2); 
         }
         | RETURN SEMICOLON {
@@ -2041,6 +2116,8 @@ variable: ID {
 
             print_log_text($$->text);
 
+
+            $$->code = "";
             $$->tempVar = $1->key;
             $$->stk_offset = ret_symbol->stk_offset;
 
@@ -2144,9 +2221,8 @@ variable: ID {
                 // code
                 
                 $$->code = $3->code+"\n";
-
                 $$->code += "MOV AX,"+stk_address($3->stk_offset)+"\n";
-                $$->code += $1->code+"\n";
+                if($1->code != "") $$->code += $1->code+"\n";
                 $$->code += "MOV "+stk_address_typecast($1->stk_offset)+",AX";
 
                 erm_h($1); erm_h($3);
@@ -2678,22 +2754,6 @@ factor: variable {
                 }
                 else // other errors
                 {
-                    // printing function param_list
-                    // cout<<"OG Param : ";
-                    // for(auto s:ret_symbol->param_v)
-                    // {
-                    //     cout<<s<<" , ";
-                    // }
-                    // cout<<endl;
-
-                    // // printing argument_list
-                    // cout<<"Called Args : ";
-                    // for(auto s:$3->param_v)
-                    // {
-                    //     cout<<s<<" , ";
-                    // }
-                    // cout<<endl;
-
                     if(ret_symbol->param_v.size() != $3->param_v.size())
                     {
                         error_function_parameter_number(ret_symbol->key);
@@ -2712,6 +2772,19 @@ factor: variable {
             }
 
             print_log_text($$->text);
+
+            //code 
+
+            $$->code = $3->code+"\n";
+            $$->code += "CALL "+$1->key+"\n";
+            $$->code += "ADD SP,"+to_string(2*ret_symbol->param_v.size());
+
+            if(ret_symbol->var_type != "void")
+            {
+                string tempVar = newTemp();
+                $$->stk_offset = to_string(SP_VAL);
+                $$->code += "\nMOV "+stk_address_typecast($$->stk_offset)+",AX";
+            }
 
             erm_h($3);
             erm_s($1);
@@ -2856,6 +2929,10 @@ arguments: arguments COMMA logic_expression {
 
                 print_log_text($$->text);
 
+                $$->code = "PUSH "+stk_address($3->stk_offset)+"\n";
+                $$->code += $1->code;
+                
+
                 erm_h($1); erm_h($3);
             }
 	    | logic_expression {
@@ -2874,9 +2951,11 @@ arguments: arguments COMMA logic_expression {
 
                 print_log_text($$->text);
 
-                $$->code = $1->code;
-                $$->tempVar = $1->tempVar;
                 $$->stk_offset = $1->stk_offset;
+                $$->tempVar = $1->tempVar;
+
+                $$->code = "PUSH "+stk_address($$->stk_offset);
+                
 
                 erm_h($1);
             }
@@ -2913,8 +2992,6 @@ main(int argc,char *argv[])
 	yyparse();
 
     fileToCode("output_proc.txt");
-
-
 
     sym_tab->print_all_scope(logout);
 

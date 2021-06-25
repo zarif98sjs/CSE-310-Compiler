@@ -1,8 +1,9 @@
 
 
 ScopeTable # 1
+ 5 --> < sum , ID>
  26 --> < main , ID>
 
 
-Total lines: 8
+Total lines: 15
 Total errors: 0

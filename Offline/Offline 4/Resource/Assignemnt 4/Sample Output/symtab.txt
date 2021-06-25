@@ -1,14 +1,29 @@
-Line no 8
+Line no 6
 
 ScopeTable # 2
- 7 --> < a , ID , 22>
+ 7 --> < a , ID , -1>
  8 --> < b , ID , -1>
  9 --> < c , ID , -1>
- 17 --> < ara , ID , { 10 -1 -1 -1 -1 -1 -1 -1 -1 12 } > 
+ 10 --> < d , ID , -1>
+ 25 --> < s , ID , -2>
 
 
 
 ScopeTable # 1
+ 5 --> < sum , ID>
+
+
+Line no 16
+
+ScopeTable # 3
+ 0 --> < x , ID , 10>
+ 1 --> < y , ID , 12>
+ 25 --> < s , ID , 0>
+
+
+
+ScopeTable # 1
+ 5 --> < sum , ID>
  26 --> < main , ID>
 
 

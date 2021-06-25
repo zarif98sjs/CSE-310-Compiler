@@ -1,47 +1,87 @@
 .MODEL small
 .stack 100H
 .DATA
+s2 dw ?
+t0 dw ?
 a2 dw ?
 b2 dw ?
 c2 dw ?
-ara2 dw 10 dup ($)
-t0 dw ?
+d2 dw ?
+x3 dw ?
+y3 dw ?
 t1 dw ?
 t2 dw ?
+s3 dw ?
 t3 dw ?
-t4 dw ?
-t5 dw ?
-t6 dw ?
-t7 dw ?
-t8 dw ?
 
 .CODE
+sum proc
+push ax
+push bx
+push dx
+push si
+push di
+push a2
+push b2
+push c2
+push d2
+push s2
+push t0
+
+push bp
+mov bp,sp
+mov ax,[bp+26]
+mov a2,ax
+mov ax,[bp+28]
+mov b2,ax
+mov ax,[bp+30]
+mov c2,ax
+mov ax,[bp+32]
+mov d2,ax
+
+mov ax,a2
+add ax,b2
+mov t0,ax
+mov s2,ax
+mov cx,s2
+jmp L0
+L0:
+pop bp
+pop t0
+pop s2
+pop d2
+pop c2
+pop b2
+pop a2
+pop di
+pop si
+pop dx
+pop bx
+pop ax
+ret 8
+sum endp
+
 main proc
 mov ax,@data
 mov ds,ax
 
 mov t1,10
-mov t0,0
-mov bx, t0
-add bx,bx
 mov ax,t1
-mov ara2[bx],ax
-mov t3,12
-mov t2,9
-mov bx, t2
-add bx,bx
-mov ax,t3
-mov ara2[bx],ax
-mov ax, ara2[bx]
-mov t5, ax
-mov ax, ara2[bx]
-mov t7, ax
-mov ax,t5
-add ax,t7
-mov t8,ax
-mov a2,ax
+mov x3,ax
+mov t2,12
+mov ax,t2
+mov y3,ax
+push x3
+push y3
+push y3
+push x3
+
+call sum
+mov ax,cx
+mov t3,ax
+mov s3,ax
 call OUTDEC
-L0:
+L1:
 
 mov ah,4ch
 int 21h
