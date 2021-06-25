@@ -1,16 +1,19 @@
-int sum(int a,int b,int c,int d)
-{
-    int s;
-    s = a+b;
-    return s;
+int f(int a){
+    return 2*a;
+    a=9;
+}
+
+int g(int a, int b){
+    int x;
+    x=f(a)+a+b;
+    return x;
 }
 
 int main(){
-    int x,y;
-    x = 10;
-    y = 12;
-
-    int s;
-    s = sum(x,y,y,x);
-    println(s);
+    int a,b;
+    a=1;
+    b=2;
+    a=g(a,b);
+    println(a);
+    return 0;
 }

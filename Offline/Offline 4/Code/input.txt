@@ -1,15 +1,19 @@
-int sum_1(int a,int b)
-{
-    int s;
-    s = a+b;
-    return s;
+int f(int a){
+    return 2*a;
+    a=9;
+}
+
+int g(int a, int b){
+    int x;
+    x=f(a)+a+b;
+    return x;
 }
 
 int main(){
-    int x,y;
-    x = 10;
-    y = 12;
-    int s;
-    s = sum_1(2*x,y)+sum_1(x,2*y);
-    printf(s);
+    int a,b;
+    a=1;
+    b=2;
+    a=g(a,b);
+    printf(a);
+    return 0;
 }

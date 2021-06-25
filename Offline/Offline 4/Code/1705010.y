@@ -248,8 +248,13 @@ void error_parameter_name_missing(int param_id,string func_name)
 
 ///////////////////////////////////////////
 
+string cur_function_name = "";
+
 void insert_function_to_global(SymbolInfo* temp_s,string var_type)
 {
+
+    cur_function_name = temp_s->key;
+
     // insert function ID to SymbolTable with VAR_TYPE
     temp_s->setVarType(var_type);
     temp_s->isFunction = true;
@@ -415,13 +420,17 @@ string stk_address_param(string stk_offset)
     return "[bp+"+stk_offset+"]";
 }
 
-
 string stk_address_typecast(string stk_offset)
 {
     return "WORD PTR[bp-"+stk_offset+"]";
 }
 
 
+
+string cur_function_label(string name)
+{
+    return "L_"+name;
+}
 
 %}
 
@@ -903,7 +912,7 @@ func_declaration: type_specifier ID LPAREN parameter_list RPAREN SEMICOLON {
 		;
 
 		 
-func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_now = true;insert_function_to_global($2,$1->text);} compound_statement { 
+func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_now = true; insert_function_to_global($2,$1->text);} compound_statement { 
                 print_grammar_rule("func_definition","type_specifier ID LPAREN parameter_list RPAREN compound_statement");
                 
                 $$ = new Helper();
@@ -928,17 +937,25 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_no
                 }
 
                 $$->code += "PUSH BP\nMOV BP,SP\n";
+                $$->code += "SUB SP,"+to_string(SP_VAL)+"\n";
 
                 $$->code += $4->code+"\n";
                 $$->code += $7->code+"\n";
 
+
+                $$->code += cur_function_label(cur_function_name)+":\n";
+                $$->code += "ADD SP,"+to_string(SP_VAL)+"\n";
                 $$->code += "POP BP\n";
 
                 if($2->key=="main")
                 {
                     $$->code += "\n;DOS EXIT\nMOV AH,4ch\nINT 21h\n";
                 }
-                else $$->code += "RET\n";
+                else 
+                {
+                    $$->code += "RET\n";
+                }
+
 
                 $$->code += $2->key+" ENDP\n\n";
 
@@ -1013,12 +1030,24 @@ func_definition: type_specifier ID LPAREN parameter_list RPAREN { is_function_no
                     $$->code += "MOV AX, @DATA\nMOV DS, AX\n";
                 }
 
+                $$->code += "PUSH BP\nMOV BP,SP\n";
+                $$->code += "SUB SP,"+to_string(SP_VAL)+"\n";
+
                 $$->code += $6->code+"\n";
+
+                $$->code += cur_function_label(cur_function_name)+":\n";
+                $$->code += "ADD SP,"+to_string(SP_VAL)+"\n";
+                $$->code += "POP BP\n";
 
                 if($2->key=="main")
                 {
                     $$->code += "\n;DOS EXIT\nMOV AH,4ch\nINT 21h\n";
                 }
+                else 
+                {
+                    $$->code += "RET\n";
+                }
+                
 
                 $$->code += $2->key+" ENDP\n";
 
@@ -2038,7 +2067,11 @@ statement: var_declaration {
             print_log_text($$->text);
 
             $$->code = $2->code+"\n";
-            $$->code += "MOV AX,"+stk_address($2->stk_offset);
+            $$->code += "MOV AX,"+stk_address($2->stk_offset)+"\n";
+            $$->code += "JMP "+cur_function_label(cur_function_name)+"\n";
+
+            //$$->code += "POP BP\n";
+            //$$->code += "RET";
 
             erm_h($2); 
         }
@@ -2055,6 +2088,9 @@ statement: var_declaration {
             $$->text += ";";
 
             print_log_text($$->text);
+
+            $$->code = "JMP "+cur_function_label(cur_function_name)+"\n";
+            //$$->code += "RET";
         }
 	  ;
 	  
@@ -2992,8 +3028,6 @@ main(int argc,char *argv[])
 
     yyin=fin;
 	yyparse();
-
-    fileToCode("output_proc.txt");
 
     sym_tab->print_all_scope(logout);
 
