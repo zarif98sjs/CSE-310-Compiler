@@ -2929,7 +2929,8 @@ arguments: arguments COMMA logic_expression {
 
                 print_log_text($$->text);
 
-                $$->code = "PUSH "+stk_address($3->stk_offset)+"\n";
+                $$->code = $3->code+"\n";
+                $$->code += "PUSH "+stk_address($3->stk_offset)+"\n";
                 $$->code += $1->code;
                 
 
@@ -2954,7 +2955,8 @@ arguments: arguments COMMA logic_expression {
                 $$->stk_offset = $1->stk_offset;
                 $$->tempVar = $1->tempVar;
 
-                $$->code = "PUSH "+stk_address($$->stk_offset);
+                $$->code = $1->code+"\n";
+                $$->code += "PUSH "+stk_address($$->stk_offset);
                 
 
                 erm_h($1);

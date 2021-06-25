@@ -945,7 +945,7 @@ static const yytype_uint16 yyrline[] =
     1905,  1924,  1961,  1989,  2029,  2045,  2061,  2070,  2089,  2126,
     2177,  2195,  2234,  2251,  2351,  2368,  2432,  2450,  2525,  2543,
     2655,  2670,  2684,  2703,  2721,  2792,  2813,  2834,  2847,  2860,
-    2876,  2894,  2911,  2917,  2938
+    2876,  2894,  2911,  2917,  2939
 };
 #endif
 
@@ -4959,17 +4959,18 @@ yyreduce:
 
                 print_log_text((yyval.helper)->text);
 
-                (yyval.helper)->code = "PUSH "+stk_address((yyvsp[0].helper)->stk_offset)+"\n";
+                (yyval.helper)->code = (yyvsp[0].helper)->code+"\n";
+                (yyval.helper)->code += "PUSH "+stk_address((yyvsp[0].helper)->stk_offset)+"\n";
                 (yyval.helper)->code += (yyvsp[-2].helper)->code;
                 
 
                 erm_h((yyvsp[-2].helper)); erm_h((yyvsp[0].helper));
             }
-#line 4969 "y.tab.c" /* yacc.c:1646  */
+#line 4970 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 2938 "1705010.y" /* yacc.c:1646  */
+#line 2939 "1705010.y" /* yacc.c:1646  */
     {
 
                 print_grammar_rule("arguments","logic_expression");
@@ -4989,16 +4990,17 @@ yyreduce:
                 (yyval.helper)->stk_offset = (yyvsp[0].helper)->stk_offset;
                 (yyval.helper)->tempVar = (yyvsp[0].helper)->tempVar;
 
-                (yyval.helper)->code = "PUSH "+stk_address((yyval.helper)->stk_offset);
+                (yyval.helper)->code = (yyvsp[0].helper)->code+"\n";
+                (yyval.helper)->code += "PUSH "+stk_address((yyval.helper)->stk_offset);
                 
 
                 erm_h((yyvsp[0].helper));
             }
-#line 4998 "y.tab.c" /* yacc.c:1646  */
+#line 5000 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 5002 "y.tab.c" /* yacc.c:1646  */
+#line 5004 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -5226,7 +5228,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 2964 "1705010.y" /* yacc.c:1906  */
+#line 2966 "1705010.y" /* yacc.c:1906  */
 
 
 main(int argc,char *argv[])

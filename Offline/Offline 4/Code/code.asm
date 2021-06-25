@@ -102,10 +102,15 @@ MOV WORD PTR[bp-2],AX
 MOV AX,[bp+6]
 MOV WORD PTR[bp-4],AX
 
+; s=a+b;
+
 
 MOV AX,[bp-2]
 ADD AX,[bp-4]
+MOV WORD PTR[bp-8],AX
+MOV AX,[bp-8]
 MOV WORD PTR[bp-6],AX
+
 MOV AX,[bp-6]
 POP BP
 RET
@@ -115,8 +120,8 @@ main PROC
 MOV AX, @DATA
 MOV DS, AX
 
-; x=11;
-MOV WORD PTR[bp-6],11
+; x=10;
+MOV WORD PTR[bp-6],10
 MOV AX,[bp-6]
 MOV WORD PTR[bp-2],AX
 ; y=12;
@@ -124,13 +129,33 @@ MOV WORD PTR[bp-8],12
 MOV AX,[bp-8]
 MOV WORD PTR[bp-4],AX
 
-; s=sum_1(x,y);
+; s=sum_1(2*x,y)+sum_1(x,2*y);
+
 PUSH [bp-4]
+MOV WORD PTR[bp-12],2
+
+MOV AX,[bp-12]
+IMUL WORD PTR[bp-2]
+MOV WORD PTR[bp-14],AX
+PUSH [bp-14]
+CALL sum_1
+ADD SP,4
+MOV WORD PTR[bp-16],AX
+MOV WORD PTR[bp-18],2
+
+MOV AX,[bp-18]
+IMUL WORD PTR[bp-4]
+MOV WORD PTR[bp-20],AX
+PUSH [bp-20]
+
 PUSH [bp-2]
 CALL sum_1
 ADD SP,4
-MOV WORD PTR[bp-12],AX
-MOV AX,[bp-12]
+MOV WORD PTR[bp-22],AX
+MOV AX,[bp-16]
+ADD AX,[bp-22]
+MOV WORD PTR[bp-24],AX
+MOV AX,[bp-24]
 MOV WORD PTR[bp-10],AX
 
 ; printf(s);

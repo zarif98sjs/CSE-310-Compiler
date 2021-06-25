@@ -7,9 +7,9 @@ int sum_1(int a,int b)
 
 int main(){
     int x,y;
-    x = 11;
+    x = 10;
     y = 12;
     int s;
-    s = sum_1(x,y);
+    s = sum_1(2*x,y)+sum_1(x,2*y);
     printf(s);
 }

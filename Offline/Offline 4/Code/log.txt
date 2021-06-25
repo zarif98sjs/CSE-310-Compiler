@@ -18,376 +18,564 @@ Line 1: parameter_list : parameter_list COMMA type_specifier ID
 
 int a,int b
 
-Line 3: variable : ID
+Line 3: type_specifier : INT
 
-a
+int
 
-Line 3: factor : variable
+Line 3: declaration_list : ID
 
-a
+s
 
-Line 3: unary_expression : factor
+Line 3: var_declaration : type_specifier declaration_list SEMICOLON
 
-a
+int s;
 
-Line 3: term : unary_expression
+Line 3: statement : var_declaration
 
-a
-
-Line 3: simple_expression : term
-
-a
-
-Line 3: variable : ID
-
-b
-
-Line 3: factor : variable
-
-b
-
-Line 3: unary_expression : factor
-
-b
-
-Line 3: term : unary_expression
-
-b
-
-Line 3: simple_expression : simple_expression ADDOP term
-
-a+b
-
-Line 3: rel_expression : simple_expression
-
-a+b
-
-Line 3: logic_expression : rel_expression
-
-a+b
-
-Line 3: expression : logic_expression
-
-a+b
-
-Line 3: statement : RETURN expression SEMICOLON
-
-return a+b;
+int s;
 
 Line 3: statements : statement
 
-return a+b;
+int s;
 
-Line 4: compound_statement : LCURL statements RCURL
+Line 4: variable : ID
+
+s
+
+Line 4: variable : ID
+
+a
+
+Line 4: factor : variable
+
+a
+
+Line 4: unary_expression : factor
+
+a
+
+Line 4: term : unary_expression
+
+a
+
+Line 4: simple_expression : term
+
+a
+
+Line 4: variable : ID
+
+b
+
+Line 4: factor : variable
+
+b
+
+Line 4: unary_expression : factor
+
+b
+
+Line 4: term : unary_expression
+
+b
+
+Line 4: simple_expression : simple_expression ADDOP term
+
+a+b
+
+Line 4: rel_expression : simple_expression
+
+a+b
+
+Line 4: logic_expression : rel_expression
+
+a+b
+
+Line 4: expression : variable ASSIGNOP logic_expression
+
+s=a+b
+
+Line 4: expression_statement : expression SEMICOLON
+
+s=a+b;
+
+Line 4: statement : expression_statement
+
+s=a+b;
+
+Line 4: statements : statements statement
+
+int s;
+s=a+b;
+
+Line 5: variable : ID
+
+s
+
+Line 5: factor : variable
+
+s
+
+Line 5: unary_expression : factor
+
+s
+
+Line 5: term : unary_expression
+
+s
+
+Line 5: simple_expression : term
+
+s
+
+Line 5: rel_expression : simple_expression
+
+s
+
+Line 5: logic_expression : rel_expression
+
+s
+
+Line 5: expression : logic_expression
+
+s
+
+Line 5: statement : RETURN expression SEMICOLON
+
+return s;
+
+Line 5: statements : statements statement
+
+int s;
+s=a+b;
+return s;
+
+Line 6: compound_statement : LCURL statements RCURL
 
 {
-return a+b;
+int s;
+s=a+b;
+return s;
 }
 
 ScopeTable # 1.1
 7 --> < a , ID > 
 8 --> < b , ID > 
+25 --> < s , ID > 
 
 ScopeTable # 1
 5 --> < sum_1 , ID > 
 
-Line 4: func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
+Line 6: func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
 
 int sum_1(int a,int b){
-return a+b;
+int s;
+s=a+b;
+return s;
 }
 
-Line 4: unit : func_definition
+Line 6: unit : func_definition
 
 int sum_1(int a,int b){
-return a+b;
+int s;
+s=a+b;
+return s;
 }
 
-Line 4: program : unit
+Line 6: program : unit
 
 int sum_1(int a,int b){
-return a+b;
+int s;
+s=a+b;
+return s;
 }
 
-Line 6: type_specifier : INT
+Line 8: type_specifier : INT
 
 int
 
-Line 7: type_specifier : INT
+Line 9: type_specifier : INT
 
 int
 
-Line 7: declaration_list : ID
+Line 9: declaration_list : ID
 
 x
 
-Line 7: declaration_list : declaration_list COMMA ID
+Line 9: declaration_list : declaration_list COMMA ID
 
 x,y
 
-Line 7: var_declaration : type_specifier declaration_list SEMICOLON
+Line 9: var_declaration : type_specifier declaration_list SEMICOLON
 
 int x,y;
 
-Line 7: statement : var_declaration
+Line 9: statement : var_declaration
 
 int x,y;
 
-Line 7: statements : statement
+Line 9: statements : statement
 
 int x,y;
 
-Line 8: variable : ID
+Line 10: variable : ID
 
 x
 
-Line 8: factor : CONST_INT
+Line 10: factor : CONST_INT
 
-11
+10
 
-Line 8: unary_expression : factor
+Line 10: unary_expression : factor
 
-11
+10
 
-Line 8: term : unary_expression
+Line 10: term : unary_expression
 
-11
+10
 
-Line 8: simple_expression : term
+Line 10: simple_expression : term
 
-11
+10
 
-Line 8: rel_expression : simple_expression
+Line 10: rel_expression : simple_expression
 
-11
+10
 
-Line 8: logic_expression : rel_expression
+Line 10: logic_expression : rel_expression
 
-11
+10
 
-Line 8: expression : variable ASSIGNOP logic_expression
+Line 10: expression : variable ASSIGNOP logic_expression
 
-x=11
+x=10
 
-Line 8: expression_statement : expression SEMICOLON
+Line 10: expression_statement : expression SEMICOLON
 
-x=11;
+x=10;
 
-Line 8: statement : expression_statement
+Line 10: statement : expression_statement
 
-x=11;
-
-Line 8: statements : statements statement
-
-int x,y;
-x=11;
-
-Line 9: variable : ID
-
-y
-
-Line 9: factor : CONST_INT
-
-12
-
-Line 9: unary_expression : factor
-
-12
-
-Line 9: term : unary_expression
-
-12
-
-Line 9: simple_expression : term
-
-12
-
-Line 9: rel_expression : simple_expression
-
-12
-
-Line 9: logic_expression : rel_expression
-
-12
-
-Line 9: expression : variable ASSIGNOP logic_expression
-
-y=12
-
-Line 9: expression_statement : expression SEMICOLON
-
-y=12;
-
-Line 9: statement : expression_statement
-
-y=12;
-
-Line 9: statements : statements statement
-
-int x,y;
-x=11;
-y=12;
-
-Line 10: type_specifier : INT
-
-int
-
-Line 10: declaration_list : ID
-
-s
-
-Line 10: var_declaration : type_specifier declaration_list SEMICOLON
-
-int s;
-
-Line 10: statement : var_declaration
-
-int s;
+x=10;
 
 Line 10: statements : statements statement
 
 int x,y;
-x=11;
-y=12;
-int s;
-
-Line 11: variable : ID
-
-s
-
-Line 11: variable : ID
-
-x
-
-Line 11: factor : variable
-
-x
-
-Line 11: unary_expression : factor
-
-x
-
-Line 11: term : unary_expression
-
-x
-
-Line 11: simple_expression : term
-
-x
-
-Line 11: rel_expression : simple_expression
-
-x
-
-Line 11: logic_expression : rel_expression
-
-x
-
-Line 11: arguments : logic_expression
-
-x
+x=10;
 
 Line 11: variable : ID
 
 y
 
-Line 11: factor : variable
+Line 11: factor : CONST_INT
 
-y
-
-Line 11: unary_expression : factor
-
-y
-
-Line 11: term : unary_expression
-
-y
-
-Line 11: simple_expression : term
-
-y
-
-Line 11: rel_expression : simple_expression
-
-y
-
-Line 11: logic_expression : rel_expression
-
-y
-
-Line 11: arguments : arguments COMMA logic_expression
-
-x,y
-
-Line 11: argument_list : arguments
-
-x,y
-
-Line 11: factor : ID LPAREN argument_list RPAREN
-
-sum_1(x,y)
+12
 
 Line 11: unary_expression : factor
 
-sum_1(x,y)
+12
 
 Line 11: term : unary_expression
 
-sum_1(x,y)
+12
 
 Line 11: simple_expression : term
 
-sum_1(x,y)
+12
 
 Line 11: rel_expression : simple_expression
 
-sum_1(x,y)
+12
 
 Line 11: logic_expression : rel_expression
 
-sum_1(x,y)
+12
 
 Line 11: expression : variable ASSIGNOP logic_expression
 
-s=sum_1(x,y)
+y=12
 
 Line 11: expression_statement : expression SEMICOLON
 
-s=sum_1(x,y);
+y=12;
 
 Line 11: statement : expression_statement
 
-s=sum_1(x,y);
+y=12;
 
 Line 11: statements : statements statement
 
 int x,y;
-x=11;
+x=10;
 y=12;
+
+Line 12: type_specifier : INT
+
+int
+
+Line 12: declaration_list : ID
+
+s
+
+Line 12: var_declaration : type_specifier declaration_list SEMICOLON
+
 int s;
-s=sum_1(x,y);
 
-Line 12: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+Line 12: statement : var_declaration
 
-printf(s);
+int s;
 
 Line 12: statements : statements statement
 
 int x,y;
-x=11;
+x=10;
 y=12;
 int s;
-s=sum_1(x,y);
+
+Line 13: variable : ID
+
+s
+
+Line 13: factor : CONST_INT
+
+2
+
+Line 13: unary_expression : factor
+
+2
+
+Line 13: term : unary_expression
+
+2
+
+Line 13: variable : ID
+
+x
+
+Line 13: factor : variable
+
+x
+
+Line 13: unary_expression : factor
+
+x
+
+Line 13: term : term MULOP unary_expression
+
+2*x
+
+Line 13: simple_expression : term
+
+2*x
+
+Line 13: rel_expression : simple_expression
+
+2*x
+
+Line 13: logic_expression : rel_expression
+
+2*x
+
+Line 13: arguments : logic_expression
+
+2*x
+
+Line 13: variable : ID
+
+y
+
+Line 13: factor : variable
+
+y
+
+Line 13: unary_expression : factor
+
+y
+
+Line 13: term : unary_expression
+
+y
+
+Line 13: simple_expression : term
+
+y
+
+Line 13: rel_expression : simple_expression
+
+y
+
+Line 13: logic_expression : rel_expression
+
+y
+
+Line 13: arguments : arguments COMMA logic_expression
+
+2*x,y
+
+Line 13: argument_list : arguments
+
+2*x,y
+
+Line 13: factor : ID LPAREN argument_list RPAREN
+
+sum_1(2*x,y)
+
+Line 13: unary_expression : factor
+
+sum_1(2*x,y)
+
+Line 13: term : unary_expression
+
+sum_1(2*x,y)
+
+Line 13: simple_expression : term
+
+sum_1(2*x,y)
+
+Line 13: variable : ID
+
+x
+
+Line 13: factor : variable
+
+x
+
+Line 13: unary_expression : factor
+
+x
+
+Line 13: term : unary_expression
+
+x
+
+Line 13: simple_expression : term
+
+x
+
+Line 13: rel_expression : simple_expression
+
+x
+
+Line 13: logic_expression : rel_expression
+
+x
+
+Line 13: arguments : logic_expression
+
+x
+
+Line 13: factor : CONST_INT
+
+2
+
+Line 13: unary_expression : factor
+
+2
+
+Line 13: term : unary_expression
+
+2
+
+Line 13: variable : ID
+
+y
+
+Line 13: factor : variable
+
+y
+
+Line 13: unary_expression : factor
+
+y
+
+Line 13: term : term MULOP unary_expression
+
+2*y
+
+Line 13: simple_expression : term
+
+2*y
+
+Line 13: rel_expression : simple_expression
+
+2*y
+
+Line 13: logic_expression : rel_expression
+
+2*y
+
+Line 13: arguments : arguments COMMA logic_expression
+
+x,2*y
+
+Line 13: argument_list : arguments
+
+x,2*y
+
+Line 13: factor : ID LPAREN argument_list RPAREN
+
+sum_1(x,2*y)
+
+Line 13: unary_expression : factor
+
+sum_1(x,2*y)
+
+Line 13: term : unary_expression
+
+sum_1(x,2*y)
+
+Line 13: simple_expression : simple_expression ADDOP term
+
+sum_1(2*x,y)+sum_1(x,2*y)
+
+Line 13: rel_expression : simple_expression
+
+sum_1(2*x,y)+sum_1(x,2*y)
+
+Line 13: logic_expression : rel_expression
+
+sum_1(2*x,y)+sum_1(x,2*y)
+
+Line 13: expression : variable ASSIGNOP logic_expression
+
+s=sum_1(2*x,y)+sum_1(x,2*y)
+
+Line 13: expression_statement : expression SEMICOLON
+
+s=sum_1(2*x,y)+sum_1(x,2*y);
+
+Line 13: statement : expression_statement
+
+s=sum_1(2*x,y)+sum_1(x,2*y);
+
+Line 13: statements : statements statement
+
+int x,y;
+x=10;
+y=12;
+int s;
+s=sum_1(2*x,y)+sum_1(x,2*y);
+
+Line 14: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
 printf(s);
 
-Line 13: compound_statement : LCURL statements RCURL
+Line 14: statements : statements statement
+
+int x,y;
+x=10;
+y=12;
+int s;
+s=sum_1(2*x,y)+sum_1(x,2*y);
+printf(s);
+
+Line 15: compound_statement : LCURL statements RCURL
 
 {
 int x,y;
-x=11;
+x=10;
 y=12;
 int s;
-s=sum_1(x,y);
+s=sum_1(2*x,y)+sum_1(x,2*y);
 printf(s);
 }
 
@@ -400,47 +588,49 @@ ScopeTable # 1
 1 --> < main , ID > 
 5 --> < sum_1 , ID > 
 
-Line 13: func_definition : type_specifier ID LPAREN RPAREN compound_statement
+Line 15: func_definition : type_specifier ID LPAREN RPAREN compound_statement
 
 int main(){
 int x,y;
-x=11;
+x=10;
 y=12;
 int s;
-s=sum_1(x,y);
+s=sum_1(2*x,y)+sum_1(x,2*y);
 printf(s);
 }
 
-Line 13: unit : func_definition
+Line 15: unit : func_definition
 
 int main(){
 int x,y;
-x=11;
+x=10;
 y=12;
 int s;
-s=sum_1(x,y);
+s=sum_1(2*x,y)+sum_1(x,2*y);
 printf(s);
 }
 
-Line 13: program : program unit
+Line 15: program : program unit
 
 int sum_1(int a,int b){
-return a+b;
+int s;
+s=a+b;
+return s;
 }
 int main(){
 int x,y;
-x=11;
+x=10;
 y=12;
 int s;
-s=sum_1(x,y);
+s=sum_1(2*x,y)+sum_1(x,2*y);
 printf(s);
 }
 
-Line 13: start : program
+Line 15: start : program
 
 ScopeTable # 1
 1 --> < main , ID > 
 5 --> < sum_1 , ID > 
 
-Total lines: 13
+Total lines: 15
 Total errors: 0
