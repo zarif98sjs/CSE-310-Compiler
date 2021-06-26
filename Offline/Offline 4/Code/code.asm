@@ -11,6 +11,8 @@ DIV_REM DW ?
 CR EQU 0DH
 LF EQU 0AH
 NEWLINE DB CR, LF , '$'
+x_global dw ?
+ara dw 10 dup ($)
 
 .CODE
 
@@ -93,92 +95,79 @@ OUTPUT PROC
       
 OUTPUT ENDP
 
-fib PROC
-PUSH BP
-MOV BP,SP
-SUB SP,22
-
-MOV AX,[bp+4]
-MOV WORD PTR[bp-4],AX
-
-MOV WORD PTR[bp-6],1
-MOV AX,[bp-4]
-CMP AX,[bp-6]
-jle L0
-MOV WORD PTR[bp-8],0
-JMP L1
-L0:
-MOV WORD PTR[bp-8],1
-L1:
-
-CMP [bp-8],0
-JE L2
-
-MOV AX,[bp-4]
-JMP L_fib
-
-L2:
-
-MOV WORD PTR[bp-10],1
-MOV AX,[bp-4]
-SUB AX,[bp-10]
-MOV WORD PTR[bp-12],AX
-PUSH [bp-12]
-CALL fib
-ADD SP,2
-MOV WORD PTR[bp-14],AX
-
-MOV WORD PTR[bp-16],2
-MOV AX,[bp-4]
-SUB AX,[bp-16]
-MOV WORD PTR[bp-18],AX
-PUSH [bp-18]
-CALL fib
-ADD SP,2
-MOV WORD PTR[bp-20],AX
-MOV AX,[bp-14]
-ADD AX,[bp-20]
-MOV WORD PTR[bp-22],AX
-MOV AX,[bp-22]
-JMP L_fib
-
-L_fib:
-ADD SP,22
-POP BP
-RET
-fib ENDP
-
 main PROC
 MOV AX, @DATA
 MOV DS, AX
 PUSH BP
 MOV BP,SP
-SUB SP,10
+SUB SP,36
 
-; n=4;
-MOV WORD PTR[bp-4],4
-MOV AX,[bp-4]
-MOV WORD PTR[bp-2],AX
-
-; s=fib(n);
-
-PUSH [bp-2]
-CALL fib
-ADD SP,2
-MOV WORD PTR[bp-8],AX
-MOV AX,[bp-8]
-MOV WORD PTR[bp-6],AX
-
-; printf(s);
+; x=12;
+MOV WORD PTR[bp-6],12
 MOV AX,[bp-6]
+MOV WORD PTR[bp-2],AX
+; y=13;
+MOV WORD PTR[bp-8],13
+MOV AX,[bp-8]
+MOV WORD PTR[bp-4],AX
+
+; ara[2]=7;
+MOV WORD PTR[bp-14],7
+MOV AX,[bp-14]
+MOV WORD PTR[bp-12],2
+MOV BX,[bp-12]
+ADD BX,BX
+MOV ara[BX],AX
+; x_global=x+ara[2]+y+ara[2];
+
+MOV WORD PTR[bp-16],2
+MOV BX,[bp-16]
+ADD BX,BX
+MOV AX,[bp-2]
+ADD AX,ara[BX]
+MOV WORD PTR[bp-18],AX
+
+MOV AX,[bp-18]
+ADD AX,[bp-4]
+MOV WORD PTR[bp-20],AX
+MOV WORD PTR[bp-22],2
+MOV BX,[bp-22]
+ADD BX,BX
+MOV AX,[bp-20]
+ADD AX,ara[BX]
+MOV WORD PTR[bp-24],AX
+MOV AX,[bp-24]
+MOV x_global,AX
+
+; printf(x_global);
+MOV AX,x_global
 MOV FOR_PRINT,AX
 CALL OUTPUT
-MOV WORD PTR[bp-10],0
-MOV AX,[bp-10]
+; ara[3]=12+2;
+MOV WORD PTR[bp-28],12
+MOV WORD PTR[bp-30],2
+MOV AX,[bp-28]
+ADD AX,[bp-30]
+MOV WORD PTR[bp-32],AX
+MOV AX,[bp-32]
+MOV WORD PTR[bp-26],3
+MOV BX,[bp-26]
+ADD BX,BX
+MOV ara[BX],AX
+
+; printf(ara[3]);
+MOV WORD PTR[bp-34],3
+MOV BX,[bp-34]
+ADD BX,BX
+MOV AX,ara[BX]
+MOV FOR_PRINT,AX
+CALL OUTPUT
+MOV WORD PTR[bp-36],0
+MOV AX,[bp-36]
 JMP L_main
 
 L_main:
-ADD SP,10
+ADD SP,36
 POP BP
 
 ;DOS EXIT

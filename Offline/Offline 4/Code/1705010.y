@@ -432,6 +432,26 @@ string cur_function_label(string name)
     return "L_"+name;
 }
 
+string process_global_variable(string str)
+{
+    vector<string> ret;
+    char delim = '[';
+
+    size_t start;
+    size_t end = 0;
+
+    while ((start = str.find_first_not_of(delim, end)) != string::npos)
+    {
+        end = str.find(delim, start);
+        ret.push_back(str.substr(start, end - start));
+    }
+
+    int sz = ret.size();
+
+    if(sz == 1) return ret[0];
+    else return ret[0]+"[BX]";
+}
+
 %}
 
 %error-verbose
@@ -1398,19 +1418,39 @@ var_declaration: type_specifier declaration_list SEMICOLON {
                 // insert all declaration_list ID to SymbolTable with VAR_TYPE
                 for(auto el:$2->v)
                 {
-                    if(el->var_type == "array")
-                    {
-                        el->setVarType($1->text + "_array");
-                        incSP(el->ara_size);
-                        el->stk_offset = to_string(SP_VAL);
-                    }
-                    else 
-                    {
-                        el->setVarType($1->text); 
+                        if(el->var_type == "array")
+                        {
+                            el->setVarType($1->text + "_array");
 
-                        incSP();
-                        el->stk_offset = to_string(SP_VAL);
-                    }
+                            if(sym_tab->getCurScopeTableId()!="1") // not global
+                            {
+                                incSP(el->ara_size);
+                                el->stk_offset = to_string(SP_VAL);
+                            }
+                            else
+                            {
+                                DATA_vector.push_back(el->key + " dw "+to_string(el->ara_size)+" dup ($)");
+                            }
+
+                        }
+                        else 
+                        {
+                            el->setVarType($1->text); 
+
+                            if(sym_tab->getCurScopeTableId()!="1") // not global
+                            {
+                                incSP();
+                                el->stk_offset = to_string(SP_VAL);
+                            }
+                            else
+                            {
+                                DATA_vector.push_back(el->key + " dw ?");
+                            }
+                
+                        }
+                    
+
+                    
                     
                     if(!sym_tab->insert_symbol(*el)) // already present in current scope
                     {
@@ -2032,7 +2072,10 @@ statement: var_declaration {
             }
 
             $$->code = "\n; "+$$->text+"\n";
-            $$->code += "MOV AX,"+stk_address(ret_symbol->stk_offset)+"\n";
+            
+            if(ret_symbol->stk_offset != "") $$->code += "MOV AX,"+stk_address(ret_symbol->stk_offset)+"\n";
+            else $$->code += "MOV AX,"+$3->key+"\n";
+            
             $$->code += "MOV FOR_PRINT,AX\n";
             $$->code += "CALL OUTPUT";
             
@@ -2067,12 +2110,15 @@ statement: var_declaration {
             // code
             
             $$->code += $5->code+"\n";
-            $$->code += "MOV SI,"+stk_address($5->stk_offset)+"\n";
-            $$->code += "ADD SI,SI\n";
+
+            $$->code += "MOV BX,"+stk_address($5->stk_offset)+"\n";
+            $$->code += "ADD BX,BX\n";
 
             $$->stk_offset = ret_symbol->stk_offset+"+SI";
 
-            $$->code += "MOV AX,"+stk_address($$->stk_offset)+"\n";
+            if(ret_symbol->stk_offset != "") $$->code += "MOV AX,"+stk_address($$->stk_offset)+"\n";
+            else $$->code += "MOV AX,"+$3->key+"[BX]\n";
+            
             $$->code += "MOV FOR_PRINT,AX\n";
             $$->code += "CALL OUTPUT";
             
@@ -2222,11 +2268,21 @@ variable: ID {
             print_log_text($$->text);
 
             // code
-            
+
             $$->code = $3->code+"\n";
-            $$->code += "MOV SI,"+stk_address($3->stk_offset)+"\n";
-            $$->code += "ADD SI,SI";
-            $$->stk_offset = ret_symbol->stk_offset+"+SI";
+
+            if(ret_symbol->stk_offset!="")
+            {
+                $$->code += "MOV SI,"+stk_address($3->stk_offset)+"\n";
+                $$->code += "ADD SI,SI";
+                $$->stk_offset = ret_symbol->stk_offset+"+SI";
+            }
+            else
+            {
+                $$->code += "MOV BX,"+stk_address($3->stk_offset)+"\n";
+                $$->code += "ADD BX,BX";
+                //$$->stk_offset = ret_symbol->stk_offset+"+SI";
+            }
             
             erm_h($3);
             erm_s($1);
@@ -2280,9 +2336,14 @@ variable: ID {
                 // code
                 
                 $$->code = $3->code+"\n";
-                $$->code += "MOV AX,"+stk_address($3->stk_offset)+"\n";
+
+                if($3->stk_offset != "") $$->code += "MOV AX,"+stk_address($3->stk_offset)+"\n";
+                else $$->code += "MOV AX,"+process_global_variable($3->text)+"\n";
+
                 if($1->code != "") $$->code += $1->code+"\n";
-                $$->code += "MOV "+stk_address_typecast($1->stk_offset)+",AX";
+
+                if($1->stk_offset != "") $$->code += "MOV "+stk_address_typecast($1->stk_offset)+",AX";
+                else $$->code += "MOV "+process_global_variable($1->text)+",AX";
 
                 erm_h($1); erm_h($3);
             }	
@@ -2548,8 +2609,12 @@ simple_expression: term {
                         // code for +
                         $$->code = $1->code+"\n";
                         $$->code += $3->code+"\n";
-                        $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
-                        $$->code += "ADD AX,"+stk_address($3->stk_offset)+"\n";
+                        
+                        if($1->stk_offset!="") $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
+                        else $$->code += "MOV AX,"+process_global_variable($1->text)+"\n";
+
+                        if($3->stk_offset!="") $$->code += "ADD AX,"+stk_address($3->stk_offset)+"\n";
+                        else $$->code += "ADD AX,"+process_global_variable($3->text)+"\n";
 
                         string tempVar = newTemp();
 
@@ -2563,8 +2628,12 @@ simple_expression: term {
                         // code for -
                         $$->code = $1->code+"\n";
                         $$->code += $3->code+"\n";
-                        $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
-                        $$->code += "SUB AX,"+stk_address($3->stk_offset)+"\n";
+                        
+                        if($1->stk_offset!="") $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
+                        else $$->code += "MOV AX,"+process_global_variable($1->text)+"\n";
+
+                        if($3->stk_offset!="") $$->code += "SUB AX,"+stk_address($3->stk_offset)+"\n";
+                        else $$->code += "SUB AX,"+process_global_variable($3->text)+"\n";
 
                         string tempVar = newTemp();
 

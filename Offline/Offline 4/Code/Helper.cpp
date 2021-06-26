@@ -9,7 +9,13 @@ using namespace std;
 
 
 
-Helper::Helper(){};
+Helper::Helper(){
+    text= "";
+    HelperType="";
+    code="";
+    tempVar="";
+    stk_offset="";
+};
 Helper::Helper(string text,vector<SymbolInfo*>v)
 {
     this->text = text;

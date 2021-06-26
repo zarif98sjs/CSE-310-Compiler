@@ -1,16 +1,18 @@
-int fib(int n)
-{
-    if (n <= 1)
-        return n;
-    return fib(n-1) + fib(n-2);
-}
- 
+int x_global;
+int ara[10];
+
 int main ()
 {
-    int n;
-    n = 4;
-    int s;
-    s = fib(n);
-    printf(s);
+    int x,y;
+    x = 12;
+    y = 13;
+    int z;
+    ara[2] = 7;
+    x_global = x+ara[2]+y+ara[2];
+    printf(x_global);
+    ara[3] = 12+2;
+    printf(ara[3]);
+
+
     return 0;
 }

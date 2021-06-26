@@ -1,4 +1,4 @@
-Line no 8
+Line no 10
 
 ScopeTable # 3
 
@@ -7,22 +7,7 @@ ScopeTable # 3
 ScopeTable # 2
  7 --> < a , ID , 2>
  8 --> < b , ID , 2>
-
-
-
-ScopeTable # 1
- 26 --> < main , ID>
-
-
-Line no 11
-
-ScopeTable # 4
-
-
-
-ScopeTable # 2
- 7 --> < a , ID , 1>
- 8 --> < b , ID , 2>
+ 17 --> < ara , ID , { -1 -1 23 -1 -1 -1 -1 -1 -1 -1 } > 
 
 
 
@@ -32,9 +17,27 @@ ScopeTable # 1
 
 Line no 13
 
+ScopeTable # 4
+
+
+
 ScopeTable # 2
  7 --> < a , ID , 1>
  8 --> < b , ID , 2>
+ 17 --> < ara , ID , { -1 -1 23 -1 -1 -1 -1 -1 -1 -1 } > 
+
+
+
+ScopeTable # 1
+ 26 --> < main , ID>
+
+
+Line no 15
+
+ScopeTable # 2
+ 7 --> < a , ID , 1>
+ 8 --> < b , ID , 2>
+ 17 --> < ara , ID , { -1 -1 23 -1 -1 -1 -1 -1 -1 -1 } > 
 
 
 
