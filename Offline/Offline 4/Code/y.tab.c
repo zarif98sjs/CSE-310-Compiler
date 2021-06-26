@@ -972,9 +972,9 @@ static const yytype_uint16 yyrline[] =
     1525,  1537,  1560,  1589,  1618,  1652,  1688,  1728,  1743,  1767,
     1795,  1809,  1824,  1839,  1853,  1868,  1883,  1899,  1913,  1959,
     1982,  2016,  2053,  2084,  2127,  2147,  2166,  2175,  2194,  2231,
-    2292,  2310,  2354,  2371,  2471,  2488,  2556,  2574,  2657,  2675,
-    2801,  2816,  2830,  2849,  2867,  2938,  2959,  2980,  2993,  3006,
-    3022,  3040,  3057,  3063,  3085
+    2292,  2310,  2354,  2371,  2479,  2496,  2564,  2582,  2665,  2683,
+    2809,  2824,  2838,  2857,  2875,  2946,  2967,  2988,  3001,  3014,
+    3030,  3048,  3065,  3071,  3093
 };
 #endif
 
@@ -4355,20 +4355,24 @@ yyreduce:
                     // code for &&
                     (yyval.helper)->code = (yyvsp[-2].helper)->code+"\n";
                     (yyval.helper)->code += (yyvsp[0].helper)->code+"\n";
-                    (yyval.helper)->code += "CMP "+ stk_address((yyvsp[-2].helper)->stk_offset)+",0\n";
+
+                    if((yyvsp[-2].helper)->stk_offset != "") (yyval.helper)->code += "CMP "+ stk_address((yyvsp[-2].helper)->stk_offset)+",0\n";
+                    else  (yyval.helper)->code += "CMP "+ process_global_variable((yyvsp[-2].helper)->text)+",0\n";
 
                     string tempL1 = newLabel();
                     string tempL2 = newLabel();
 
                     (yyval.helper)->code += "JE "+tempL1+"\n";
 
-                    (yyval.helper)->code += "CMP "+stk_address((yyvsp[0].helper)->stk_offset)+",0\n";
+                    if((yyvsp[0].helper)->stk_offset != "") (yyval.helper)->code += "CMP "+stk_address((yyvsp[0].helper)->stk_offset)+",0\n";
+                    else (yyval.helper)->code += "CMP "+process_global_variable((yyvsp[0].helper)->text)+",0\n";
+
                     (yyval.helper)->code += "JE "+tempL1+"\n";
 
                     string tempVar = newTemp();
 
                     (yyval.helper)->tempVar = tempVar;
-                    (yyval.helper)->stk_offset = SP_VAL; // init
+                    (yyval.helper)->stk_offset = to_string(SP_VAL); // init
 
                     (yyval.helper)->code += "MOV "+stk_address_typecast((yyval.helper)->stk_offset)+",1\n";
                     (yyval.helper)->code += "JMP "+tempL2+"\n";
@@ -4383,14 +4387,18 @@ yyreduce:
                     // code for ||
                     (yyval.helper)->code = (yyvsp[-2].helper)->code+"\n";
                     (yyval.helper)->code += (yyvsp[0].helper)->code+"\n";
-                    (yyval.helper)->code += "CMP "+stk_address((yyvsp[-2].helper)->stk_offset)+",0\n";
+
+                    if((yyvsp[-2].helper)->stk_offset != "") (yyval.helper)->code += "CMP "+stk_address((yyvsp[-2].helper)->stk_offset)+",0\n";
+                    else  (yyval.helper)->code += "CMP "+process_global_variable((yyvsp[-2].helper)->text)+",0\n";
 
                     string tempL1 = newLabel();
                     string tempL2 = newLabel();
 
                     (yyval.helper)->code += "JNE "+tempL1+"\n";
 
-                    (yyval.helper)->code += "CMP "+stk_address((yyvsp[0].helper)->stk_offset)+",0\n";
+                    if((yyvsp[0].helper)->stk_offset != "") (yyval.helper)->code += "CMP "+stk_address((yyvsp[0].helper)->stk_offset)+",0\n";
+                    else (yyval.helper)->code += "CMP "+process_global_variable((yyvsp[0].helper)->text)+",0\n";
+
                     (yyval.helper)->code += "JNE "+tempL1+"\n";
 
                     string tempVar = newTemp();
@@ -4410,11 +4418,11 @@ yyreduce:
                 erm_h((yyvsp[-2].helper)); erm_h((yyvsp[0].helper));
                 erm_s((yyvsp[-1].symbol_info));
             }
-#line 4414 "y.tab.c" /* yacc.c:1646  */
+#line 4422 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 2471 "1705010.y" /* yacc.c:1646  */
+#line 2479 "1705010.y" /* yacc.c:1646  */
     {
                 print_grammar_rule("rel_expression","simple_expression");
 
@@ -4432,11 +4440,11 @@ yyreduce:
 
                 erm_h((yyvsp[0].helper));
             }
-#line 4436 "y.tab.c" /* yacc.c:1646  */
+#line 4444 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 2488 "1705010.y" /* yacc.c:1646  */
+#line 2496 "1705010.y" /* yacc.c:1646  */
     {
                 print_grammar_rule("rel_expression","simple_expression RELOP simple_expression");
                 
@@ -4503,11 +4511,11 @@ yyreduce:
                 erm_h((yyvsp[-2].helper)); erm_h((yyvsp[0].helper));
                 erm_s((yyvsp[-1].symbol_info));
             }
-#line 4507 "y.tab.c" /* yacc.c:1646  */
+#line 4515 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 2556 "1705010.y" /* yacc.c:1646  */
+#line 2564 "1705010.y" /* yacc.c:1646  */
     {
 
                     print_grammar_rule("simple_expression","term");
@@ -4526,11 +4534,11 @@ yyreduce:
 
                     erm_h((yyvsp[0].helper));
             }
-#line 4530 "y.tab.c" /* yacc.c:1646  */
+#line 4538 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 2574 "1705010.y" /* yacc.c:1646  */
+#line 2582 "1705010.y" /* yacc.c:1646  */
     {
                     print_grammar_rule("simple_expression","simple_expression ADDOP term");
 
@@ -4612,11 +4620,11 @@ yyreduce:
                     erm_h((yyvsp[-2].helper)); erm_h((yyvsp[0].helper));
                     erm_s((yyvsp[-1].symbol_info));
             }
-#line 4616 "y.tab.c" /* yacc.c:1646  */
+#line 4624 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 2657 "1705010.y" /* yacc.c:1646  */
+#line 2665 "1705010.y" /* yacc.c:1646  */
     {
 
             print_grammar_rule("term","unary_expression");
@@ -4635,11 +4643,11 @@ yyreduce:
 
             erm_h((yyvsp[0].helper));
     }
-#line 4639 "y.tab.c" /* yacc.c:1646  */
+#line 4647 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 2675 "1705010.y" /* yacc.c:1646  */
+#line 2683 "1705010.y" /* yacc.c:1646  */
     {
 
             print_grammar_rule("term","term MULOP unary_expression");
@@ -4764,11 +4772,11 @@ yyreduce:
             erm_h((yyvsp[-2].helper)); erm_h((yyvsp[0].helper));
             erm_s((yyvsp[-1].symbol_info));
     }
-#line 4768 "y.tab.c" /* yacc.c:1646  */
+#line 4776 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 2801 "1705010.y" /* yacc.c:1646  */
+#line 2809 "1705010.y" /* yacc.c:1646  */
     {
                 print_grammar_rule("unary_expression","ADDOP unary_expression");
                 
@@ -4784,11 +4792,11 @@ yyreduce:
                 erm_h((yyvsp[0].helper));
                 erm_s((yyvsp[-1].symbol_info));
             }
-#line 4788 "y.tab.c" /* yacc.c:1646  */
+#line 4796 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 2816 "1705010.y" /* yacc.c:1646  */
+#line 2824 "1705010.y" /* yacc.c:1646  */
     {
                 print_grammar_rule("unary_expression","NOT unary_expression");
                 
@@ -4803,11 +4811,11 @@ yyreduce:
 
                 erm_h((yyvsp[0].helper));
             }
-#line 4807 "y.tab.c" /* yacc.c:1646  */
+#line 4815 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 2830 "1705010.y" /* yacc.c:1646  */
+#line 2838 "1705010.y" /* yacc.c:1646  */
     { 
                 print_grammar_rule("unary_expression","factor");
                 
@@ -4825,11 +4833,11 @@ yyreduce:
 
                 erm_h((yyvsp[0].helper));
             }
-#line 4829 "y.tab.c" /* yacc.c:1646  */
+#line 4837 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 2849 "1705010.y" /* yacc.c:1646  */
+#line 2857 "1705010.y" /* yacc.c:1646  */
     {
 
             print_grammar_rule("factor","variable");
@@ -4848,11 +4856,11 @@ yyreduce:
 
             erm_h((yyvsp[0].helper));
         }
-#line 4852 "y.tab.c" /* yacc.c:1646  */
+#line 4860 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 2867 "1705010.y" /* yacc.c:1646  */
+#line 2875 "1705010.y" /* yacc.c:1646  */
     {
 
             print_grammar_rule("factor","ID LPAREN argument_list RPAREN");
@@ -4924,11 +4932,11 @@ yyreduce:
             erm_h((yyvsp[-1].helper));
             erm_s((yyvsp[-3].symbol_info));
         }
-#line 4928 "y.tab.c" /* yacc.c:1646  */
+#line 4936 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 2938 "1705010.y" /* yacc.c:1646  */
+#line 2946 "1705010.y" /* yacc.c:1646  */
     {
 
             print_grammar_rule("factor","LPAREN expression RPAREN");
@@ -4950,11 +4958,11 @@ yyreduce:
             erm_h((yyvsp[-1].helper));
         
         }
-#line 4954 "y.tab.c" /* yacc.c:1646  */
+#line 4962 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 2959 "1705010.y" /* yacc.c:1646  */
+#line 2967 "1705010.y" /* yacc.c:1646  */
     { 
             print_grammar_rule("factor","CONST_INT");
 
@@ -4976,11 +4984,11 @@ yyreduce:
 
             erm_s((yyvsp[0].symbol_info));
         }
-#line 4980 "y.tab.c" /* yacc.c:1646  */
+#line 4988 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 2980 "1705010.y" /* yacc.c:1646  */
+#line 2988 "1705010.y" /* yacc.c:1646  */
     { 
             print_grammar_rule("factor","CONST_FLOAT");
 
@@ -4994,11 +5002,11 @@ yyreduce:
 
             erm_s((yyvsp[0].symbol_info));
         }
-#line 4998 "y.tab.c" /* yacc.c:1646  */
+#line 5006 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 2993 "1705010.y" /* yacc.c:1646  */
+#line 3001 "1705010.y" /* yacc.c:1646  */
     { 
             print_grammar_rule("factor","ERROR_FLOAT");
 
@@ -5012,11 +5020,11 @@ yyreduce:
 
             erm_s((yyvsp[0].symbol_info));
         }
-#line 5016 "y.tab.c" /* yacc.c:1646  */
+#line 5024 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 3006 "1705010.y" /* yacc.c:1646  */
+#line 3014 "1705010.y" /* yacc.c:1646  */
     {
             print_grammar_rule("factor","variable INCOP");
 
@@ -5033,11 +5041,11 @@ yyreduce:
 
             erm_h((yyvsp[-1].helper));
         }
-#line 5037 "y.tab.c" /* yacc.c:1646  */
+#line 5045 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 3022 "1705010.y" /* yacc.c:1646  */
+#line 3030 "1705010.y" /* yacc.c:1646  */
     {
             print_grammar_rule("factor","variable DECOP");
 
@@ -5054,11 +5062,11 @@ yyreduce:
 
             erm_h((yyvsp[-1].helper));
         }
-#line 5058 "y.tab.c" /* yacc.c:1646  */
+#line 5066 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 3040 "1705010.y" /* yacc.c:1646  */
+#line 3048 "1705010.y" /* yacc.c:1646  */
     {
 
                     print_grammar_rule("argument_list","arguments");
@@ -5076,20 +5084,20 @@ yyreduce:
 
                     erm_h((yyvsp[0].helper));
                 }
-#line 5080 "y.tab.c" /* yacc.c:1646  */
+#line 5088 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 3057 "1705010.y" /* yacc.c:1646  */
+#line 3065 "1705010.y" /* yacc.c:1646  */
     {
                 print_grammar_rule("argument_list","");
                 (yyval.helper) = new Helper();
             }
-#line 5089 "y.tab.c" /* yacc.c:1646  */
+#line 5097 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 3063 "1705010.y" /* yacc.c:1646  */
+#line 3071 "1705010.y" /* yacc.c:1646  */
     {
 
                 print_grammar_rule("arguments","arguments COMMA logic_expression");
@@ -5112,11 +5120,11 @@ yyreduce:
 
                 erm_h((yyvsp[-2].helper)); erm_h((yyvsp[0].helper));
             }
-#line 5116 "y.tab.c" /* yacc.c:1646  */
+#line 5124 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 3085 "1705010.y" /* yacc.c:1646  */
+#line 3093 "1705010.y" /* yacc.c:1646  */
     {
 
                 print_grammar_rule("arguments","logic_expression");
@@ -5142,11 +5150,11 @@ yyreduce:
 
                 erm_h((yyvsp[0].helper));
             }
-#line 5146 "y.tab.c" /* yacc.c:1646  */
+#line 5154 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 5150 "y.tab.c" /* yacc.c:1646  */
+#line 5158 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -5374,7 +5382,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 3112 "1705010.y" /* yacc.c:1906  */
+#line 3120 "1705010.y" /* yacc.c:1906  */
 
 
 main(int argc,char *argv[])

@@ -100,7 +100,7 @@ MOV AX, @DATA
 MOV DS, AX
 PUSH BP
 MOV BP,SP
-SUB SP,36
+SUB SP,44
 
 ; x=31;
 MOV WORD PTR[bp-8],31
@@ -114,8 +114,8 @@ MOV WORD PTR[bp-4],AX
 MOV WORD PTR[bp-12],3
 MOV AX,[bp-12]
 MOV x_global,AX
-; ara[2]=12;
-MOV WORD PTR[bp-16],12
+; ara[2]=0;
+MOV WORD PTR[bp-16],0
 MOV AX,[bp-16]
 MOV WORD PTR[bp-14],2
 MOV BX,[bp-14]
@@ -123,42 +123,63 @@ ADD BX,BX
 MOV ara[BX],AX
 
 MOV WORD PTR[bp-18],2
-MOV BX,[bp-18]
-ADD BX,BX
 MOV AX,x_global
-CMP AX,ara[BX]
-jg L0
+CMP AX,[bp-18]
+je L0
 MOV WORD PTR[bp-20],0
 JMP L1
 L0:
 MOV WORD PTR[bp-20],1
 L1:
 
+MOV WORD PTR[bp-22],2
+MOV BX,[bp-22]
+ADD BX,BX
+MOV WORD PTR[bp-24],0
+MOV AX,ara[BX]
+CMP AX,[bp-24]
+jne L2
+MOV WORD PTR[bp-26],0
+JMP L3
+L2:
+MOV WORD PTR[bp-26],1
+L3:
+
 CMP [bp-20],0
-JE L2
+JNE L4
+CMP [bp-26],0
+JNE L4
+MOV WORD PTR[bp-28],0
+JMP L5
+L4:
+MOV WORD PTR[bp-28],1
+L5:
+
+CMP [bp-28],0
+JE L6
 ; x_global=x_global-1;
 
-MOV WORD PTR[bp-22],1
-MOV AX,x_global
-SUB AX,[bp-22]
-MOV WORD PTR[bp-24],AX
-MOV AX,[bp-24]
-MOV x_global,AX
-JMP L3
-L2:; ara[2]=ara[2]-1;
-MOV WORD PTR[bp-28],2
-MOV BX,[bp-28]
-ADD BX,BX
 MOV WORD PTR[bp-30],1
-MOV AX,ara[BX]
+MOV AX,x_global
 SUB AX,[bp-30]
 MOV WORD PTR[bp-32],AX
 MOV AX,[bp-32]
-MOV WORD PTR[bp-26],2
-MOV BX,[bp-26]
+MOV x_global,AX
+JMP L7
+L6:; ara[2]=ara[2]-1;
+MOV WORD PTR[bp-36],2
+MOV BX,[bp-36]
+ADD BX,BX
+MOV WORD PTR[bp-38],1
+MOV AX,ara[BX]
+SUB AX,[bp-38]
+MOV WORD PTR[bp-40],AX
+MOV AX,[bp-40]
+MOV WORD PTR[bp-34],2
+MOV BX,[bp-34]
 ADD BX,BX
 MOV ara[BX],AX
-L3:
+L7:
 
 ; printf(x_global);
 MOV AX,x_global
@@ -166,18 +187,18 @@ MOV FOR_PRINT,AX
 CALL OUTPUT
 
 ; printf(ara[2]);
-MOV WORD PTR[bp-34],2
-MOV BX,[bp-34]
+MOV WORD PTR[bp-42],2
+MOV BX,[bp-42]
 ADD BX,BX
 MOV AX,ara[BX]
 MOV FOR_PRINT,AX
 CALL OUTPUT
-MOV WORD PTR[bp-36],0
-MOV AX,[bp-36]
+MOV WORD PTR[bp-44],0
+MOV AX,[bp-44]
 JMP L_main
 
 L_main:
-ADD SP,36
+ADD SP,44
 POP BP
 
 ;DOS EXIT

@@ -7,9 +7,9 @@ int main ()
     x = 31;
     y = 55;
     x_global = 3;
-    ara[2] = 12;
+    ara[2] = 0;
 
-    if(x_global>ara[2])
+    if(x_global==2 || ara[2]!=0)
     {
         x_global = x_global -1;
     }

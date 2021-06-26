@@ -2411,20 +2411,24 @@ logic_expression: rel_expression {
                     // code for &&
                     $$->code = $1->code+"\n";
                     $$->code += $3->code+"\n";
-                    $$->code += "CMP "+ stk_address($1->stk_offset)+",0\n";
+
+                    if($1->stk_offset != "") $$->code += "CMP "+ stk_address($1->stk_offset)+",0\n";
+                    else  $$->code += "CMP "+ process_global_variable($1->text)+",0\n";
 
                     string tempL1 = newLabel();
                     string tempL2 = newLabel();
 
                     $$->code += "JE "+tempL1+"\n";
 
-                    $$->code += "CMP "+stk_address($3->stk_offset)+",0\n";
+                    if($3->stk_offset != "") $$->code += "CMP "+stk_address($3->stk_offset)+",0\n";
+                    else $$->code += "CMP "+process_global_variable($3->text)+",0\n";
+
                     $$->code += "JE "+tempL1+"\n";
 
                     string tempVar = newTemp();
 
                     $$->tempVar = tempVar;
-                    $$->stk_offset = SP_VAL; // init
+                    $$->stk_offset = to_string(SP_VAL); // init
 
                     $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",1\n";
                     $$->code += "JMP "+tempL2+"\n";
@@ -2439,14 +2443,18 @@ logic_expression: rel_expression {
                     // code for ||
                     $$->code = $1->code+"\n";
                     $$->code += $3->code+"\n";
-                    $$->code += "CMP "+stk_address($1->stk_offset)+",0\n";
+
+                    if($1->stk_offset != "") $$->code += "CMP "+stk_address($1->stk_offset)+",0\n";
+                    else  $$->code += "CMP "+process_global_variable($1->text)+",0\n";
 
                     string tempL1 = newLabel();
                     string tempL2 = newLabel();
 
                     $$->code += "JNE "+tempL1+"\n";
 
-                    $$->code += "CMP "+stk_address($3->stk_offset)+",0\n";
+                    if($3->stk_offset != "") $$->code += "CMP "+stk_address($3->stk_offset)+",0\n";
+                    else $$->code += "CMP "+process_global_variable($3->text)+",0\n";
+
                     $$->code += "JNE "+tempL1+"\n";
 
                     string tempVar = newTemp();
