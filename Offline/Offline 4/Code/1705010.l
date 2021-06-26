@@ -103,7 +103,7 @@ ALL_EXCEPT_BACKSLASH [^\\]
 "case" {return CASE;}
 "default" {return DEFAULT;}
 "continue" {return CONTINUE;}
-"printf"	{return PRINTLN;}
+"printf"|"println"	{return PRINTLN;}
 
 {LETTER}{ALNUM}*	{
 		SymbolInfo *s= new  SymbolInfo(yytext, "ID");

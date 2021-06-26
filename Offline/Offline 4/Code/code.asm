@@ -11,8 +11,6 @@ DIV_REM DW ?
 CR EQU 0DH
 LF EQU 0AH
 NEWLINE DB CR, LF , '$'
-x_global dw ?
-ara dw 10 dup ($)
 
 .CODE
 
@@ -100,105 +98,80 @@ MOV AX, @DATA
 MOV DS, AX
 PUSH BP
 MOV BP,SP
-SUB SP,44
+SUB SP,26
 
-; x=31;
-MOV WORD PTR[bp-8],31
-MOV AX,[bp-8]
-MOV WORD PTR[bp-2],AX
-; y=55;
-MOV WORD PTR[bp-10],55
+; b=0;
+MOV WORD PTR[bp-10],0
 MOV AX,[bp-10]
 MOV WORD PTR[bp-4],AX
-; x_global=3;
-MOV WORD PTR[bp-12],3
+; c=1;
+MOV WORD PTR[bp-12],1
 MOV AX,[bp-12]
-MOV x_global,AX
-; ara[2]=0;
-MOV WORD PTR[bp-16],0
-MOV AX,[bp-16]
-MOV WORD PTR[bp-14],2
-MOV BX,[bp-14]
-ADD BX,BX
-MOV ara[BX],AX
+MOV WORD PTR[bp-6],AX
+; for(i=0;i<4;i++){a=3;while(a--){b++;}}
+MOV WORD PTR[bp-14],0
+MOV AX,[bp-14]
+MOV WORD PTR[bp-8],AX
+L4:
+; i<4;
 
-MOV WORD PTR[bp-18],2
-MOV AX,x_global
-CMP AX,[bp-18]
-je L0
-MOV WORD PTR[bp-20],0
+MOV WORD PTR[bp-16],4
+MOV AX,[bp-8]
+CMP AX,[bp-16]
+jl L0
+MOV WORD PTR[bp-18],0
 JMP L1
 L0:
-MOV WORD PTR[bp-20],1
+MOV WORD PTR[bp-18],1
 L1:
 
-MOV WORD PTR[bp-22],2
-MOV BX,[bp-22]
-ADD BX,BX
-MOV WORD PTR[bp-24],0
-MOV AX,ara[BX]
-CMP AX,[bp-24]
-jne L2
-MOV WORD PTR[bp-26],0
-JMP L3
+; check for loop condition
+CMP [bp-18],0
+JE L5
+; a=3;
+MOV WORD PTR[bp-22],3
+MOV AX,[bp-22]
+MOV WORD PTR[bp-2],AX
+; while(a--){b++;}
 L2:
-MOV WORD PTR[bp-26],1
+; a--
+MOV AX,[bp-2]
+MOV WORD PTR[bp-24],AX
+DEC WORD PTR[bp-2]
+; check while loop condition
+CMP [bp-24],0
+JE L3
+; b++;
+MOV AX,[bp-4]
+MOV WORD PTR[bp-26],AX
+INC WORD PTR[bp-4]
+JMP L2
 L3:
 
-CMP [bp-20],0
-JNE L4
-CMP [bp-26],0
-JNE L4
-MOV WORD PTR[bp-28],0
-JMP L5
-L4:
-MOV WORD PTR[bp-28],1
+; i++
+MOV AX,[bp-8]
+MOV WORD PTR[bp-20],AX
+INC WORD PTR[bp-8]
+JMP L4
 L5:
 
-CMP [bp-28],0
-JE L6
-; x_global=x_global-1;
 
-MOV WORD PTR[bp-30],1
-MOV AX,x_global
-SUB AX,[bp-30]
-MOV WORD PTR[bp-32],AX
-MOV AX,[bp-32]
-MOV x_global,AX
-JMP L7
-L6:; ara[2]=ara[2]-1;
-MOV WORD PTR[bp-36],2
-MOV BX,[bp-36]
-ADD BX,BX
-MOV WORD PTR[bp-38],1
-MOV AX,ara[BX]
-SUB AX,[bp-38]
-MOV WORD PTR[bp-40],AX
-MOV AX,[bp-40]
-MOV WORD PTR[bp-34],2
-MOV BX,[bp-34]
-ADD BX,BX
-MOV ara[BX],AX
-L7:
-
-; printf(x_global);
-MOV AX,x_global
+; printf(a);
+MOV AX,[bp-2]
 MOV FOR_PRINT,AX
 CALL OUTPUT
 
-; printf(ara[2]);
-MOV WORD PTR[bp-42],2
-MOV BX,[bp-42]
-ADD BX,BX
-MOV AX,ara[BX]
+; printf(b);
+MOV AX,[bp-4]
 MOV FOR_PRINT,AX
 CALL OUTPUT
-MOV WORD PTR[bp-44],0
-MOV AX,[bp-44]
-JMP L_main
 
+; printf(c);
+MOV AX,[bp-6]
+MOV FOR_PRINT,AX
+CALL OUTPUT
 L_main:
-ADD SP,44
+ADD SP,26
 POP BP
 
 ;DOS EXIT

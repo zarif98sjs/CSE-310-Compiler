@@ -974,7 +974,7 @@ static const yytype_uint16 yyrline[] =
     1982,  2016,  2053,  2084,  2127,  2147,  2166,  2175,  2194,  2231,
     2292,  2310,  2354,  2371,  2479,  2496,  2564,  2582,  2665,  2683,
     2809,  2824,  2838,  2857,  2875,  2946,  2967,  2988,  3001,  3014,
-    3030,  3048,  3065,  3071,  3093
+    3039,  3066,  3083,  3089,  3111
 };
 #endif
 
@@ -5034,18 +5034,27 @@ yyreduce:
 
             print_log_text((yyval.helper)->text);
 
-            (yyval.helper)->tempVar = (yyvsp[-1].helper)->tempVar;
-            (yyval.helper)->stk_offset = (yyvsp[-1].helper)->stk_offset;
+            /**
+            $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
+            $$->code = "INC "+stk_address_typecast($$->stk_offset);
+            **/
 
-            (yyval.helper)->code = "INC "+stk_address_typecast((yyval.helper)->stk_offset);
+            /// as postfix , passing the previous value
+            (yyval.helper)->tempVar = newTemp();
+            (yyval.helper)->stk_offset = to_string(SP_VAL); // init 
+
+            (yyval.helper)->code = "MOV AX,"+stk_address((yyvsp[-1].helper)->stk_offset)+"\n";
+            (yyval.helper)->code += "MOV "+stk_address_typecast((yyval.helper)->stk_offset)+",AX\n";
+            (yyval.helper)->code += "INC "+stk_address_typecast((yyvsp[-1].helper)->stk_offset); // actual variable
 
             erm_h((yyvsp[-1].helper));
         }
-#line 5045 "y.tab.c" /* yacc.c:1646  */
+#line 5054 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 3030 "1705010.y" /* yacc.c:1646  */
+#line 3039 "1705010.y" /* yacc.c:1646  */
     {
             print_grammar_rule("factor","variable DECOP");
 
@@ -5055,18 +5064,27 @@ yyreduce:
 
             print_log_text((yyval.helper)->text);
 
-            (yyval.helper)->tempVar = (yyvsp[-1].helper)->tempVar;
-            (yyval.helper)->stk_offset = (yyvsp[-1].helper)->stk_offset;
+            /**
+            $$->tempVar = $1->tempVar;
+            $$->stk_offset = $1->stk_offset;
+            $$->code = "DEC "+stk_address_typecast($$->stk_offset);
+            **/
 
-            (yyval.helper)->code = "DEC "+stk_address_typecast((yyval.helper)->stk_offset);
+            /// as postfix , passing the previous value
+            (yyval.helper)->tempVar = newTemp();
+            (yyval.helper)->stk_offset = to_string(SP_VAL); // init 
+
+            (yyval.helper)->code = "MOV AX,"+stk_address((yyvsp[-1].helper)->stk_offset)+"\n";
+            (yyval.helper)->code += "MOV "+stk_address_typecast((yyval.helper)->stk_offset)+",AX\n";
+            (yyval.helper)->code += "DEC "+stk_address_typecast((yyvsp[-1].helper)->stk_offset); // actual variable
 
             erm_h((yyvsp[-1].helper));
         }
-#line 5066 "y.tab.c" /* yacc.c:1646  */
+#line 5084 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 3048 "1705010.y" /* yacc.c:1646  */
+#line 3066 "1705010.y" /* yacc.c:1646  */
     {
 
                     print_grammar_rule("argument_list","arguments");
@@ -5084,20 +5102,20 @@ yyreduce:
 
                     erm_h((yyvsp[0].helper));
                 }
-#line 5088 "y.tab.c" /* yacc.c:1646  */
+#line 5106 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 3065 "1705010.y" /* yacc.c:1646  */
+#line 3083 "1705010.y" /* yacc.c:1646  */
     {
                 print_grammar_rule("argument_list","");
                 (yyval.helper) = new Helper();
             }
-#line 5097 "y.tab.c" /* yacc.c:1646  */
+#line 5115 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 3071 "1705010.y" /* yacc.c:1646  */
+#line 3089 "1705010.y" /* yacc.c:1646  */
     {
 
                 print_grammar_rule("arguments","arguments COMMA logic_expression");
@@ -5120,11 +5138,11 @@ yyreduce:
 
                 erm_h((yyvsp[-2].helper)); erm_h((yyvsp[0].helper));
             }
-#line 5124 "y.tab.c" /* yacc.c:1646  */
+#line 5142 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 3093 "1705010.y" /* yacc.c:1646  */
+#line 3111 "1705010.y" /* yacc.c:1646  */
     {
 
                 print_grammar_rule("arguments","logic_expression");
@@ -5150,11 +5168,11 @@ yyreduce:
 
                 erm_h((yyvsp[0].helper));
             }
-#line 5154 "y.tab.c" /* yacc.c:1646  */
+#line 5172 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 5158 "y.tab.c" /* yacc.c:1646  */
+#line 5176 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -5382,7 +5400,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 3120 "1705010.y" /* yacc.c:1906  */
+#line 3138 "1705010.y" /* yacc.c:1906  */
 
 
 main(int argc,char *argv[])

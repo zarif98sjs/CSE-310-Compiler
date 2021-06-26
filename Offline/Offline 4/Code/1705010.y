@@ -3020,10 +3020,19 @@ factor: variable {
 
             print_log_text($$->text);
 
+            /**
             $$->tempVar = $1->tempVar;
             $$->stk_offset = $1->stk_offset;
-
             $$->code = "INC "+stk_address_typecast($$->stk_offset);
+            **/
+
+            /// as postfix , passing the previous value
+            $$->tempVar = newTemp();
+            $$->stk_offset = to_string(SP_VAL); // init 
+
+            $$->code = "MOV AX,"+stk_address($1->stk_offset)+"\n";
+            $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX\n";
+            $$->code += "INC "+stk_address_typecast($1->stk_offset); // actual variable
 
             erm_h($1);
         }
@@ -3036,10 +3045,19 @@ factor: variable {
 
             print_log_text($$->text);
 
+            /**
             $$->tempVar = $1->tempVar;
             $$->stk_offset = $1->stk_offset;
-
             $$->code = "DEC "+stk_address_typecast($$->stk_offset);
+            **/
+
+            /// as postfix , passing the previous value
+            $$->tempVar = newTemp();
+            $$->stk_offset = to_string(SP_VAL); // init 
+
+            $$->code = "MOV AX,"+stk_address($1->stk_offset)+"\n";
+            $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX\n";
+            $$->code += "DEC "+stk_address_typecast($1->stk_offset); // actual variable
 
             erm_h($1);
         }

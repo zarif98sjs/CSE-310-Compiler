@@ -1,25 +1,14 @@
-int x_global;
-int ara[10];
-
-int main ()
-{
-    int x,y,z;
-    x = 31;
-    y = 55;
-    x_global = 3;
-    ara[2] = 0;
-
-    if(x_global==2 || ara[2]!=0)
-    {
-        x_global = x_global -1;
+int main(){
+    int a,b,c,i;
+    b=0;
+	c=1;
+    for(i=0;i<4;i++){
+        a=3;
+        while(a--){
+            b++;
+        }
     }
-    else 
-    {
-        ara[2] = ara[2] - 1;
-    }
-
-    printf(x_global);
-    printf(ara[2]);
-
-    return 0;
+    println(a);
+    println(b);
+    println(c);
 }

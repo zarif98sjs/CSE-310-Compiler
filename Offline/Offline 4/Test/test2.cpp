@@ -85,17 +85,21 @@ string dec_to_hex(string d_s)
     return res;
 }
 
-int32_t main()
-{
-    optimizeIO();
-
-    auto v1 = tokenize("asd[2]",'[');
-    cout<<v1<<endl;
-    auto v2 = tokenize("asda",'[');
-    cout<<v2<<endl;
-
-    return 0;
+int main(){
+    int a,b,c,i;
+    b=0;
+	c=1;
+    for(i=0;i<4;i++){
+        a=3;
+        while(a--){
+            b++;
+        }
+    }
+    cout<<a<<endl;
+    cout<<b<<endl;
+    cout<<c<<endl;
 }
+
 
 /**
 
