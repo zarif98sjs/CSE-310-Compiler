@@ -2701,9 +2701,14 @@ term:	unary_expression {
                         // code
                         $$->code = $1->code+"\n";
                         $$->code += $3->code+"\n";
-                        $$->code += "MOV AX,"+ stk_address($1->stk_offset)+"\n";
+
+                        if($1->stk_offset!="") $$->code += "MOV AX,"+ stk_address($1->stk_offset)+"\n";
+                        else $$->code += "MOV AX,"+process_global_variable($1->text)+"\n";
+                        
                         $$->code += "CWD\n";
-                        $$->code += "IDIV "+stk_address_typecast($3->stk_offset)+"\n";
+
+                        if($3->stk_offset!="") $$->code += "IDIV "+stk_address_typecast($3->stk_offset)+"\n";
+                        else $$->code += "IDIV "+process_global_variable($3->text)+"\n";
 
                         string tempVar = newTemp();
 
@@ -2711,7 +2716,6 @@ term:	unary_expression {
                         $$->stk_offset = to_string(SP_VAL);
 
                         $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",DX";
-                        
 
                     }
                 }
