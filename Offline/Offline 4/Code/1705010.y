@@ -2110,14 +2110,20 @@ statement: var_declaration {
             // code
             
             $$->code += $5->code+"\n";
-
-            $$->code += "MOV BX,"+stk_address($5->stk_offset)+"\n";
-            $$->code += "ADD BX,BX\n";
-
             $$->stk_offset = ret_symbol->stk_offset+"+SI";
 
-            if(ret_symbol->stk_offset != "") $$->code += "MOV AX,"+stk_address($$->stk_offset)+"\n";
-            else $$->code += "MOV AX,"+$3->key+"[BX]\n";
+            if(ret_symbol->stk_offset != "")
+            {
+                $$->code += "MOV SI,"+stk_address($5->stk_offset)+"\n";
+                $$->code += "ADD SI,SI\n";
+                $$->code += "MOV AX,"+stk_address($$->stk_offset)+"\n";
+            }
+            else
+            {   $$->code += "MOV BX,"+stk_address($5->stk_offset)+"\n";
+                $$->code += "ADD BX,BX\n";
+                $$->code += "MOV AX,"+$3->key+"[BX]\n";
+            }
+            
             
             $$->code += "MOV FOR_PRINT,AX\n";
             $$->code += "CALL OUTPUT";
@@ -3030,9 +3036,15 @@ factor: variable {
             $$->tempVar = newTemp();
             $$->stk_offset = to_string(SP_VAL); // init 
 
-            $$->code = "MOV AX,"+stk_address($1->stk_offset)+"\n";
+            $$->code = $1->code+"\n";
+
+            if($1->stk_offset != "") $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
+            else $$->code += "MOV AX,"+process_global_variable($1->text)+"\n";
+            
             $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX\n";
-            $$->code += "INC "+stk_address_typecast($1->stk_offset); // actual variable
+
+            if($1->stk_offset != "") $$->code += "INC "+stk_address_typecast($1->stk_offset); // actual variable
+            else $$->code += "INC "+process_global_variable($1->text); // actual variable
 
             erm_h($1);
         }
@@ -3055,9 +3067,15 @@ factor: variable {
             $$->tempVar = newTemp();
             $$->stk_offset = to_string(SP_VAL); // init 
 
-            $$->code = "MOV AX,"+stk_address($1->stk_offset)+"\n";
+            $$->code = $1->code+"\n";
+
+            if($1->stk_offset != "") $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
+            else $$->code += "MOV AX,"+process_global_variable($1->text)+"\n";
+            
             $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX\n";
-            $$->code += "DEC "+stk_address_typecast($1->stk_offset); // actual variable
+
+            if($1->stk_offset != "") $$->code += "DEC "+stk_address_typecast($1->stk_offset); // actual variable
+            else $$->code += "DEC "+process_global_variable($1->text); // actual variable
 
             erm_h($1);
         }

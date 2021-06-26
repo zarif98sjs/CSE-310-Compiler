@@ -11,6 +11,7 @@ DIV_REM DW ?
 CR EQU 0DH
 LF EQU 0AH
 NEWLINE DB CR, LF , '$'
+ara dw 10 dup ($)
 
 .CODE
 
@@ -98,7 +99,7 @@ MOV AX, @DATA
 MOV DS, AX
 PUSH BP
 MOV BP,SP
-SUB SP,26
+SUB SP,40
 
 ; b=0;
 MOV WORD PTR[bp-10],0
@@ -108,61 +109,89 @@ MOV WORD PTR[bp-4],AX
 MOV WORD PTR[bp-12],1
 MOV AX,[bp-12]
 MOV WORD PTR[bp-6],AX
-; for(i=0;i<4;i++){a=3;while(a--){b++;}}
-MOV WORD PTR[bp-14],0
-MOV AX,[bp-14]
+; ara[2]=0;
+MOV WORD PTR[bp-16],0
+MOV AX,[bp-16]
+MOV WORD PTR[bp-14],2
+MOV BX,[bp-14]
+ADD BX,BX
+MOV ara[BX],AX
+; for(i=0;i<4;i++){printf(i);ara[1]=3;while(ara[1]--){ara[2]++;}}
+MOV WORD PTR[bp-18],0
+MOV AX,[bp-18]
 MOV WORD PTR[bp-8],AX
 L4:
 ; i<4;
 
-MOV WORD PTR[bp-16],4
+MOV WORD PTR[bp-20],4
 MOV AX,[bp-8]
-CMP AX,[bp-16]
+CMP AX,[bp-20]
 jl L0
-MOV WORD PTR[bp-18],0
+MOV WORD PTR[bp-22],0
 JMP L1
 L0:
-MOV WORD PTR[bp-18],1
+MOV WORD PTR[bp-22],1
 L1:
 
 ; check for loop condition
-CMP [bp-18],0
+CMP [bp-22],0
 JE L5
-; a=3;
-MOV WORD PTR[bp-22],3
-MOV AX,[bp-22]
-MOV WORD PTR[bp-2],AX
-; while(a--){b++;}
+
+; printf(i);
+MOV AX,[bp-8]
+MOV FOR_PRINT,AX
+CALL OUTPUT
+; ara[1]=3;
+MOV WORD PTR[bp-28],3
+MOV AX,[bp-28]
+MOV WORD PTR[bp-26],1
+MOV BX,[bp-26]
+ADD BX,BX
+MOV ara[BX],AX
+; while(ara[1]--){ara[2]++;}
 L2:
-; a--
-MOV AX,[bp-2]
-MOV WORD PTR[bp-24],AX
-DEC WORD PTR[bp-2]
+; ara[1]--
+MOV WORD PTR[bp-30],1
+MOV BX,[bp-30]
+ADD BX,BX
+MOV AX,ara[BX]
+MOV WORD PTR[bp-32],AX
+DEC ara[BX]
 ; check while loop condition
-CMP [bp-24],0
+CMP [bp-32],0
 JE L3
-; b++;
-MOV AX,[bp-4]
-MOV WORD PTR[bp-26],AX
-INC WORD PTR[bp-4]
+; ara[2]++;
+MOV WORD PTR[bp-34],2
+MOV BX,[bp-34]
+ADD BX,BX
+MOV AX,ara[BX]
+MOV WORD PTR[bp-36],AX
+INC ara[BX]
 JMP L2
 L3:
 
 ; i++
+
 MOV AX,[bp-8]
-MOV WORD PTR[bp-20],AX
+MOV WORD PTR[bp-24],AX
 INC WORD PTR[bp-8]
 JMP L4
 L5:
 
 
-; printf(a);
-MOV AX,[bp-2]
+; printf(ara[1]);
+MOV WORD PTR[bp-38],1
+MOV BX,[bp-38]
+ADD BX,BX
+MOV AX,ara[BX]
 MOV FOR_PRINT,AX
 CALL OUTPUT
 
-; printf(b);
-MOV AX,[bp-4]
+; printf(ara[2]);
+MOV WORD PTR[bp-40],2
+MOV BX,[bp-40]
+ADD BX,BX
+MOV AX,ara[BX]
 MOV FOR_PRINT,AX
 CALL OUTPUT
 
@@ -171,7 +200,7 @@ MOV AX,[bp-6]
 MOV FOR_PRINT,AX
 CALL OUTPUT
 L_main:
-ADD SP,26
+ADD SP,40
 POP BP
 
 ;DOS EXIT
