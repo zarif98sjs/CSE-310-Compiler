@@ -55,17 +55,21 @@ Line 6: declaration_list : declaration_list COMMA ID
 
 x,y
 
+Line 6: declaration_list : declaration_list COMMA ID
+
+x,y,z
+
 Line 6: var_declaration : type_specifier declaration_list SEMICOLON
 
-int x,y;
+int x,y,z;
 
 Line 6: statement : var_declaration
 
-int x,y;
+int x,y,z;
 
 Line 6: statements : statement
 
-int x,y;
+int x,y,z;
 
 Line 7: variable : ID
 
@@ -73,44 +77,44 @@ x
 
 Line 7: factor : CONST_INT
 
-12
+31
 
 Line 7: unary_expression : factor
 
-12
+31
 
 Line 7: term : unary_expression
 
-12
+31
 
 Line 7: simple_expression : term
 
-12
+31
 
 Line 7: rel_expression : simple_expression
 
-12
+31
 
 Line 7: logic_expression : rel_expression
 
-12
+31
 
 Line 7: expression : variable ASSIGNOP logic_expression
 
-x=12
+x=31
 
 Line 7: expression_statement : expression SEMICOLON
 
-x=12;
+x=31;
 
 Line 7: statement : expression_statement
 
-x=12;
+x=31;
 
 Line 7: statements : statements statement
 
-int x,y;
-x=12;
+int x,y,z;
+x=31;
 
 Line 8: variable : ID
 
@@ -118,68 +122,92 @@ y
 
 Line 8: factor : CONST_INT
 
-13
+55
 
 Line 8: unary_expression : factor
 
-13
+55
 
 Line 8: term : unary_expression
 
-13
+55
 
 Line 8: simple_expression : term
 
-13
+55
 
 Line 8: rel_expression : simple_expression
 
-13
+55
 
 Line 8: logic_expression : rel_expression
 
-13
+55
 
 Line 8: expression : variable ASSIGNOP logic_expression
 
-y=13
+y=55
 
 Line 8: expression_statement : expression SEMICOLON
 
-y=13;
+y=55;
 
 Line 8: statement : expression_statement
 
-y=13;
+y=55;
 
 Line 8: statements : statements statement
 
-int x,y;
-x=12;
-y=13;
+int x,y,z;
+x=31;
+y=55;
 
-Line 9: type_specifier : INT
+Line 9: variable : ID
 
-int
+x_global
 
-Line 9: declaration_list : ID
+Line 9: factor : CONST_INT
 
-z
+3
 
-Line 9: var_declaration : type_specifier declaration_list SEMICOLON
+Line 9: unary_expression : factor
 
-int z;
+3
 
-Line 9: statement : var_declaration
+Line 9: term : unary_expression
 
-int z;
+3
+
+Line 9: simple_expression : term
+
+3
+
+Line 9: rel_expression : simple_expression
+
+3
+
+Line 9: logic_expression : rel_expression
+
+3
+
+Line 9: expression : variable ASSIGNOP logic_expression
+
+x_global=3
+
+Line 9: expression_statement : expression SEMICOLON
+
+x_global=3;
+
+Line 9: statement : expression_statement
+
+x_global=3;
 
 Line 9: statements : statements statement
 
-int x,y;
-x=12;
-y=13;
-int z;
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
 
 Line 10: factor : CONST_INT
 
@@ -215,427 +243,1573 @@ ara[2]
 
 Line 10: factor : CONST_INT
 
-7
+3
 
 Line 10: unary_expression : factor
 
-7
+3
 
 Line 10: term : unary_expression
 
-7
+3
 
 Line 10: simple_expression : term
 
-7
+3
 
 Line 10: rel_expression : simple_expression
 
-7
+3
 
 Line 10: logic_expression : rel_expression
 
-7
+3
 
 Line 10: expression : variable ASSIGNOP logic_expression
 
-ara[2]=7
+ara[2]=3
 
 Line 10: expression_statement : expression SEMICOLON
 
-ara[2]=7;
+ara[2]=3;
 
 Line 10: statement : expression_statement
 
-ara[2]=7;
+ara[2]=3;
 
 Line 10: statements : statements statement
 
-int x,y;
-x=12;
-y=13;
-int z;
-ara[2]=7;
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
 
-Line 11: variable : ID
+Line 12: variable : ID
+
+z
+
+Line 12: variable : ID
+
+x
+
+Line 12: factor : variable
+
+x
+
+Line 12: unary_expression : factor
+
+x
+
+Line 12: term : unary_expression
+
+x
+
+Line 12: variable : ID
 
 x_global
 
-Line 11: variable : ID
+Line 12: factor : variable
 
-x
+x_global
 
-Line 11: factor : variable
+Line 12: unary_expression : factor
 
-x
+x_global
 
-Line 11: unary_expression : factor
+Line 12: term : term MULOP unary_expression
 
-x
+x%x_global
 
-Line 11: term : unary_expression
+Line 12: simple_expression : term
 
-x
+x%x_global
 
-Line 11: simple_expression : term
+Line 12: rel_expression : simple_expression
 
-x
+x%x_global
 
-Line 11: factor : CONST_INT
+Line 12: logic_expression : rel_expression
 
-2
+x%x_global
 
-Line 11: unary_expression : factor
+Line 12: expression : variable ASSIGNOP logic_expression
 
-2
+z=x%x_global
 
-Line 11: term : unary_expression
+Line 12: expression_statement : expression SEMICOLON
 
-2
+z=x%x_global;
 
-Line 11: simple_expression : term
+Line 12: statement : expression_statement
 
-2
-
-Line 11: rel_expression : simple_expression
-
-2
-
-Line 11: logic_expression : rel_expression
-
-2
-
-Line 11: expression : logic_expression
-
-2
-
-Line 11: variable : ID LTHIRD expression RTHIRD
-
-ara[2]
-
-Line 11: factor : variable
-
-ara[2]
-
-Line 11: unary_expression : factor
-
-ara[2]
-
-Line 11: term : unary_expression
-
-ara[2]
-
-Line 11: simple_expression : simple_expression ADDOP term
-
-x+ara[2]
-
-Line 11: variable : ID
-
-y
-
-Line 11: factor : variable
-
-y
-
-Line 11: unary_expression : factor
-
-y
-
-Line 11: term : unary_expression
-
-y
-
-Line 11: simple_expression : simple_expression ADDOP term
-
-x+ara[2]+y
-
-Line 11: factor : CONST_INT
-
-2
-
-Line 11: unary_expression : factor
-
-2
-
-Line 11: term : unary_expression
-
-2
-
-Line 11: simple_expression : term
-
-2
-
-Line 11: rel_expression : simple_expression
-
-2
-
-Line 11: logic_expression : rel_expression
-
-2
-
-Line 11: expression : logic_expression
-
-2
-
-Line 11: variable : ID LTHIRD expression RTHIRD
-
-ara[2]
-
-Line 11: factor : variable
-
-ara[2]
-
-Line 11: unary_expression : factor
-
-ara[2]
-
-Line 11: term : unary_expression
-
-ara[2]
-
-Line 11: simple_expression : simple_expression ADDOP term
-
-x+ara[2]+y+ara[2]
-
-Line 11: rel_expression : simple_expression
-
-x+ara[2]+y+ara[2]
-
-Line 11: logic_expression : rel_expression
-
-x+ara[2]+y+ara[2]
-
-Line 11: expression : variable ASSIGNOP logic_expression
-
-x_global=x+ara[2]+y+ara[2]
-
-Line 11: expression_statement : expression SEMICOLON
-
-x_global=x+ara[2]+y+ara[2];
-
-Line 11: statement : expression_statement
-
-x_global=x+ara[2]+y+ara[2];
-
-Line 11: statements : statements statement
-
-int x,y;
-x=12;
-y=13;
-int z;
-ara[2]=7;
-x_global=x+ara[2]+y+ara[2];
-
-Line 12: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
-
-printf(x_global);
+z=x%x_global;
 
 Line 12: statements : statements statement
 
-int x,y;
-x=12;
-y=13;
-int z;
-ara[2]=7;
-x_global=x+ara[2]+y+ara[2];
-printf(x_global);
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
 
-Line 13: factor : CONST_INT
+Line 13: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
 
-3
-
-Line 13: unary_expression : factor
-
-3
-
-Line 13: term : unary_expression
-
-3
-
-Line 13: simple_expression : term
-
-3
-
-Line 13: rel_expression : simple_expression
-
-3
-
-Line 13: logic_expression : rel_expression
-
-3
-
-Line 13: expression : logic_expression
-
-3
-
-Line 13: variable : ID LTHIRD expression RTHIRD
-
-ara[3]
-
-Line 13: factor : CONST_INT
-
-12
-
-Line 13: unary_expression : factor
-
-12
-
-Line 13: term : unary_expression
-
-12
-
-Line 13: simple_expression : term
-
-12
-
-Line 13: factor : CONST_INT
-
-2
-
-Line 13: unary_expression : factor
-
-2
-
-Line 13: term : unary_expression
-
-2
-
-Line 13: simple_expression : simple_expression ADDOP term
-
-12+2
-
-Line 13: rel_expression : simple_expression
-
-12+2
-
-Line 13: logic_expression : rel_expression
-
-12+2
-
-Line 13: expression : variable ASSIGNOP logic_expression
-
-ara[3]=12+2
-
-Line 13: expression_statement : expression SEMICOLON
-
-ara[3]=12+2;
-
-Line 13: statement : expression_statement
-
-ara[3]=12+2;
+printf(z);
 
 Line 13: statements : statements statement
 
-int x,y;
-x=12;
-y=13;
-int z;
-ara[2]=7;
-x_global=x+ara[2]+y+ara[2];
-printf(x_global);
-ara[3]=12+2;
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
 
-Line 14: factor : CONST_INT
+Line 14: variable : ID
 
-3
+z
+
+Line 14: variable : ID
+
+x_global
+
+Line 14: factor : variable
+
+x_global
 
 Line 14: unary_expression : factor
 
-3
+x_global
 
 Line 14: term : unary_expression
 
-3
+x_global
+
+Line 14: variable : ID
+
+y
+
+Line 14: factor : variable
+
+y
+
+Line 14: unary_expression : factor
+
+y
+
+Line 14: term : term MULOP unary_expression
+
+x_global%y
 
 Line 14: simple_expression : term
 
-3
+x_global%y
 
 Line 14: rel_expression : simple_expression
 
-3
+x_global%y
 
 Line 14: logic_expression : rel_expression
 
-3
+x_global%y
 
-Line 14: expression : logic_expression
+Line 14: expression : variable ASSIGNOP logic_expression
 
-3
+z=x_global%y
 
-Line 14: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+Line 14: expression_statement : expression SEMICOLON
 
-printf(ara[3]);
+z=x_global%y;
+
+Line 14: statement : expression_statement
+
+z=x_global%y;
 
 Line 14: statements : statements statement
 
-int x,y;
-x=12;
-y=13;
-int z;
-ara[2]=7;
-x_global=x+ara[2]+y+ara[2];
-printf(x_global);
-ara[3]=12+2;
-printf(ara[3]);
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
 
-Line 17: factor : CONST_INT
+Line 15: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
 
-0
+printf(z);
+
+Line 15: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+
+Line 17: variable : ID
+
+z
+
+Line 17: variable : ID
+
+x
+
+Line 17: factor : variable
+
+x
 
 Line 17: unary_expression : factor
 
-0
+x
 
 Line 17: term : unary_expression
 
-0
+x
+
+Line 17: factor : CONST_INT
+
+2
+
+Line 17: unary_expression : factor
+
+2
+
+Line 17: term : unary_expression
+
+2
 
 Line 17: simple_expression : term
 
-0
+2
 
 Line 17: rel_expression : simple_expression
 
-0
+2
 
 Line 17: logic_expression : rel_expression
 
-0
+2
 
 Line 17: expression : logic_expression
 
-0
+2
 
-Line 17: statement : RETURN expression SEMICOLON
+Line 17: variable : ID LTHIRD expression RTHIRD
 
-return 0;
+ara[2]
+
+Line 17: factor : variable
+
+ara[2]
+
+Line 17: unary_expression : factor
+
+ara[2]
+
+Line 17: term : term MULOP unary_expression
+
+x%ara[2]
+
+Line 17: simple_expression : term
+
+x%ara[2]
+
+Line 17: rel_expression : simple_expression
+
+x%ara[2]
+
+Line 17: logic_expression : rel_expression
+
+x%ara[2]
+
+Line 17: expression : variable ASSIGNOP logic_expression
+
+z=x%ara[2]
+
+Line 17: expression_statement : expression SEMICOLON
+
+z=x%ara[2];
+
+Line 17: statement : expression_statement
+
+z=x%ara[2];
 
 Line 17: statements : statements statement
 
-int x,y;
-x=12;
-y=13;
-int z;
-ara[2]=7;
-x_global=x+ara[2]+y+ara[2];
-printf(x_global);
-ara[3]=12+2;
-printf(ara[3]);
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+
+Line 18: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(z);
+
+Line 18: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+
+Line 19: variable : ID
+
+z
+
+Line 19: factor : CONST_INT
+
+2
+
+Line 19: unary_expression : factor
+
+2
+
+Line 19: term : unary_expression
+
+2
+
+Line 19: simple_expression : term
+
+2
+
+Line 19: rel_expression : simple_expression
+
+2
+
+Line 19: logic_expression : rel_expression
+
+2
+
+Line 19: expression : logic_expression
+
+2
+
+Line 19: variable : ID LTHIRD expression RTHIRD
+
+ara[2]
+
+Line 19: factor : variable
+
+ara[2]
+
+Line 19: unary_expression : factor
+
+ara[2]
+
+Line 19: term : unary_expression
+
+ara[2]
+
+Line 19: variable : ID
+
+y
+
+Line 19: factor : variable
+
+y
+
+Line 19: unary_expression : factor
+
+y
+
+Line 19: term : term MULOP unary_expression
+
+ara[2]%y
+
+Line 19: simple_expression : term
+
+ara[2]%y
+
+Line 19: rel_expression : simple_expression
+
+ara[2]%y
+
+Line 19: logic_expression : rel_expression
+
+ara[2]%y
+
+Line 19: expression : variable ASSIGNOP logic_expression
+
+z=ara[2]%y
+
+Line 19: expression_statement : expression SEMICOLON
+
+z=ara[2]%y;
+
+Line 19: statement : expression_statement
+
+z=ara[2]%y;
+
+Line 19: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+
+Line 20: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(z);
+
+Line 20: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+
+Line 22: variable : ID
+
+z
+
+Line 22: variable : ID
+
+x
+
+Line 22: factor : variable
+
+x
+
+Line 22: unary_expression : factor
+
+x
+
+Line 22: term : unary_expression
+
+x
+
+Line 22: variable : ID
+
+x_global
+
+Line 22: factor : variable
+
+x_global
+
+Line 22: unary_expression : factor
+
+x_global
+
+Line 22: term : term MULOP unary_expression
+
+x*x_global
+
+Line 22: simple_expression : term
+
+x*x_global
+
+Line 22: rel_expression : simple_expression
+
+x*x_global
+
+Line 22: logic_expression : rel_expression
+
+x*x_global
+
+Line 22: expression : variable ASSIGNOP logic_expression
+
+z=x*x_global
+
+Line 22: expression_statement : expression SEMICOLON
+
+z=x*x_global;
+
+Line 22: statement : expression_statement
+
+z=x*x_global;
+
+Line 22: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+
+Line 23: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(z);
+
+Line 23: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+
+Line 24: variable : ID
+
+z
+
+Line 24: variable : ID
+
+x_global
+
+Line 24: factor : variable
+
+x_global
+
+Line 24: unary_expression : factor
+
+x_global
+
+Line 24: term : unary_expression
+
+x_global
+
+Line 24: variable : ID
+
+y
+
+Line 24: factor : variable
+
+y
+
+Line 24: unary_expression : factor
+
+y
+
+Line 24: term : term MULOP unary_expression
+
+x_global*y
+
+Line 24: simple_expression : term
+
+x_global*y
+
+Line 24: rel_expression : simple_expression
+
+x_global*y
+
+Line 24: logic_expression : rel_expression
+
+x_global*y
+
+Line 24: expression : variable ASSIGNOP logic_expression
+
+z=x_global*y
+
+Line 24: expression_statement : expression SEMICOLON
+
+z=x_global*y;
+
+Line 24: statement : expression_statement
+
+z=x_global*y;
+
+Line 24: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+
+Line 25: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(z);
+
+Line 25: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+
+Line 27: variable : ID
+
+z
+
+Line 27: variable : ID
+
+x
+
+Line 27: factor : variable
+
+x
+
+Line 27: unary_expression : factor
+
+x
+
+Line 27: term : unary_expression
+
+x
+
+Line 27: factor : CONST_INT
+
+2
+
+Line 27: unary_expression : factor
+
+2
+
+Line 27: term : unary_expression
+
+2
+
+Line 27: simple_expression : term
+
+2
+
+Line 27: rel_expression : simple_expression
+
+2
+
+Line 27: logic_expression : rel_expression
+
+2
+
+Line 27: expression : logic_expression
+
+2
+
+Line 27: variable : ID LTHIRD expression RTHIRD
+
+ara[2]
+
+Line 27: factor : variable
+
+ara[2]
+
+Line 27: unary_expression : factor
+
+ara[2]
+
+Line 27: term : term MULOP unary_expression
+
+x*ara[2]
+
+Line 27: simple_expression : term
+
+x*ara[2]
+
+Line 27: rel_expression : simple_expression
+
+x*ara[2]
+
+Line 27: logic_expression : rel_expression
+
+x*ara[2]
+
+Line 27: expression : variable ASSIGNOP logic_expression
+
+z=x*ara[2]
+
+Line 27: expression_statement : expression SEMICOLON
+
+z=x*ara[2];
+
+Line 27: statement : expression_statement
+
+z=x*ara[2];
+
+Line 27: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+
+Line 28: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(z);
+
+Line 28: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+
+Line 29: variable : ID
+
+z
+
+Line 29: factor : CONST_INT
+
+2
+
+Line 29: unary_expression : factor
+
+2
+
+Line 29: term : unary_expression
+
+2
+
+Line 29: simple_expression : term
+
+2
+
+Line 29: rel_expression : simple_expression
+
+2
+
+Line 29: logic_expression : rel_expression
+
+2
+
+Line 29: expression : logic_expression
+
+2
+
+Line 29: variable : ID LTHIRD expression RTHIRD
+
+ara[2]
+
+Line 29: factor : variable
+
+ara[2]
+
+Line 29: unary_expression : factor
+
+ara[2]
+
+Line 29: term : unary_expression
+
+ara[2]
+
+Line 29: variable : ID
+
+y
+
+Line 29: factor : variable
+
+y
+
+Line 29: unary_expression : factor
+
+y
+
+Line 29: term : term MULOP unary_expression
+
+ara[2]*y
+
+Line 29: simple_expression : term
+
+ara[2]*y
+
+Line 29: rel_expression : simple_expression
+
+ara[2]*y
+
+Line 29: logic_expression : rel_expression
+
+ara[2]*y
+
+Line 29: expression : variable ASSIGNOP logic_expression
+
+z=ara[2]*y
+
+Line 29: expression_statement : expression SEMICOLON
+
+z=ara[2]*y;
+
+Line 29: statement : expression_statement
+
+z=ara[2]*y;
+
+Line 29: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+
+Line 30: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(z);
+
+Line 30: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+
+Line 32: variable : ID
+
+z
+
+Line 32: variable : ID
+
+x
+
+Line 32: factor : variable
+
+x
+
+Line 32: unary_expression : factor
+
+x
+
+Line 32: term : unary_expression
+
+x
+
+Line 32: variable : ID
+
+x_global
+
+Line 32: factor : variable
+
+x_global
+
+Line 32: unary_expression : factor
+
+x_global
+
+Line 32: term : term MULOP unary_expression
+
+x/x_global
+
+Line 32: simple_expression : term
+
+x/x_global
+
+Line 32: rel_expression : simple_expression
+
+x/x_global
+
+Line 32: logic_expression : rel_expression
+
+x/x_global
+
+Line 32: expression : variable ASSIGNOP logic_expression
+
+z=x/x_global
+
+Line 32: expression_statement : expression SEMICOLON
+
+z=x/x_global;
+
+Line 32: statement : expression_statement
+
+z=x/x_global;
+
+Line 32: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+z=x/x_global;
+
+Line 33: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(z);
+
+Line 33: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+z=x/x_global;
+printf(z);
+
+Line 34: variable : ID
+
+z
+
+Line 34: variable : ID
+
+x_global
+
+Line 34: factor : variable
+
+x_global
+
+Line 34: unary_expression : factor
+
+x_global
+
+Line 34: term : unary_expression
+
+x_global
+
+Line 34: variable : ID
+
+y
+
+Line 34: factor : variable
+
+y
+
+Line 34: unary_expression : factor
+
+y
+
+Line 34: term : term MULOP unary_expression
+
+x_global/y
+
+Line 34: simple_expression : term
+
+x_global/y
+
+Line 34: rel_expression : simple_expression
+
+x_global/y
+
+Line 34: logic_expression : rel_expression
+
+x_global/y
+
+Line 34: expression : variable ASSIGNOP logic_expression
+
+z=x_global/y
+
+Line 34: expression_statement : expression SEMICOLON
+
+z=x_global/y;
+
+Line 34: statement : expression_statement
+
+z=x_global/y;
+
+Line 34: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+z=x/x_global;
+printf(z);
+z=x_global/y;
+
+Line 35: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(z);
+
+Line 35: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+z=x/x_global;
+printf(z);
+z=x_global/y;
+printf(z);
+
+Line 37: variable : ID
+
+z
+
+Line 37: variable : ID
+
+x
+
+Line 37: factor : variable
+
+x
+
+Line 37: unary_expression : factor
+
+x
+
+Line 37: term : unary_expression
+
+x
+
+Line 37: factor : CONST_INT
+
+2
+
+Line 37: unary_expression : factor
+
+2
+
+Line 37: term : unary_expression
+
+2
+
+Line 37: simple_expression : term
+
+2
+
+Line 37: rel_expression : simple_expression
+
+2
+
+Line 37: logic_expression : rel_expression
+
+2
+
+Line 37: expression : logic_expression
+
+2
+
+Line 37: variable : ID LTHIRD expression RTHIRD
+
+ara[2]
+
+Line 37: factor : variable
+
+ara[2]
+
+Line 37: unary_expression : factor
+
+ara[2]
+
+Line 37: term : term MULOP unary_expression
+
+x/ara[2]
+
+Line 37: simple_expression : term
+
+x/ara[2]
+
+Line 37: rel_expression : simple_expression
+
+x/ara[2]
+
+Line 37: logic_expression : rel_expression
+
+x/ara[2]
+
+Line 37: expression : variable ASSIGNOP logic_expression
+
+z=x/ara[2]
+
+Line 37: expression_statement : expression SEMICOLON
+
+z=x/ara[2];
+
+Line 37: statement : expression_statement
+
+z=x/ara[2];
+
+Line 37: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+z=x/x_global;
+printf(z);
+z=x_global/y;
+printf(z);
+z=x/ara[2];
+
+Line 38: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(z);
+
+Line 38: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+z=x/x_global;
+printf(z);
+z=x_global/y;
+printf(z);
+z=x/ara[2];
+printf(z);
+
+Line 39: variable : ID
+
+z
+
+Line 39: factor : CONST_INT
+
+2
+
+Line 39: unary_expression : factor
+
+2
+
+Line 39: term : unary_expression
+
+2
+
+Line 39: simple_expression : term
+
+2
+
+Line 39: rel_expression : simple_expression
+
+2
+
+Line 39: logic_expression : rel_expression
+
+2
+
+Line 39: expression : logic_expression
+
+2
+
+Line 39: variable : ID LTHIRD expression RTHIRD
+
+ara[2]
+
+Line 39: factor : variable
+
+ara[2]
+
+Line 39: unary_expression : factor
+
+ara[2]
+
+Line 39: term : unary_expression
+
+ara[2]
+
+Line 39: variable : ID
+
+y
+
+Line 39: factor : variable
+
+y
+
+Line 39: unary_expression : factor
+
+y
+
+Line 39: term : term MULOP unary_expression
+
+ara[2]/y
+
+Line 39: simple_expression : term
+
+ara[2]/y
+
+Line 39: rel_expression : simple_expression
+
+ara[2]/y
+
+Line 39: logic_expression : rel_expression
+
+ara[2]/y
+
+Line 39: expression : variable ASSIGNOP logic_expression
+
+z=ara[2]/y
+
+Line 39: expression_statement : expression SEMICOLON
+
+z=ara[2]/y;
+
+Line 39: statement : expression_statement
+
+z=ara[2]/y;
+
+Line 39: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+z=x/x_global;
+printf(z);
+z=x_global/y;
+printf(z);
+z=x/ara[2];
+printf(z);
+z=ara[2]/y;
+
+Line 40: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(z);
+
+Line 40: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+z=x/x_global;
+printf(z);
+z=x_global/y;
+printf(z);
+z=x/ara[2];
+printf(z);
+z=ara[2]/y;
+printf(z);
+
+Line 43: factor : CONST_INT
+
+0
+
+Line 43: unary_expression : factor
+
+0
+
+Line 43: term : unary_expression
+
+0
+
+Line 43: simple_expression : term
+
+0
+
+Line 43: rel_expression : simple_expression
+
+0
+
+Line 43: logic_expression : rel_expression
+
+0
+
+Line 43: expression : logic_expression
+
+0
+
+Line 43: statement : RETURN expression SEMICOLON
+
 return 0;
 
-Line 18: compound_statement : LCURL statements RCURL
+Line 43: statements : statements statement
+
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+z=x/x_global;
+printf(z);
+z=x_global/y;
+printf(z);
+z=x/ara[2];
+printf(z);
+z=ara[2]/y;
+printf(z);
+return 0;
+
+Line 44: compound_statement : LCURL statements RCURL
 
 {
-int x,y;
-x=12;
-y=13;
-int z;
-ara[2]=7;
-x_global=x+ara[2]+y+ara[2];
-printf(x_global);
-ara[3]=12+2;
-printf(ara[3]);
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+z=x/x_global;
+printf(z);
+z=x_global/y;
+printf(z);
+z=x/ara[2];
+printf(z);
+z=ara[2]/y;
+printf(z);
 return 0;
 }
 
@@ -649,59 +1823,119 @@ ScopeTable # 1
 1 --> < main , ID > 
 8 --> < ara , ID > 
 
-Line 18: func_definition : type_specifier ID LPAREN RPAREN compound_statement
+Line 44: func_definition : type_specifier ID LPAREN RPAREN compound_statement
 
 int main(){
-int x,y;
-x=12;
-y=13;
-int z;
-ara[2]=7;
-x_global=x+ara[2]+y+ara[2];
-printf(x_global);
-ara[3]=12+2;
-printf(ara[3]);
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+z=x/x_global;
+printf(z);
+z=x_global/y;
+printf(z);
+z=x/ara[2];
+printf(z);
+z=ara[2]/y;
+printf(z);
 return 0;
 }
 
-Line 18: unit : func_definition
+Line 44: unit : func_definition
 
 int main(){
-int x,y;
-x=12;
-y=13;
-int z;
-ara[2]=7;
-x_global=x+ara[2]+y+ara[2];
-printf(x_global);
-ara[3]=12+2;
-printf(ara[3]);
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+z=x/x_global;
+printf(z);
+z=x_global/y;
+printf(z);
+z=x/ara[2];
+printf(z);
+z=ara[2]/y;
+printf(z);
 return 0;
 }
 
-Line 18: program : program unit
+Line 44: program : program unit
 
 int x_global;
 int ara[10];
 int main(){
-int x,y;
-x=12;
-y=13;
-int z;
-ara[2]=7;
-x_global=x+ara[2]+y+ara[2];
-printf(x_global);
-ara[3]=12+2;
-printf(ara[3]);
+int x,y,z;
+x=31;
+y=55;
+x_global=3;
+ara[2]=3;
+z=x%x_global;
+printf(z);
+z=x_global%y;
+printf(z);
+z=x%ara[2];
+printf(z);
+z=ara[2]%y;
+printf(z);
+z=x*x_global;
+printf(z);
+z=x_global*y;
+printf(z);
+z=x*ara[2];
+printf(z);
+z=ara[2]*y;
+printf(z);
+z=x/x_global;
+printf(z);
+z=x_global/y;
+printf(z);
+z=x/ara[2];
+printf(z);
+z=ara[2]/y;
+printf(z);
 return 0;
 }
 
-Line 18: start : program
+Line 44: start : program
 
 ScopeTable # 1
 0 --> < x_global , ID > 
 1 --> < main , ID > 
 8 --> < ara , ID > 
 
-Total lines: 18
+Total lines: 44
 Total errors: 0

@@ -3,15 +3,41 @@ int ara[10];
 
 int main ()
 {
-    int x,y;
-    x = 12;
-    y = 13;
-    int z;
-    ara[2] = 7;
-    x_global = x+ara[2]+y+ara[2];
-    printf(x_global);
-    ara[3] = 12+2;
-    printf(ara[3]);
+    int x,y,z;
+    x = 31;
+    y = 55;
+    x_global = 3;
+    ara[2] = 3;
+
+    z = x%x_global;
+    printf(z);
+    z = x_global%y;
+    printf(z);
+
+    z = x%ara[2];
+    printf(z);
+    z = ara[2]%y;
+    printf(z);
+
+    z = x*x_global;
+    printf(z);
+    z = x_global*y;
+    printf(z);
+
+    z = x*ara[2];
+    printf(z);
+    z = ara[2]*y;
+    printf(z);
+
+    z = x/x_global;
+    printf(z);
+    z = x_global/y;
+    printf(z);
+
+    z = x/ara[2];
+    printf(z);
+    z = ara[2]/y;
+    printf(z);
 
 
     return 0;
