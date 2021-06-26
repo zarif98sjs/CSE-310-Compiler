@@ -7,38 +7,19 @@ int main ()
     x = 31;
     y = 55;
     x_global = 3;
-    ara[2] = 3;
+    ara[2] = 12;
 
-    z = x%x_global;
-    printf(z);
-    z = x_global%y;
-    printf(z);
+    if(x_global>ara[2])
+    {
+        x_global = x_global -1;
+    }
+    else 
+    {
+        ara[2] = ara[2] - 1;
+    }
 
-    z = x%ara[2];
-    printf(z);
-    z = ara[2]%y;
-    printf(z);
-
-    z = x*x_global;
-    printf(z);
-    z = x_global*y;
-    printf(z);
-
-    z = x*ara[2];
-    printf(z);
-    z = ara[2]*y;
-    printf(z);
-
-    z = x/x_global;
-    printf(z);
-    z = x_global/y;
-    printf(z);
-
-    z = x/ara[2];
-    printf(z);
-    z = ara[2]/y;
-    printf(z);
-
+    printf(x_global);
+    printf(ara[2]);
 
     return 0;
 }

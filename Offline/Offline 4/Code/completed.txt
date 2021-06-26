@@ -17,5 +17,5 @@ NEW START USING STACK
 14. recursive function
 -----------------
 15. postfix
-16. global variable : ASSIGNOP ADDOP MULOP
+16. global variable : ASSIGNOP ADDOP MULOP RELOP
 __. printf

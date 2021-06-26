@@ -2526,8 +2526,11 @@ rel_expression: simple_expression {
                 $$->code = $1->code+"\n";
                 $$->code += $3->code+"\n";
 
-                $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
-                $$->code += "CMP AX,"+stk_address($3->stk_offset)+"\n";
+                if($1->stk_offset != "") $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
+                else $$->code += "MOV AX,"+process_global_variable($1->text)+"\n";
+
+                if($3->stk_offset != "") $$->code += "CMP AX,"+stk_address($3->stk_offset)+"\n";
+                else $$->code += "CMP AX,"+process_global_variable($3->text)+"\n";
 
                 string tempVar = newTemp();
                 string tempL1 = newLabel();
