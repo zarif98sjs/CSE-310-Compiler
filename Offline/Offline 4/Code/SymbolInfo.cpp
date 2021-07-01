@@ -2,8 +2,12 @@
 #include "SymbolInfo.h"
 
 SymbolInfo::SymbolInfo(){
+    
     isFunctionDeclaration = false;
     isFunction = false;
+
+    var_type = "";
+    stk_offset = "";
 }
 
 SymbolInfo::SymbolInfo(string key,string val)
@@ -15,6 +19,9 @@ SymbolInfo::SymbolInfo(string key,string val)
     bucket = -1;
     bucket_pos = 0;
     ara_size = 0;
+
+    var_type = "";
+    stk_offset = "";
 }
 
 SymbolInfo::SymbolInfo(string key,string val,string var_type,string stk_offset,int ara_size,vector<string>param_v,bool isFunctionDeclaration,bool isFunction)

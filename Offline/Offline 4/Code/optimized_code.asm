@@ -87,13 +87,14 @@ OUTPUT PROC
       
 OUTPUT ENDP
 
+
+
 main PROC
 MOV AX, @DATA
 MOV DS, AX
 PUSH BP
 MOV BP,SP
 SUB SP,6
-
 ; a=4;
 MOV WORD PTR [bp-4],4
 MOV AX,[bp-4]
@@ -101,29 +102,23 @@ MOV WORD PTR [bp-2],AX
 ; while(a--){printf(a);}
 L0:
 ; a--
-
 MOV AX,[bp-2]
 MOV WORD PTR [bp-6],AX
 DEC WORD PTR [bp-2]
 ; check while loop condition
 CMP [bp-6],0
 JE L1
-
 ; printf(a);
 MOV AX,[bp-2]
 MOV FOR_PRINT,AX
 CALL OUTPUT
 JMP L0
 L1:
-
 L_main:
 ADD SP,6
 POP BP
-
 ;DOS EXIT
 MOV AH,4ch
 INT 21h
 main ENDP
 END MAIN
-
-

@@ -1,15 +1,19 @@
+int f(int a){
+    return 2*a;
+    a=9;
+}
+
+int g(int a, int b){
+    int x;
+    x=f(a)+a+b;
+    return x;
+}
 
 int main(){
     int a,b;
-    int ara[10];
-    ara[2] = 23;
     a=1;
     b=2;
-    if(a>b){
-        a++;
-    }
-    else{
-        a--;
-    }
+    a=g(a,b);
+    println(a);
     return 0;
 }

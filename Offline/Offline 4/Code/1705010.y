@@ -15,6 +15,7 @@ using namespace std;
 ofstream logout;
 ofstream errout;
 ofstream codeout;
+ofstream opt_codeout;
 
 extern int line_count;
 int err_count = 0;
@@ -338,15 +339,15 @@ void erm_h(Helper* h) // erase memory of Helper pointer
 ///////////////////////////////////////
 ///////// MACHINE CODE GEN ////////////
 
-void fileToCode(string sourceFileName)
+void fileToCode(ofstream &out_s,string sourceFileName)
 {
     ifstream file_src;
     file_src.open(sourceFileName);
     string to_copy;
 
-    if(file_src && codeout){
+    if(file_src && out_s){
         while(getline(file_src,to_copy)){
-            codeout << to_copy << "\n";
+            out_s << to_copy << "\n";
         }
     
     } else {
@@ -422,10 +423,8 @@ string stk_address_param(string stk_offset)
 
 string stk_address_typecast(string stk_offset)
 {
-    return "WORD PTR[bp-"+stk_offset+"]";
+    return "WORD PTR [bp-"+stk_offset+"]";
 }
-
-
 
 string cur_function_label(string name)
 {
@@ -450,6 +449,114 @@ string process_global_variable(string str)
 
     if(sz == 1) return ret[0];
     else return ret[0]+"[BX]";
+}
+
+vector<string> tokenize(string str,char delim)
+{
+    vector<string> ret;
+
+    size_t start;
+    size_t end = 0;
+
+    while ((start = str.find_first_not_of(delim, end)) != string::npos)
+    {
+        end = str.find(delim, start);
+        ret.push_back(str.substr(start, end - start));
+    }
+
+    return ret;
+}
+
+void optimize_code(string code)
+{
+    vector<string>line_v  = tokenize(code,'\n');
+    int line_v_sz = line_v.size();
+
+    string prev_line_cmd = "";
+    vector<string>prev_line_token;
+
+    for(int i=0;i<line_v_sz;i++)
+    {
+        string cur_line = line_v[i];
+        vector<string>cur_line_token;
+
+        if(cur_line[0] == ';')
+        {
+            opt_codeout<<cur_line<<endl;
+            continue;
+        }
+
+        vector<string>token_v = tokenize(cur_line,' ');
+
+        if(token_v[0] == "MOV" || token_v[0]=="mov")
+        {
+
+            if(token_v[1] == "WORD")
+            {
+                cur_line_token = tokenize(token_v[3],',');
+            }
+            else
+            {
+                cur_line_token = tokenize(token_v[1],',');
+            }
+
+            if(prev_line_cmd == "MOV" || prev_line_cmd == "mov")
+            {
+                
+                if(i>0)
+                {
+                    // for(auto x:prev_line_token)
+                    //     cout<<x<<endl;
+
+                    // cout<<endl;
+                    // cout<<"---"<<endl;
+                    // cout<<endl;
+
+                    // for(auto x:cur_line_token)
+                    //     cout<<x<<endl;
+
+                    // cout<<"==========="<<endl;
+
+                    if(cur_line_token[0] == prev_line_token[1] && cur_line_token[1] == prev_line_token[0])
+                    {
+                        // optimize
+                    }
+                    else 
+                    {
+                        opt_codeout<<cur_line<<endl;
+                    }
+                }
+                else
+                {
+                    opt_codeout<<cur_line<<endl;
+                }
+            }
+            else
+            {
+               opt_codeout<<cur_line<<endl; 
+            }
+
+            prev_line_token = cur_line_token;
+
+        }
+        else
+        {
+
+            int sz_token_v = token_v.size();
+
+            if(sz_token_v >= 2)
+            {
+                if(token_v[1] == "PROC")
+                    opt_codeout<<endl;
+            }
+
+            opt_codeout<<cur_line<<endl;
+            prev_line_token.clear();
+        }
+        
+        prev_line_cmd = token_v[0];
+        
+    }
 }
 
 %}
@@ -501,12 +608,19 @@ start: program
         codeout<<".DATA"<<endl;
         for(auto dv:DATA_vector) codeout<<dv<<endl;
         codeout<<endl;
-
         codeout<<".CODE"<<endl;
-
-        fileToCode("output_proc.txt");
-        
+        fileToCode(codeout,"output_proc.txt");
         codeout<<"\n"<<$$->code<<"\n"<<endl;
+
+        ///////////
+
+        opt_codeout<<".DATA"<<endl;
+        for(auto dv:DATA_vector) opt_codeout<<dv<<endl;
+        opt_codeout<<endl;
+        opt_codeout<<".CODE"<<endl;
+        fileToCode(opt_codeout,"output_proc.txt");
+        opt_codeout<<"\n"<<endl;
+        optimize_code($$->code);
         
         erm_h($1);
 	}
@@ -2073,7 +2187,7 @@ statement: var_declaration {
 
             $$->code = "\n; "+$$->text+"\n";
             
-            if(ret_symbol->stk_offset != "") $$->code += "MOV AX,"+stk_address(ret_symbol->stk_offset)+"\n";
+            if(ret_symbol != NULL && ret_symbol->stk_offset != "") $$->code += "MOV AX,"+stk_address(ret_symbol->stk_offset)+"\n";
             else $$->code += "MOV AX,"+$3->key+"\n";
             
             $$->code += "MOV FOR_PRINT,AX\n";
@@ -2105,28 +2219,31 @@ statement: var_declaration {
                 $$->setHelperType("NULL");
             }
 
-            $$->code = "\n; "+$$->text+"\n";
-
-            // code
-            
-            $$->code += $5->code+"\n";
-            $$->stk_offset = ret_symbol->stk_offset+"+SI";
-
-            if(ret_symbol->stk_offset != "")
+            if(ret_symbol != NULL)
             {
-                $$->code += "MOV SI,"+stk_address($5->stk_offset)+"\n";
-                $$->code += "ADD SI,SI\n";
-                $$->code += "MOV AX,"+stk_address($$->stk_offset)+"\n";
+                $$->code = "\n; "+$$->text+"\n";
+
+                // code
+
+                $$->code += $5->code+"\n";
+                $$->stk_offset = ret_symbol->stk_offset+"+SI";
+
+                if(ret_symbol->stk_offset != "")
+                {
+                    $$->code += "MOV SI,"+stk_address($5->stk_offset)+"\n";
+                    $$->code += "ADD SI,SI\n";
+                    $$->code += "MOV AX,"+stk_address($$->stk_offset)+"\n";
+                }
+                else
+                {   $$->code += "MOV BX,"+stk_address($5->stk_offset)+"\n";
+                    $$->code += "ADD BX,BX\n";
+                    $$->code += "MOV AX,"+$3->key+"[BX]\n";
+                }
+
+                $$->code += "MOV FOR_PRINT,AX\n";
+                $$->code += "CALL OUTPUT";
             }
-            else
-            {   $$->code += "MOV BX,"+stk_address($5->stk_offset)+"\n";
-                $$->code += "ADD BX,BX\n";
-                $$->code += "MOV AX,"+$3->key+"[BX]\n";
-            }
-            
-            
-            $$->code += "MOV FOR_PRINT,AX\n";
-            $$->code += "CALL OUTPUT";
+        
             
             erm_s($3);
         }
@@ -2230,7 +2347,8 @@ variable: ID {
 
             $$->code = "";
             $$->tempVar = $1->key;
-            $$->stk_offset = ret_symbol->stk_offset;
+
+            if(ret_symbol != NULL) $$->stk_offset = ret_symbol->stk_offset;
 
             erm_s($1);
         }		
@@ -2273,23 +2391,26 @@ variable: ID {
 
             print_log_text($$->text);
 
-            // code
-
-            $$->code = $3->code+"\n";
-
-            if(ret_symbol->stk_offset!="")
+            if(ret_symbol != NULL)
             {
-                $$->code += "MOV SI,"+stk_address($3->stk_offset)+"\n";
-                $$->code += "ADD SI,SI";
-                $$->stk_offset = ret_symbol->stk_offset+"+SI";
+                // code
+
+                $$->code = $3->code+"\n";
+
+                if(ret_symbol->stk_offset!="")
+                {
+                    $$->code += "MOV SI,"+stk_address($3->stk_offset)+"\n";
+                    $$->code += "ADD SI,SI";
+                    $$->stk_offset = ret_symbol->stk_offset+"+SI";
+                }
+                else
+                {
+                    $$->code += "MOV BX,"+stk_address($3->stk_offset)+"\n";
+                    $$->code += "ADD BX,BX";
+                    //$$->stk_offset = ret_symbol->stk_offset+"+SI";
+                }
             }
-            else
-            {
-                $$->code += "MOV BX,"+stk_address($3->stk_offset)+"\n";
-                $$->code += "ADD BX,BX";
-                //$$->stk_offset = ret_symbol->stk_offset+"+SI";
-            }
-            
+
             erm_h($3);
             erm_s($1);
          }
@@ -2933,19 +3054,23 @@ factor: variable {
 
             print_log_text($$->text);
 
-            //code 
-
-            $$->code = $3->code+"\n";
-            $$->code += "CALL "+$1->key+"\n";
-            $$->code += "ADD SP,"+to_string(2*ret_symbol->param_v.size());
-
-            if(ret_symbol->var_type != "void")
+            if(ret_symbol != NULL)
             {
-                string tempVar = newTemp();
-                $$->stk_offset = to_string(SP_VAL);
-                $$->code += "\nMOV "+stk_address_typecast($$->stk_offset)+",AX";
+                //code 
+
+                $$->code = $3->code+"\n";
+                $$->code += "CALL "+$1->key+"\n";
+                $$->code += "ADD SP,"+to_string(2*ret_symbol->param_v.size());
+
+                if(ret_symbol->var_type != "void")
+                {
+                    string tempVar = newTemp();
+                    $$->stk_offset = to_string(SP_VAL);
+                    $$->code += "\nMOV "+stk_address_typecast($$->stk_offset)+",AX";
+                }
             }
 
+            
             erm_h($3);
             erm_s($1);
         }
@@ -3171,12 +3296,13 @@ main(int argc,char *argv[])
     logout.open("log.txt");
 	errout.open("error.txt");
 	codeout.open("code.asm");
+	opt_codeout.open("optimized_code.asm");
 
-    fileToCode("asm_header.txt");
+    fileToCode(codeout,"asm_header.txt");
+    fileToCode(opt_codeout,"asm_header.txt");
+
     DATA_vector.push_back("IS_NEG DB ?");
     DATA_vector.push_back("FOR_PRINT DW ?");
-    DATA_vector.push_back("MARKER DW 0DH");
-    DATA_vector.push_back("DIV_RES DW ? \nDIV_REM DW ?");
     DATA_vector.push_back("CR EQU 0DH\nLF EQU 0AH\nNEWLINE DB CR, LF , '$'");
 
 
@@ -3193,6 +3319,7 @@ main(int argc,char *argv[])
     logout.close();
 	errout.close();
 	codeout.close();
+	opt_codeout.close();
 
     exit(0);
 }

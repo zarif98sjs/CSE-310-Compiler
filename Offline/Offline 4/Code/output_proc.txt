@@ -26,9 +26,6 @@ OUTPUT PROC
         DIV BX ; QUOTIENT : AX  , REMAINDER : DX     
         
         MOV FOR_PRINT , AX
-    
-        MOV DIV_RES , AX
-        MOV DIV_REM , DX 
         
         PUSH DX
         
