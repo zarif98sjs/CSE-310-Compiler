@@ -598,6 +598,10 @@ start: program
         print_grammar_rule("start","program");
 
         $$ = new Helper();
+
+        // update type
+        $$->HelperType = $1->HelperType;
+        
         $$->text = $1->text;
 
         // code
@@ -605,23 +609,33 @@ start: program
 
         // print_log_text($$->text);
 
-        codeout<<".DATA"<<endl;
-        for(auto dv:DATA_vector) codeout<<dv<<endl;
-        codeout<<endl;
-        codeout<<".CODE"<<endl;
-        fileToCode(codeout,"output_proc.txt");
-        codeout<<"\n"<<$$->code<<"\n"<<endl;
 
-        ///////////
+        if(err_count == 0)
+        {
+            string asm_header = ".MODEL SMALL\n\n.STACK 100H";
+            string output_proc = "\r\nOUTPUT PROC\r\n               \r\n        MOV CX , 0FH     \r\n        PUSH CX ; marker\r\n        \r\n        MOV IS_NEG, 0H\r\n        MOV AX , FOR_PRINT\r\n        TEST AX , 8000H\r\n        JE OUTPUT_LOOP\r\n                    \r\n        MOV IS_NEG, 1H\r\n        MOV AX , 0FFFFH\r\n        SUB AX , FOR_PRINT\r\n        ADD AX , 1H\r\n        MOV FOR_PRINT , AX\r\n\r\n    OUTPUT_LOOP:\r\n    \r\n        ;MOV AH, 1\r\n        ;INT 21H\r\n        \r\n        MOV AX , FOR_PRINT\r\n        XOR DX,DX\r\n        MOV BX , 10D\r\n        DIV BX ; QUOTIENT : AX  , REMAINDER : DX     \r\n        \r\n        MOV FOR_PRINT , AX\r\n        \r\n        PUSH DX\r\n        \r\n        CMP AX , 0H\r\n        JNE OUTPUT_LOOP\r\n        \r\n        ;LEA DX, NEWLINE ; DX : USED IN IO and MUL,DIV\r\n        ;MOV AH, 9 ; AH,9 used for character string output\r\n        ;INT 21H;\r\n\r\n        MOV AL , IS_NEG\r\n        CMP AL , 1H\r\n        JNE OP_STACK_PRINT\r\n        \r\n        MOV AH, 2\r\n        MOV DX, '-' ; stored in DL for display \r\n        INT 21H\r\n            \r\n        \r\n    OP_STACK_PRINT:\r\n    \r\n        ;MOV AH, 1\r\n        ;INT 21H\r\n    \r\n        POP BX\r\n        \r\n        CMP BX , 0FH\r\n        JE EXIT_OUTPUT\r\n        \r\n       \r\n        MOV AH, 2\r\n        MOV DX, BX ; stored in DL for display \r\n        ADD DX , 30H\r\n        INT 21H\r\n        \r\n        JMP OP_STACK_PRINT\r\n\r\n    EXIT_OUTPUT:\r\n    \r\n        ;POP CX \r\n\r\n        LEA DX, NEWLINE\r\n        MOV AH, 9 \r\n        INT 21H\r\n    \r\n        RET     \r\n      \r\nOUTPUT ENDP";
 
-        opt_codeout<<".DATA"<<endl;
-        for(auto dv:DATA_vector) opt_codeout<<dv<<endl;
-        opt_codeout<<endl;
-        opt_codeout<<".CODE"<<endl;
-        fileToCode(opt_codeout,"output_proc.txt");
-        opt_codeout<<"\n"<<endl;
-        optimize_code($$->code);
-        
+            codeout<<asm_header<<endl;
+            codeout<<".DATA"<<endl;
+            for(auto dv:DATA_vector) codeout<<dv<<endl;
+            codeout<<endl;
+            codeout<<".CODE"<<endl;
+            // fileToCode(codeout,"output_proc.txt");
+            codeout<<output_proc<<endl;
+            codeout<<"\n"<<$$->code<<"\n"<<endl;
+
+            ///////////
+            opt_codeout<<asm_header<<endl;
+            opt_codeout<<".DATA"<<endl;
+            for(auto dv:DATA_vector) opt_codeout<<dv<<endl;
+            opt_codeout<<endl;
+            opt_codeout<<".CODE"<<endl;
+            // fileToCode(opt_codeout,"output_proc.txt");
+            opt_codeout<<output_proc<<endl;
+            opt_codeout<<"\n"<<endl;
+            optimize_code($$->code);
+        }
+
         erm_h($1);
 	}
 	;
@@ -651,6 +665,9 @@ program: program unit  {
             $$ = new Helper();
             $$->text = $1->text;
 
+            // update type
+            $$->HelperType = $1->HelperType;
+
             print_log_text($$->text); 
 
             // code
@@ -668,6 +685,9 @@ unit: var_declaration {
             $$ = new Helper();
             $$->text = $1->text;
 
+            // update type
+            $$->HelperType = $1->HelperType;
+
             print_log_text($$->text); 
 
             // code
@@ -682,6 +702,9 @@ unit: var_declaration {
 
             $$ = new Helper();
             $$->text = $1->text;
+
+            // update type
+            $$->HelperType = $1->HelperType;
 
             print_log_text($1->text); 
 
@@ -700,6 +723,9 @@ unit: var_declaration {
 
             $$ = new Helper();
             $$->text = $1->text;
+
+            // update type
+            $$->HelperType = $1->HelperType;
 
             print_log_text($1->text); 
 
@@ -1344,6 +1370,9 @@ parameter_list: parameter_list COMMA type_specifier ID {
 
             $$ = new Helper();
 
+            // update type
+            $$->HelperType = $1->HelperType;
+
             // update text
             $$->text = $1->text;
 
@@ -1562,9 +1591,6 @@ var_declaration: type_specifier declaration_list SEMICOLON {
                             }
                 
                         }
-                    
-
-                    
                     
                     if(!sym_tab->insert_symbol(*el)) // already present in current scope
                     {
@@ -1956,6 +1982,9 @@ statement: var_declaration {
             $$ = new Helper();
             $$->text = $1->text;
 
+            // update type
+            $$->HelperType = $1->HelperType;
+
             print_log_text($$->text);
 
             $$->code = $1->code;
@@ -2000,6 +2029,9 @@ statement: var_declaration {
             $$ = new Helper();
             $$->text = $1->text;
 
+            // update type
+            $$->HelperType = $1->HelperType;
+
             print_log_text($$->text);
 
             $$->code = "; "+$$->text+"\n";
@@ -2015,6 +2047,9 @@ statement: var_declaration {
 
             $$ = new Helper();
             $$->text = $1->text;
+
+            // update type
+            $$->HelperType = $1->HelperType;
 
             print_log_text($$->text);
 
@@ -2464,13 +2499,13 @@ variable: ID {
                 
                 $$->code = $3->code+"\n";
 
-                if($3->stk_offset != "") $$->code += "MOV AX,"+stk_address($3->stk_offset)+"\n";
-                else $$->code += "MOV AX,"+process_global_variable($3->text)+"\n";
+                if($3->stk_offset != "") $$->code += "MOV CX,"+stk_address($3->stk_offset)+"\n";
+                else $$->code += "MOV CX,"+process_global_variable($3->text)+"\n";
 
                 if($1->code != "") $$->code += $1->code+"\n";
 
-                if($1->stk_offset != "") $$->code += "MOV "+stk_address_typecast($1->stk_offset)+",AX";
-                else $$->code += "MOV "+process_global_variable($1->text)+",AX";
+                if($1->stk_offset != "") $$->code += "MOV "+stk_address_typecast($1->stk_offset)+",CX";
+                else $$->code += "MOV "+process_global_variable($1->text)+",CX";
 
                 erm_h($1); erm_h($3);
             }	
@@ -2747,10 +2782,11 @@ simple_expression: term {
                     {
                         // code for +
                         $$->code = $1->code+"\n";
-                        $$->code += $3->code+"\n";
                         
                         if($1->stk_offset!="") $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
                         else $$->code += "MOV AX,"+process_global_variable($1->text)+"\n";
+
+                        $$->code += $3->code+"\n";
 
                         if($3->stk_offset!="") $$->code += "ADD AX,"+stk_address($3->stk_offset)+"\n";
                         else $$->code += "ADD AX,"+process_global_variable($3->text)+"\n";
@@ -2766,10 +2802,11 @@ simple_expression: term {
                     {
                         // code for -
                         $$->code = $1->code+"\n";
-                        $$->code += $3->code+"\n";
                         
                         if($1->stk_offset!="") $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
                         else $$->code += "MOV AX,"+process_global_variable($1->text)+"\n";
+
+                        $$->code += $3->code+"\n";
 
                         if($3->stk_offset!="") $$->code += "SUB AX,"+stk_address($3->stk_offset)+"\n";
                         else $$->code += "SUB AX,"+process_global_variable($3->text)+"\n";
@@ -2839,12 +2876,16 @@ term:	unary_expression {
 
                         // code
                         $$->code = $1->code+"\n";
-                        $$->code += $3->code+"\n";
+                        
 
-                        if($1->stk_offset!="") $$->code += "MOV AX,"+ stk_address($1->stk_offset)+"\n";
-                        else $$->code += "MOV AX,"+process_global_variable($1->text)+"\n";
+                        if($1->stk_offset!="") $$->code += "MOV CX,"+ stk_address($1->stk_offset)+"\n";
+                        else $$->code += "MOV CX,"+process_global_variable($1->text)+"\n";
                         
                         $$->code += "CWD\n";
+
+                        $$->code += $3->code+"\n";
+
+                        $$->code += "MOV AX,CX\n"; /// speacial case to handle noth array and normal variable
 
                         if($3->stk_offset!="") $$->code += "IDIV "+stk_address_typecast($3->stk_offset)+"\n";
                         else $$->code += "IDIV "+process_global_variable($3->text)+"\n";
@@ -2887,11 +2928,13 @@ term:	unary_expression {
                 {
                     // code for *
                     $$->code = $1->code+"\n";
+
+                    if($1->stk_offset!="") $$->code += "MOV CX,"+stk_address($1->stk_offset)+"\n";
+                    else $$->code += "MOV CX,"+process_global_variable($1->text)+"\n";
+
                     $$->code += $3->code+"\n";
 
-                    if($1->stk_offset!="") $$->code += "MOV AX,"+stk_address($1->stk_offset)+"\n";
-                    else $$->code += "MOV AX,"+process_global_variable($1->text)+"\n";
-
+                    $$->code += "MOV AX,CX\n"; /// speacial case to handle noth array and normal variable
 
                     if($3->stk_offset!="") $$->code += "IMUL "+stk_address_typecast($3->stk_offset)+"\n";
                     else $$->code += "IMUL "+process_global_variable($3->text)+"\n";
@@ -2906,13 +2949,15 @@ term:	unary_expression {
                 {
                     // code
                     $$->code = $1->code+"\n";
-                    $$->code += $3->code+"\n";
 
-                    if($1->stk_offset!="") $$->code += "MOV AX,"+ stk_address($1->stk_offset)+"\n";
-                    else $$->code += "MOV AX,"+ process_global_variable($1->text)+"\n";
+                    if($1->stk_offset!="") $$->code += "MOV CX,"+ stk_address($1->stk_offset)+"\n";
+                    else $$->code += "MOV CX,"+ process_global_variable($1->text)+"\n";
                     
                     $$->code += "CWD\n";
 
+                    $$->code += $3->code+"\n";
+
+                    $$->code += "MOV AX,CX\n"; /// speacial case to handle noth array and normal variable
 
                     if($3->stk_offset!="") $$->code += "IDIV "+stk_address_typecast($3->stk_offset)+"\n";
                     else $$->code += "IDIV "+process_global_variable($3->text)+"\n";
@@ -2945,6 +2990,21 @@ unary_expression: ADDOP unary_expression  {
 
                 print_log_text($$->text);
 
+                if($1->key == "+")
+                {
+                    $$->code = $2->code;
+                    $$->tempVar = $2->tempVar;
+                    $$->stk_offset = $2->stk_offset;
+                }
+                else
+                {
+                    $$->code = $2->code+"\n";
+                    $$->code += "NEG "+stk_address_typecast($2->stk_offset);
+
+                    $$->tempVar = $2->tempVar;
+                    $$->stk_offset = $2->stk_offset;
+                }
+
                 erm_h($2);
                 erm_s($1);
             }
@@ -2959,6 +3019,26 @@ unary_expression: ADDOP unary_expression  {
                 $$->HelperType = $2->HelperType;
 
                 print_log_text($$->text);
+
+                $$->stk_offset = $2->stk_offset;
+
+                $$->code = $2->code+"\n";
+                $$->code += "CMP "+stk_address($2->stk_offset)+",0\n";
+
+                string tempL1 = newLabel();
+                string tempL2 = newLabel();
+
+                $$->code += "JE "+tempL1+"\n";
+
+                $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",0\n";
+                $$->code += "JMP "+tempL2+"\n";
+
+                $$->code += tempL1+":\n";
+                $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",1\n";
+
+                $$->code += tempL2+":\n";
+
+                $$->tempVar = $2->tempVar;
 
                 erm_h($2);
             }
@@ -3146,8 +3226,12 @@ factor: variable {
             print_grammar_rule("factor","variable INCOP");
 
             $$ = new Helper();
+          
             $$->text = $1->text;
             $$->text += "++";
+
+            // update type
+            $$->HelperType = $1->HelperType;
 
             print_log_text($$->text);
 
@@ -3179,6 +3263,9 @@ factor: variable {
             $$ = new Helper();
             $$->text = $1->text;
             $$->text += "--";
+
+            // update type
+            $$->HelperType = $1->HelperType;
 
             print_log_text($$->text);
 
@@ -3245,7 +3332,9 @@ arguments: arguments COMMA logic_expression {
                 print_log_text($$->text);
 
                 $$->code = $3->code+"\n";
-                $$->code += "PUSH "+stk_address($3->stk_offset)+"\n";
+                if($3->stk_offset != "") $$->code += "PUSH "+stk_address($3->stk_offset)+"\n";
+                else $$->code += "PUSH "+$3->text+"\n";
+
                 $$->code += $1->code;
                 
 
@@ -3271,7 +3360,9 @@ arguments: arguments COMMA logic_expression {
                 $$->tempVar = $1->tempVar;
 
                 $$->code = $1->code+"\n";
-                $$->code += "PUSH "+stk_address($$->stk_offset);
+
+                if($$->stk_offset != "") $$->code += "PUSH "+stk_address($$->stk_offset);
+                else $$->code += "PUSH "+$1->text+"\n";
                 
 
                 erm_h($1);
@@ -3297,9 +3388,6 @@ main(int argc,char *argv[])
 	errout.open("error.txt");
 	codeout.open("code.asm");
 	opt_codeout.open("optimized_code.asm");
-
-    fileToCode(codeout,"asm_header.txt");
-    fileToCode(opt_codeout,"asm_header.txt");
 
     DATA_vector.push_back("IS_NEG DB ?");
     DATA_vector.push_back("FOR_PRINT DW ?");

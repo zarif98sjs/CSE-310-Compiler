@@ -1,7 +1,6 @@
 .MODEL SMALL
 
-.STACK 100H   
-
+.STACK 100H
 .DATA
 IS_NEG DB ?
 FOR_PRINT DW ?
@@ -92,32 +91,83 @@ MOV AX, @DATA
 MOV DS, AX
 PUSH BP
 MOV BP,SP
-SUB SP,6
+SUB SP,26
 
-; a=4;
-MOV WORD PTR [bp-4],4
-MOV AX,[bp-4]
-MOV WORD PTR [bp-2],AX
-; while(a--){printf(a);}
+; b=0;
+MOV WORD PTR [bp-10],0
+MOV CX,[bp-10]
+MOV WORD PTR [bp-4],CX
+; c=1;
+MOV WORD PTR [bp-12],1
+MOV CX,[bp-12]
+MOV WORD PTR [bp-6],CX
+; for(i=0;i<4;i++){a=3;while(a--){b++;}}
+MOV WORD PTR [bp-14],0
+MOV CX,[bp-14]
+MOV WORD PTR [bp-8],CX
+L4:
+; i<4;
+
+MOV WORD PTR [bp-16],4
+MOV AX,[bp-8]
+CMP AX,[bp-16]
+jl L0
+MOV WORD PTR [bp-18],0
+JMP L1
 L0:
+MOV WORD PTR [bp-18],1
+L1:
+
+; check for loop condition
+CMP [bp-18],0
+JE L5
+; a=3;
+MOV WORD PTR [bp-22],3
+MOV CX,[bp-22]
+MOV WORD PTR [bp-2],CX
+; while(a--){b++;}
+L2:
 ; a--
 
 MOV AX,[bp-2]
-MOV WORD PTR [bp-6],AX
+MOV WORD PTR [bp-24],AX
 DEC WORD PTR [bp-2]
 ; check while loop condition
-CMP [bp-6],0
-JE L1
+CMP [bp-24],0
+JE L3
+; b++;
+
+MOV AX,[bp-4]
+MOV WORD PTR [bp-26],AX
+INC WORD PTR [bp-4]
+JMP L2
+L3:
+
+; i++
+
+MOV AX,[bp-8]
+MOV WORD PTR [bp-20],AX
+INC WORD PTR [bp-8]
+JMP L4
+L5:
+
 
 ; printf(a);
 MOV AX,[bp-2]
 MOV FOR_PRINT,AX
 CALL OUTPUT
-JMP L0
-L1:
 
+; printf(b);
+MOV AX,[bp-4]
+MOV FOR_PRINT,AX
+CALL OUTPUT
+
+; printf(c);
+MOV AX,[bp-6]
+MOV FOR_PRINT,AX
+CALL OUTPUT
 L_main:
-ADD SP,6
+ADD SP,26
 POP BP
 
 ;DOS EXIT
