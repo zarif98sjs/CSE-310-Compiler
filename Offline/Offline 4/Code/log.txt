@@ -1,4 +1,4 @@
-Line 3: type_specifier : INT
+Line 1: type_specifier : INT
 
 int
 
@@ -6,29 +6,94 @@ Line 3: type_specifier : INT
 
 int
 
-Line 3: parameter_list : type_specifier ID
+Line 3: declaration_list : ID LTHIRD CONST_INT RTHIRD
 
-int n
+d[4]
 
-Line 5: variable : ID
+Line 3: var_declaration : type_specifier declaration_list SEMICOLON
 
-n
+int d[4];
 
-Line 5: factor : variable
+Line 3: statement : var_declaration
 
-n
+int d[4];
 
-Line 5: unary_expression : factor
+Line 3: statements : statement
 
-n
+int d[4];
 
-Line 5: term : unary_expression
+Line 4: factor : CONST_INT
 
-n
+0
 
-Line 5: simple_expression : term
+Line 4: unary_expression : factor
 
-n
+0
+
+Line 4: term : unary_expression
+
+0
+
+Line 4: simple_expression : term
+
+0
+
+Line 4: rel_expression : simple_expression
+
+0
+
+Line 4: logic_expression : rel_expression
+
+0
+
+Line 4: expression : logic_expression
+
+0
+
+Line 4: variable : ID LTHIRD expression RTHIRD
+
+d[0]
+
+Line 4: factor : CONST_INT
+
+20
+
+Line 4: unary_expression : factor
+
+20
+
+Line 4: term : unary_expression
+
+20
+
+Line 4: simple_expression : term
+
+20
+
+Line 4: rel_expression : simple_expression
+
+20
+
+Line 4: logic_expression : rel_expression
+
+20
+
+Line 4: expression : variable ASSIGNOP logic_expression
+
+d[0]=20
+
+Line 4: expression_statement : expression SEMICOLON
+
+d[0]=20;
+
+Line 4: statement : expression_statement
+
+d[0]=20;
+
+Line 4: statements : statements statement
+
+int d[4];
+d[0]=20;
 
 Line 5: factor : CONST_INT
 
@@ -46,438 +111,521 @@ Line 5: simple_expression : term
 
 1
 
-Line 5: rel_expression : simple_expression RELOP simple_expression
+Line 5: rel_expression : simple_expression
 
-n<=1
+1
 
 Line 5: logic_expression : rel_expression
 
-n<=1
+1
 
 Line 5: expression : logic_expression
 
-n<=1
-
-Line 6: variable : ID
-
-n
-
-Line 6: factor : variable
-
-n
-
-Line 6: unary_expression : factor
-
-n
-
-Line 6: term : unary_expression
-
-n
-
-Line 6: simple_expression : term
-
-n
-
-Line 6: rel_expression : simple_expression
-
-n
-
-Line 6: logic_expression : rel_expression
-
-n
-
-Line 6: expression : logic_expression
-
-n
-
-Line 6: statement : RETURN expression SEMICOLON
-
-return n;
-
-Line 7: statement : IF LPAREN expression RPAREN statement
-
-if(n<=1)return n;
-
-Line 7: statements : statement
-
-if(n<=1)return n;
-
-Line 7: variable : ID
-
-n
-
-Line 7: factor : variable
-
-n
-
-Line 7: unary_expression : factor
-
-n
-
-Line 7: term : unary_expression
-
-n
-
-Line 7: simple_expression : term
-
-n
-
-Line 7: factor : CONST_INT
-
 1
 
-Line 7: unary_expression : factor
+Line 5: variable : ID LTHIRD expression RTHIRD
 
-1
+d[1]
 
-Line 7: term : unary_expression
+Line 5: factor : CONST_INT
 
-1
+40
 
-Line 7: simple_expression : simple_expression ADDOP term
+Line 5: unary_expression : factor
 
-n-1
+40
 
-Line 7: rel_expression : simple_expression
+Line 5: term : unary_expression
 
-n-1
+40
 
-Line 7: logic_expression : rel_expression
+Line 5: simple_expression : term
 
-n-1
+40
 
-Line 7: arguments : logic_expression
+Line 5: rel_expression : simple_expression
 
-n-1
+40
 
-Line 7: argument_list : arguments
+Line 5: logic_expression : rel_expression
 
-n-1
+40
 
-Line 7: factor : ID LPAREN argument_list RPAREN
+Line 5: expression : variable ASSIGNOP logic_expression
 
-fib(n-1)
+d[1]=40
 
-Line 7: unary_expression : factor
+Line 5: expression_statement : expression SEMICOLON
 
-fib(n-1)
+d[1]=40;
 
-Line 7: term : unary_expression
+Line 5: statement : expression_statement
 
-fib(n-1)
+d[1]=40;
 
-Line 7: simple_expression : term
+Line 5: statements : statements statement
 
-fib(n-1)
+int d[4];
+d[0]=20;
+d[1]=40;
 
-Line 7: variable : ID
+Line 7: type_specifier : INT
 
-n
+int
 
-Line 7: factor : variable
+Line 7: declaration_list : ID
 
-n
+x
 
-Line 7: unary_expression : factor
+Line 7: var_declaration : type_specifier declaration_list SEMICOLON
 
-n
+int x;
 
-Line 7: term : unary_expression
+Line 7: statement : var_declaration
 
-n
-
-Line 7: simple_expression : term
-
-n
-
-Line 7: factor : CONST_INT
-
-2
-
-Line 7: unary_expression : factor
-
-2
-
-Line 7: term : unary_expression
-
-2
-
-Line 7: simple_expression : simple_expression ADDOP term
-
-n-2
-
-Line 7: rel_expression : simple_expression
-
-n-2
-
-Line 7: logic_expression : rel_expression
-
-n-2
-
-Line 7: arguments : logic_expression
-
-n-2
-
-Line 7: argument_list : arguments
-
-n-2
-
-Line 7: factor : ID LPAREN argument_list RPAREN
-
-fib(n-2)
-
-Line 7: unary_expression : factor
-
-fib(n-2)
-
-Line 7: term : unary_expression
-
-fib(n-2)
-
-Line 7: simple_expression : simple_expression ADDOP term
-
-fib(n-1)+fib(n-2)
-
-Line 7: rel_expression : simple_expression
-
-fib(n-1)+fib(n-2)
-
-Line 7: logic_expression : rel_expression
-
-fib(n-1)+fib(n-2)
-
-Line 7: expression : logic_expression
-
-fib(n-1)+fib(n-2)
-
-Line 7: statement : RETURN expression SEMICOLON
-
-return fib(n-1)+fib(n-2);
+int x;
 
 Line 7: statements : statements statement
 
-if(n<=1)return n;
-return fib(n-1)+fib(n-2);
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
 
-Line 8: compound_statement : LCURL statements RCURL
+Line 8: variable : ID
 
-{
-if(n<=1)return n;
-return fib(n-1)+fib(n-2);
-}
+x
 
-ScopeTable # 1.1
-20 --> < n , ID > 
+Line 8: factor : CONST_INT
 
-ScopeTable # 1
-5 --> < fib , ID > 
+0
 
-Line 8: func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement
+Line 8: unary_expression : factor
 
-int fib(int n){
-if(n<=1)return n;
-return fib(n-1)+fib(n-2);
-}
+0
 
-Line 8: unit : func_definition
+Line 8: term : unary_expression
 
-int fib(int n){
-if(n<=1)return n;
-return fib(n-1)+fib(n-2);
-}
+0
 
-Line 8: program : unit
+Line 8: simple_expression : term
 
-int fib(int n){
-if(n<=1)return n;
-return fib(n-1)+fib(n-2);
-}
+0
 
-Line 10: type_specifier : INT
+Line 8: rel_expression : simple_expression
 
-int
+0
 
-Line 12: type_specifier : INT
+Line 8: logic_expression : rel_expression
 
-int
+0
 
-Line 12: declaration_list : ID
+Line 8: expression : logic_expression
 
-n
+0
 
-Line 12: var_declaration : type_specifier declaration_list SEMICOLON
+Line 8: variable : ID LTHIRD expression RTHIRD
 
-int n;
+d[0]
 
-Line 12: statement : var_declaration
+Line 8: factor : variable
 
-int n;
+d[0]
 
-Line 12: statements : statement
+Line 8: unary_expression : factor
 
-int n;
+d[0]
 
-Line 13: variable : ID
+Line 8: term : unary_expression
 
-n
+d[0]
 
-Line 13: factor : CONST_INT
+Line 8: simple_expression : term
 
-5
+d[0]
 
-Line 13: unary_expression : factor
+Line 8: factor : CONST_INT
 
-5
+1
 
-Line 13: term : unary_expression
+Line 8: unary_expression : factor
 
-5
+1
 
-Line 13: simple_expression : term
+Line 8: term : unary_expression
 
-5
+1
 
-Line 13: rel_expression : simple_expression
+Line 8: simple_expression : term
 
-5
+1
 
-Line 13: logic_expression : rel_expression
+Line 8: rel_expression : simple_expression
 
-5
+1
 
-Line 13: expression : variable ASSIGNOP logic_expression
+Line 8: logic_expression : rel_expression
 
-n=5
+1
 
-Line 13: expression_statement : expression SEMICOLON
+Line 8: expression : logic_expression
 
-n=5;
+1
 
-Line 13: statement : expression_statement
+Line 8: variable : ID LTHIRD expression RTHIRD
 
-n=5;
+d[1]
 
-Line 13: statements : statements statement
+Line 8: factor : variable
 
-int n;
-n=5;
+d[1]
 
-Line 14: type_specifier : INT
+Line 8: unary_expression : factor
 
-int
+d[1]
 
-Line 14: declaration_list : ID
+Line 8: term : unary_expression
 
-s
+d[1]
 
-Line 14: var_declaration : type_specifier declaration_list SEMICOLON
+Line 8: simple_expression : simple_expression ADDOP term
 
-int s;
+d[0]+d[1]
 
-Line 14: statement : var_declaration
+Line 8: rel_expression : simple_expression
 
-int s;
+d[0]+d[1]
+
+Line 8: logic_expression : rel_expression
+
+d[0]+d[1]
+
+Line 8: expression : variable ASSIGNOP logic_expression
+
+x=d[0]+d[1]
+
+Line 8: expression_statement : expression SEMICOLON
+
+x=d[0]+d[1];
+
+Line 8: statement : expression_statement
+
+x=d[0]+d[1];
+
+Line 8: statements : statements statement
+
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+
+Line 9: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(x);
+
+Line 9: statements : statements statement
+
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+
+Line 11: variable : ID
+
+x
+
+Line 11: factor : CONST_INT
+
+0
+
+Line 11: unary_expression : factor
+
+0
+
+Line 11: term : unary_expression
+
+0
+
+Line 11: simple_expression : term
+
+0
+
+Line 11: rel_expression : simple_expression
+
+0
+
+Line 11: logic_expression : rel_expression
+
+0
+
+Line 11: expression : logic_expression
+
+0
+
+Line 11: variable : ID LTHIRD expression RTHIRD
+
+d[0]
+
+Line 11: factor : variable
+
+d[0]
+
+Line 11: unary_expression : factor
+
+d[0]
+
+Line 11: term : unary_expression
+
+d[0]
+
+Line 11: simple_expression : term
+
+d[0]
+
+Line 11: factor : CONST_INT
+
+1
+
+Line 11: unary_expression : factor
+
+1
+
+Line 11: term : unary_expression
+
+1
+
+Line 11: simple_expression : term
+
+1
+
+Line 11: rel_expression : simple_expression
+
+1
+
+Line 11: logic_expression : rel_expression
+
+1
+
+Line 11: expression : logic_expression
+
+1
+
+Line 11: variable : ID LTHIRD expression RTHIRD
+
+d[1]
+
+Line 11: factor : variable
+
+d[1]
+
+Line 11: unary_expression : factor
+
+d[1]
+
+Line 11: term : unary_expression
+
+d[1]
+
+Line 11: simple_expression : simple_expression ADDOP term
+
+d[0]-d[1]
+
+Line 11: rel_expression : simple_expression
+
+d[0]-d[1]
+
+Line 11: logic_expression : rel_expression
+
+d[0]-d[1]
+
+Line 11: expression : variable ASSIGNOP logic_expression
+
+x=d[0]-d[1]
+
+Line 11: expression_statement : expression SEMICOLON
+
+x=d[0]-d[1];
+
+Line 11: statement : expression_statement
+
+x=d[0]-d[1];
+
+Line 11: statements : statements statement
+
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+x=d[0]-d[1];
+
+Line 12: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(x);
+
+Line 12: statements : statements statement
+
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+x=d[0]-d[1];
+printf(x);
+
+Line 14: variable : ID
+
+x
+
+Line 14: factor : CONST_INT
+
+0
+
+Line 14: unary_expression : factor
+
+0
+
+Line 14: term : unary_expression
+
+0
+
+Line 14: simple_expression : term
+
+0
+
+Line 14: rel_expression : simple_expression
+
+0
+
+Line 14: logic_expression : rel_expression
+
+0
+
+Line 14: expression : logic_expression
+
+0
+
+Line 14: variable : ID LTHIRD expression RTHIRD
+
+d[0]
+
+Line 14: factor : variable
+
+d[0]
+
+Line 14: unary_expression : factor
+
+d[0]
+
+Line 14: term : unary_expression
+
+d[0]
+
+Line 14: factor : CONST_INT
+
+1
+
+Line 14: unary_expression : factor
+
+1
+
+Line 14: term : unary_expression
+
+1
+
+Line 14: simple_expression : term
+
+1
+
+Line 14: rel_expression : simple_expression
+
+1
+
+Line 14: logic_expression : rel_expression
+
+1
+
+Line 14: expression : logic_expression
+
+1
+
+Line 14: variable : ID LTHIRD expression RTHIRD
+
+d[1]
+
+Line 14: factor : variable
+
+d[1]
+
+Line 14: unary_expression : factor
+
+d[1]
+
+Line 14: term : term MULOP unary_expression
+
+d[0]*d[1]
+
+Line 14: simple_expression : term
+
+d[0]*d[1]
+
+Line 14: rel_expression : simple_expression
+
+d[0]*d[1]
+
+Line 14: logic_expression : rel_expression
+
+d[0]*d[1]
+
+Line 14: expression : variable ASSIGNOP logic_expression
+
+x=d[0]*d[1]
+
+Line 14: expression_statement : expression SEMICOLON
+
+x=d[0]*d[1];
+
+Line 14: statement : expression_statement
+
+x=d[0]*d[1];
 
 Line 14: statements : statements statement
 
-int n;
-n=5;
-int s;
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+x=d[0]-d[1];
+printf(x);
+x=d[0]*d[1];
 
-Line 15: variable : ID
+Line 15: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
 
-s
-
-Line 15: variable : ID
-
-n
-
-Line 15: factor : variable
-
-n
-
-Line 15: unary_expression : factor
-
-n
-
-Line 15: term : unary_expression
-
-n
-
-Line 15: simple_expression : term
-
-n
-
-Line 15: rel_expression : simple_expression
-
-n
-
-Line 15: logic_expression : rel_expression
-
-n
-
-Line 15: arguments : logic_expression
-
-n
-
-Line 15: argument_list : arguments
-
-n
-
-Line 15: factor : ID LPAREN argument_list RPAREN
-
-fib(n)
-
-Line 15: unary_expression : factor
-
-fib(n)
-
-Line 15: term : unary_expression
-
-fib(n)
-
-Line 15: simple_expression : term
-
-fib(n)
-
-Line 15: rel_expression : simple_expression
-
-fib(n)
-
-Line 15: logic_expression : rel_expression
-
-fib(n)
-
-Line 15: expression : variable ASSIGNOP logic_expression
-
-s=fib(n)
-
-Line 15: expression_statement : expression SEMICOLON
-
-s=fib(n);
-
-Line 15: statement : expression_statement
-
-s=fib(n);
+printf(x);
 
 Line 15: statements : statements statement
 
-int n;
-n=5;
-int s;
-s=fib(n);
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+x=d[0]-d[1];
+printf(x);
+x=d[0]*d[1];
+printf(x);
 
-Line 16: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+Line 17: variable : ID
 
-printf(s);
-
-Line 16: statements : statements statement
-
-int n;
-n=5;
-int s;
-s=fib(n);
-printf(s);
+x
 
 Line 17: factor : CONST_INT
 
@@ -507,80 +655,417 @@ Line 17: expression : logic_expression
 
 0
 
-Line 17: statement : RETURN expression SEMICOLON
+Line 17: variable : ID LTHIRD expression RTHIRD
 
-return 0;
+d[0]
+
+Line 17: factor : variable
+
+d[0]
+
+Line 17: unary_expression : factor
+
+d[0]
+
+Line 17: term : unary_expression
+
+d[0]
+
+Line 17: factor : CONST_INT
+
+1
+
+Line 17: unary_expression : factor
+
+1
+
+Line 17: term : unary_expression
+
+1
+
+Line 17: simple_expression : term
+
+1
+
+Line 17: rel_expression : simple_expression
+
+1
+
+Line 17: logic_expression : rel_expression
+
+1
+
+Line 17: expression : logic_expression
+
+1
+
+Line 17: variable : ID LTHIRD expression RTHIRD
+
+d[1]
+
+Line 17: factor : variable
+
+d[1]
+
+Line 17: unary_expression : factor
+
+d[1]
+
+Line 17: term : term MULOP unary_expression
+
+d[0]/d[1]
+
+Line 17: simple_expression : term
+
+d[0]/d[1]
+
+Line 17: rel_expression : simple_expression
+
+d[0]/d[1]
+
+Line 17: logic_expression : rel_expression
+
+d[0]/d[1]
+
+Line 17: expression : variable ASSIGNOP logic_expression
+
+x=d[0]/d[1]
+
+Line 17: expression_statement : expression SEMICOLON
+
+x=d[0]/d[1];
+
+Line 17: statement : expression_statement
+
+x=d[0]/d[1];
 
 Line 17: statements : statements statement
 
-int n;
-n=5;
-int s;
-s=fib(n);
-printf(s);
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+x=d[0]-d[1];
+printf(x);
+x=d[0]*d[1];
+printf(x);
+x=d[0]/d[1];
+
+Line 18: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(x);
+
+Line 18: statements : statements statement
+
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+x=d[0]-d[1];
+printf(x);
+x=d[0]*d[1];
+printf(x);
+x=d[0]/d[1];
+printf(x);
+
+Line 20: variable : ID
+
+x
+
+Line 20: factor : CONST_INT
+
+0
+
+Line 20: unary_expression : factor
+
+0
+
+Line 20: term : unary_expression
+
+0
+
+Line 20: simple_expression : term
+
+0
+
+Line 20: rel_expression : simple_expression
+
+0
+
+Line 20: logic_expression : rel_expression
+
+0
+
+Line 20: expression : logic_expression
+
+0
+
+Line 20: variable : ID LTHIRD expression RTHIRD
+
+d[0]
+
+Line 20: factor : variable
+
+d[0]
+
+Line 20: unary_expression : factor
+
+d[0]
+
+Line 20: term : unary_expression
+
+d[0]
+
+Line 20: factor : CONST_INT
+
+1
+
+Line 20: unary_expression : factor
+
+1
+
+Line 20: term : unary_expression
+
+1
+
+Line 20: simple_expression : term
+
+1
+
+Line 20: rel_expression : simple_expression
+
+1
+
+Line 20: logic_expression : rel_expression
+
+1
+
+Line 20: expression : logic_expression
+
+1
+
+Line 20: variable : ID LTHIRD expression RTHIRD
+
+d[1]
+
+Line 20: factor : variable
+
+d[1]
+
+Line 20: unary_expression : factor
+
+d[1]
+
+Line 20: term : term MULOP unary_expression
+
+d[0]%d[1]
+
+Line 20: simple_expression : term
+
+d[0]%d[1]
+
+Line 20: rel_expression : simple_expression
+
+d[0]%d[1]
+
+Line 20: logic_expression : rel_expression
+
+d[0]%d[1]
+
+Line 20: expression : variable ASSIGNOP logic_expression
+
+x=d[0]%d[1]
+
+Line 20: expression_statement : expression SEMICOLON
+
+x=d[0]%d[1];
+
+Line 20: statement : expression_statement
+
+x=d[0]%d[1];
+
+Line 20: statements : statements statement
+
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+x=d[0]-d[1];
+printf(x);
+x=d[0]*d[1];
+printf(x);
+x=d[0]/d[1];
+printf(x);
+x=d[0]%d[1];
+
+Line 21: statement : PRINTLN LPAREN ID RPAREN SEMICOLON
+
+printf(x);
+
+Line 21: statements : statements statement
+
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+x=d[0]-d[1];
+printf(x);
+x=d[0]*d[1];
+printf(x);
+x=d[0]/d[1];
+printf(x);
+x=d[0]%d[1];
+printf(x);
+
+Line 23: factor : CONST_INT
+
+0
+
+Line 23: unary_expression : factor
+
+0
+
+Line 23: term : unary_expression
+
+0
+
+Line 23: simple_expression : term
+
+0
+
+Line 23: rel_expression : simple_expression
+
+0
+
+Line 23: logic_expression : rel_expression
+
+0
+
+Line 23: expression : logic_expression
+
+0
+
+Line 23: statement : RETURN expression SEMICOLON
+
 return 0;
 
-Line 18: compound_statement : LCURL statements RCURL
+Line 23: statements : statements statement
+
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+x=d[0]-d[1];
+printf(x);
+x=d[0]*d[1];
+printf(x);
+x=d[0]/d[1];
+printf(x);
+x=d[0]%d[1];
+printf(x);
+return 0;
+
+Line 24: compound_statement : LCURL statements RCURL
 
 {
-int n;
-n=5;
-int s;
-s=fib(n);
-printf(s);
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+x=d[0]-d[1];
+printf(x);
+x=d[0]*d[1];
+printf(x);
+x=d[0]/d[1];
+printf(x);
+x=d[0]%d[1];
+printf(x);
 return 0;
 }
 
-ScopeTable # 1.2
-20 --> < n , ID > 
-25 --> < s , ID > 
+ScopeTable # 1.1
+0 --> < x , ID > 
+10 --> < d , ID > 
 
 ScopeTable # 1
 1 --> < main , ID > 
-5 --> < fib , ID > 
 
-Line 18: func_definition : type_specifier ID LPAREN RPAREN compound_statement
+Line 24: func_definition : type_specifier ID LPAREN RPAREN compound_statement
 
 int main(){
-int n;
-n=5;
-int s;
-s=fib(n);
-printf(s);
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+x=d[0]-d[1];
+printf(x);
+x=d[0]*d[1];
+printf(x);
+x=d[0]/d[1];
+printf(x);
+x=d[0]%d[1];
+printf(x);
 return 0;
 }
 
-Line 18: unit : func_definition
+Line 24: unit : func_definition
 
 int main(){
-int n;
-n=5;
-int s;
-s=fib(n);
-printf(s);
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+x=d[0]-d[1];
+printf(x);
+x=d[0]*d[1];
+printf(x);
+x=d[0]/d[1];
+printf(x);
+x=d[0]%d[1];
+printf(x);
 return 0;
 }
 
-Line 18: program : program unit
+Line 24: program : unit
 
-int fib(int n){
-if(n<=1)return n;
-return fib(n-1)+fib(n-2);
-}
 int main(){
-int n;
-n=5;
-int s;
-s=fib(n);
-printf(s);
+int d[4];
+d[0]=20;
+d[1]=40;
+int x;
+x=d[0]+d[1];
+printf(x);
+x=d[0]-d[1];
+printf(x);
+x=d[0]*d[1];
+printf(x);
+x=d[0]/d[1];
+printf(x);
+x=d[0]%d[1];
+printf(x);
 return 0;
 }
 
-Line 18: start : program
+Line 24: start : program
 
 ScopeTable # 1
 1 --> < main , ID > 
-5 --> < fib , ID > 
 
-Total lines: 18
+Total lines: 24
 Total errors: 0
