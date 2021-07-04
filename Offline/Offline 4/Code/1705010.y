@@ -1511,6 +1511,8 @@ dummy_scope_function:  {
 
                     if(is_function_now)
                     {
+                        // $$->code += "; retrieving function parameter\n";
+
                         for(auto &el:function_params)
                         {
 
@@ -2118,13 +2120,18 @@ statement: var_declaration {
 
             print_log_text($$->text);
 
-            $$->code = $3->code+"\n";
+            string to_print = $$->text;
+            to_print.erase(remove(to_print.begin(), to_print.end(), '\n'), to_print.end());
+
+            $$->code = "; "+to_print+"\n";
+
+            $$->code += $3->code+"\n";
             
             string tempL1 = newLabel();
             $$->code += "CMP "+stk_address($3->stk_offset)+",0\n";
             $$->code += "JE "+tempL1+"\n";
             $$->code += $5->code+"\n";
-            $$->code += tempL1+":";
+            $$->code += tempL1+":\n";
 
             erm_h($3); erm_h($5); 
         }
@@ -2144,7 +2151,12 @@ statement: var_declaration {
 
             print_log_text($$->text);
 
-            $$->code = $3->code+"\n";
+            string to_print = $$->text;
+            to_print.erase(remove(to_print.begin(), to_print.end(), '\n'), to_print.end());
+
+            $$->code = "; "+to_print+"\n";
+
+            $$->code += $3->code+"\n";
             
             string tempL1 = newLabel();
             string tempL2 = newLabel();
@@ -2154,10 +2166,10 @@ statement: var_declaration {
 
             $$->code += $5->code+"\n";
             $$->code += "JMP "+tempL2+"\n";
-            $$->code += tempL1+":";
+            $$->code += tempL1+":\n";
 
             $$->code += $7->code+"\n";
-            $$->code += tempL2+":";
+            $$->code += tempL2+":\n";
 
             erm_h($3); erm_h($5); erm_h($7);
         
@@ -2293,11 +2305,12 @@ statement: var_declaration {
 
             print_log_text($$->text);
 
-            $$->code = $2->code+"\n";
+            $$->code = "; "+$$->text;
+            $$->code += $2->code+"\n";
             
             if($2->stk_offset != "") $$->code += "MOV AX,"+stk_address($2->stk_offset)+"\n";
             else {
-                
+                $$->code += "MOV AX,"+ process_global_variable($2->text)+"\n";
             } 
 
             $$->code += "JMP "+cur_function_label(cur_function_name)+"\n";

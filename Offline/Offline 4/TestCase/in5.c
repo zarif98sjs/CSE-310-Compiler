@@ -13,6 +13,6 @@ int main ()
     n = 5;
     int s;
     s = fib(n);
-    printf(s); // 5
+    printf(s); // 6
     return 0;
 }

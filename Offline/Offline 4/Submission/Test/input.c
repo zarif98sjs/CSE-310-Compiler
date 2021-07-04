@@ -1,14 +1,18 @@
-int main(){
-    int a,b,c,i;
-    b=0;
-	c=1;
-    for(i=0;i<4;i++){
-        a=3;
-        while(a--){
-            b++;
-        }
-    }
-    println(a);
-    println(b);
-    println(c);
+// recursion : fibonacci
+
+int fib(int n)
+{
+    if (n <= 1)
+        return n;
+    return fib(n-1) + fib(n-2);
+}
+
+int main ()
+{
+    int n;
+    n = 5;
+    int s;
+    s = fib(n);
+    printf(s); // 5
+    return 0;
 }

@@ -1,18 +1,18 @@
-int ar[10];
-int f()
-{
-    int x[10];
+// recursion : fibonacci
 
-    x[2] = 20;
-    return x[2];
+int fib(int n)
+{
+    if (n <= 1)
+        return n;
+    return fib(n-1) + fib(n-2);
 }
 
-int main()
+int main ()
 {
-    ar[2] = 3;
-    println(ar[2]);
-    int re ;
-    re = f();
-    println(re);
+    int n;
+    n = 5;
+    int s;
+    s = fib(n);
+    printf(s); // 5
     return 0;
 }
