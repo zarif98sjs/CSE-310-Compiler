@@ -1,14 +1,18 @@
-int main(){
-    int a,b,c,i;
-    b=0;
-	c=1;
-    for(i=0;i<4;i++){
-        a=3;
-        while(a--){
-            b++;
-        }
-    }
-    println(a);
-    println(b);
-    println(c);
+int ar[10];
+int f()
+{
+    int x[10];
+
+    x[2] = 20;
+    return x[2];
+}
+
+int main()
+{
+    ar[2] = 3;
+    println(ar[2]);
+    int re ;
+    re = f();
+    println(re);
+    return 0;
 }

@@ -2294,12 +2294,7 @@ statement: var_declaration {
             print_log_text($$->text);
 
             $$->code = $2->code+"\n";
-            
-            if($2->stk_offset != "") $$->code += "MOV AX,"+stk_address($2->stk_offset)+"\n";
-            else {
-                
-            } 
-
+            $$->code += "MOV AX,"+stk_address($2->stk_offset)+"\n";
             $$->code += "JMP "+cur_function_label(cur_function_name)+"\n";
 
             //$$->code += "POP BP\n";
