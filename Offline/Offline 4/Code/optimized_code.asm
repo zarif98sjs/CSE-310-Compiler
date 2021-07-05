@@ -93,7 +93,7 @@ MOV AX, @DATA
 MOV DS, AX
 PUSH BP
 MOV BP,SP
-SUB SP,60
+SUB SP,74
 ; d[0]=20;
 MOV WORD PTR [bp-12],20
 MOV CX,[bp-12]
@@ -108,107 +108,116 @@ MOV WORD PTR [bp-14],1
 MOV SI,[bp-14]
 ADD SI,SI
 MOV WORD PTR [bp-8+SI],CX
-; x=d[0]+d[1];
-MOV WORD PTR [bp-20],0
-MOV SI,[bp-20]
+; a=10;
+MOV WORD PTR [bp-24],10
+MOV CX,[bp-24]
+MOV WORD PTR [bp-18],CX
+; b=14;
+MOV WORD PTR [bp-26],14
+MOV CX,[bp-26]
+MOV WORD PTR [bp-20],CX
+; c=16;
+MOV WORD PTR [bp-28],16
+MOV CX,[bp-28]
+MOV WORD PTR [bp-22],CX
+; x=d[0]-d[1];
+MOV WORD PTR [bp-32],0
+MOV SI,[bp-32]
 ADD SI,SI
 MOV AX,[bp-8+SI]
-MOV WORD PTR [bp-24],AX
-MOV WORD PTR [bp-22],1
-MOV SI,[bp-22]
+MOV WORD PTR [bp-36],AX
+MOV WORD PTR [bp-34],1
+MOV SI,[bp-34]
 ADD SI,SI
-MOV AX,[bp-24]
-ADD AX,[bp-8+SI]
-MOV WORD PTR [bp-26],AX
-MOV CX,[bp-26]
-MOV WORD PTR [bp-18],CX
+MOV AX,[bp-36]
+SUB AX,[bp-8+SI]
+MOV WORD PTR [bp-38],AX
+MOV CX,[bp-38]
+MOV WORD PTR [bp-30],CX
 ; printf(x);
+MOV AX,[bp-30]
+MOV FOR_PRINT,AX
+CALL OUTPUT
+; x=d[0]-d[1]+c;
+MOV WORD PTR [bp-40],0
+MOV SI,[bp-40]
+ADD SI,SI
+MOV AX,[bp-8+SI]
+MOV WORD PTR [bp-44],AX
+MOV WORD PTR [bp-42],1
+MOV SI,[bp-42]
+ADD SI,SI
+MOV AX,[bp-44]
+SUB AX,[bp-8+SI]
+MOV WORD PTR [bp-46],AX
+MOV WORD PTR [bp-48],AX
+ADD AX,[bp-22]
+MOV WORD PTR [bp-46],AX
+MOV CX,[bp-46]
+MOV WORD PTR [bp-30],CX
+; printf(x);
+MOV AX,[bp-30]
+MOV FOR_PRINT,AX
+CALL OUTPUT
+; x=a+b+c;
 MOV AX,[bp-18]
+MOV WORD PTR [bp-50],AX
+ADD AX,[bp-20]
+MOV WORD PTR [bp-52],AX
+MOV WORD PTR [bp-54],AX
+ADD AX,[bp-22]
+MOV WORD PTR [bp-52],AX
+MOV CX,[bp-52]
+MOV WORD PTR [bp-30],CX
+; printf(x);
+MOV AX,[bp-30]
+MOV FOR_PRINT,AX
+CALL OUTPUT
+; x=d[0]-c-d[1];
+MOV WORD PTR [bp-56],0
+MOV SI,[bp-56]
+ADD SI,SI
+MOV AX,[bp-8+SI]
+MOV WORD PTR [bp-58],AX
+SUB AX,[bp-22]
+MOV WORD PTR [bp-60],AX
+MOV WORD PTR [bp-64],AX
+MOV WORD PTR [bp-62],1
+MOV SI,[bp-62]
+ADD SI,SI
+MOV AX,[bp-64]
+SUB AX,[bp-8+SI]
+MOV WORD PTR [bp-60],AX
+MOV CX,[bp-60]
+MOV WORD PTR [bp-30],CX
+; printf(x);
+MOV AX,[bp-30]
 MOV FOR_PRINT,AX
 CALL OUTPUT
 ; x=d[0]-d[1];
-MOV WORD PTR [bp-28],0
-MOV SI,[bp-28]
+MOV WORD PTR [bp-66],0
+MOV SI,[bp-66]
 ADD SI,SI
 MOV AX,[bp-8+SI]
-MOV WORD PTR [bp-32],AX
-MOV WORD PTR [bp-30],1
-MOV SI,[bp-30]
+MOV WORD PTR [bp-70],AX
+MOV WORD PTR [bp-68],1
+MOV SI,[bp-68]
 ADD SI,SI
-MOV AX,[bp-32]
+MOV AX,[bp-70]
 SUB AX,[bp-8+SI]
-MOV WORD PTR [bp-34],AX
-MOV CX,[bp-34]
-MOV WORD PTR [bp-18],CX
+MOV WORD PTR [bp-72],AX
+MOV CX,[bp-72]
+MOV WORD PTR [bp-30],CX
 ; printf(x);
-MOV AX,[bp-18]
-MOV FOR_PRINT,AX
-CALL OUTPUT
-; x=d[0]*d[1];
-MOV WORD PTR [bp-36],0
-MOV SI,[bp-36]
-ADD SI,SI
-MOV CX,[bp-8+SI]
-MOV WORD PTR [bp-40],CX
-MOV WORD PTR [bp-38],1
-MOV SI,[bp-38]
-ADD SI,SI
-MOV CX,[bp-40]
-MOV AX,CX
-IMUL WORD PTR [bp-8+SI]
-MOV WORD PTR [bp-42],AX
-MOV CX,[bp-42]
-MOV WORD PTR [bp-18],CX
-; printf(x);
-MOV AX,[bp-18]
-MOV FOR_PRINT,AX
-CALL OUTPUT
-; x=d[0]/d[1];
-MOV WORD PTR [bp-44],0
-MOV SI,[bp-44]
-ADD SI,SI
-MOV CX,[bp-8+SI]
-CWD
-MOV WORD PTR [bp-48],CX
-MOV WORD PTR [bp-46],1
-MOV SI,[bp-46]
-ADD SI,SI
-MOV CX,[bp-48]
-MOV AX,CX
-IDIV WORD PTR [bp-8+SI]
-MOV WORD PTR [bp-50],AX
-MOV CX,[bp-50]
-MOV WORD PTR [bp-18],CX
-; printf(x);
-MOV AX,[bp-18]
-MOV FOR_PRINT,AX
-CALL OUTPUT
-; x=d[0]%d[1];
-MOV WORD PTR [bp-52],0
-MOV SI,[bp-52]
-ADD SI,SI
-MOV CX,[bp-8+SI]
-CWD
-MOV WORD PTR [bp-56],CX
-MOV WORD PTR [bp-54],1
-MOV SI,[bp-54]
-ADD SI,SI
-MOV CX,[bp-56]
-MOV AX,CX
-IDIV WORD PTR [bp-8+SI]
-MOV WORD PTR [bp-58],DX
-MOV CX,[bp-58]
-MOV WORD PTR [bp-18],CX
-; printf(x);
-MOV AX,[bp-18]
+MOV AX,[bp-30]
 MOV FOR_PRINT,AX
 CALL OUTPUT
 ; return 0;
-MOV WORD PTR [bp-60],0
-MOV AX,[bp-60]
+MOV WORD PTR [bp-74],0
+MOV AX,[bp-74]
 JMP L_main
 L_main:
-ADD SP,60
+ADD SP,74
 POP BP
 ;DOS EXIT
 MOV AH,4ch
