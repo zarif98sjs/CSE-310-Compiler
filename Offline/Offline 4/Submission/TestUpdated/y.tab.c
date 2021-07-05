@@ -4573,7 +4573,7 @@ yyreduce:
 
                         (yyval.helper)->tempVar = tempVar;
                         (yyval.helper)->stk_offset = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
+                        // temp_SP_vector.push_back(to_string(SP_VAL));
                     }
 
                     (yyval.helper)->code += "MOV "+stk_address_typecast((yyval.helper)->stk_offset)+",1\n";
@@ -4617,7 +4617,7 @@ yyreduce:
 
                         (yyval.helper)->tempVar = tempVar;
                         (yyval.helper)->stk_offset = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
+                        // temp_SP_vector.push_back(to_string(SP_VAL));
                     }
 
                     (yyval.helper)->code += "MOV "+stk_address_typecast((yyval.helper)->stk_offset)+",0\n";
@@ -4723,7 +4723,7 @@ yyreduce:
 
                     (yyval.helper)->tempVar = tempVar;
                     (yyval.helper)->stk_offset = to_string(SP_VAL);
-                    temp_SP_vector.push_back(to_string(SP_VAL));
+                    // // temp_SP_vector.push_back(to_string(SP_VAL));
                 }
 
                 (yyval.helper)->code += jumpText+" "+tempL1+"\n";
@@ -4813,7 +4813,7 @@ yyreduce:
 
                         string tempVarExtra = newTemp();
                         string tempVarExtra_stk_add = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
+                        // temp_SP_vector.push_back(to_string(SP_VAL));
                         (yyval.helper)->code += "MOV "+stk_address_typecast(tempVarExtra_stk_add)+",AX\n";
 
                         (yyval.helper)->code += (yyvsp[0].helper)->code+"\n";
@@ -4837,7 +4837,7 @@ yyreduce:
 
                             (yyval.helper)->tempVar = tempVar;
                             (yyval.helper)->stk_offset = to_string(SP_VAL);
-                            temp_SP_vector.push_back(to_string(SP_VAL));
+                            // temp_SP_vector.push_back(to_string(SP_VAL));
                         }
 
                         (yyval.helper)->code += "MOV "+stk_address_typecast((yyval.helper)->stk_offset)+",AX";
@@ -4852,7 +4852,7 @@ yyreduce:
 
                         string tempVarExtra = newTemp();
                         string tempVarExtra_stk_add = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
+                        // temp_SP_vector.push_back(to_string(SP_VAL));
                         (yyval.helper)->code += "MOV "+stk_address_typecast(tempVarExtra_stk_add)+",AX\n";
 
                         (yyval.helper)->code += (yyvsp[0].helper)->code+"\n";
@@ -4876,7 +4876,7 @@ yyreduce:
 
                             (yyval.helper)->tempVar = tempVar;
                             (yyval.helper)->stk_offset = to_string(SP_VAL);
-                            temp_SP_vector.push_back(to_string(SP_VAL));
+                            // temp_SP_vector.push_back(to_string(SP_VAL));
                         }
 
                         (yyval.helper)->code += "MOV "+stk_address_typecast((yyval.helper)->stk_offset)+",AX";
@@ -4956,7 +4956,7 @@ yyreduce:
 
                         string tempVarExtra = newTemp();
                         string tempVarExtra_stk_add = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
+                        // temp_SP_vector.push_back(to_string(SP_VAL));
                         (yyval.helper)->code += "MOV "+stk_address_typecast(tempVarExtra_stk_add)+",CX\n";
 
                         (yyval.helper)->code += (yyvsp[0].helper)->code+"\n";
@@ -4982,7 +4982,7 @@ yyreduce:
 
                             (yyval.helper)->tempVar = tempVar;
                             (yyval.helper)->stk_offset = to_string(SP_VAL);
-                            temp_SP_vector.push_back(to_string(SP_VAL));
+                            // temp_SP_vector.push_back(to_string(SP_VAL));
                         }
 
 
@@ -5025,7 +5025,7 @@ yyreduce:
 
                     string tempVarExtra = newTemp();
                     string tempVarExtra_stk_add = to_string(SP_VAL);
-                    temp_SP_vector.push_back(to_string(SP_VAL));
+                    // temp_SP_vector.push_back(to_string(SP_VAL));
                     (yyval.helper)->code += "MOV "+stk_address_typecast(tempVarExtra_stk_add)+",CX\n";
 
                     (yyval.helper)->code += (yyvsp[0].helper)->code+"\n";
@@ -5051,7 +5051,7 @@ yyreduce:
 
                         (yyval.helper)->tempVar = tempVar;
                         (yyval.helper)->stk_offset = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
+                        // temp_SP_vector.push_back(to_string(SP_VAL));
                     }
 
                     (yyval.helper)->code += "MOV "+stk_address_typecast((yyval.helper)->stk_offset)+",AX";
@@ -5068,7 +5068,7 @@ yyreduce:
 
                     string tempVarExtra = newTemp();
                     string tempVarExtra_stk_add = to_string(SP_VAL);
-                    temp_SP_vector.push_back(to_string(SP_VAL));
+                    // temp_SP_vector.push_back(to_string(SP_VAL));
                     (yyval.helper)->code += "MOV "+stk_address_typecast(tempVarExtra_stk_add)+",CX\n";
 
                     (yyval.helper)->code += (yyvsp[0].helper)->code+"\n";
@@ -5094,7 +5094,7 @@ yyreduce:
 
                         (yyval.helper)->tempVar = tempVar;
                         (yyval.helper)->stk_offset = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
+                        // temp_SP_vector.push_back(to_string(SP_VAL));
                     }
 
                     (yyval.helper)->code += "MOV "+stk_address_typecast((yyval.helper)->stk_offset)+",AX";
@@ -5297,7 +5297,7 @@ yyreduce:
                 {
                     string tempVar = newTemp();
                     (yyval.helper)->stk_offset = to_string(SP_VAL);
-                    // temp_SP_vector.push_back(to_string(SP_VAL));
+                    // // temp_SP_vector.push_back(to_string(SP_VAL));
                     (yyval.helper)->code += "\nMOV "+stk_address_typecast((yyval.helper)->stk_offset)+",AX";
                 }
             }
@@ -5422,7 +5422,7 @@ yyreduce:
             /// as postfix , passing the previous value
             (yyval.helper)->tempVar = newTemp();
             (yyval.helper)->stk_offset = to_string(SP_VAL); // init 
-            temp_SP_vector.push_back(to_string(SP_VAL));
+            //// temp_SP_vector.push_back(to_string(SP_VAL));
 
             (yyval.helper)->code = (yyvsp[-1].helper)->code+"\n";
 
@@ -5462,7 +5462,7 @@ yyreduce:
             /// as postfix , passing the previous value
             (yyval.helper)->tempVar = newTemp();
             (yyval.helper)->stk_offset = to_string(SP_VAL); // init 
-            temp_SP_vector.push_back(to_string(SP_VAL));
+            //// temp_SP_vector.push_back(to_string(SP_VAL));
 
             (yyval.helper)->code = (yyvsp[-1].helper)->code+"\n";
 
