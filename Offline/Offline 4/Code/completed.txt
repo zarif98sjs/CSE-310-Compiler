@@ -1,3 +1,6 @@
+NEW START USING STACK
+======================
+
 1. variable declaration (witout array) :: declaration_list
 2. variable assignment (witout array) :: ASSIGNOP
 3. + - :: ADDOP
@@ -7,4 +10,12 @@
 7. ++ -- :: INCOP , DECOP
 8. while loop :: WHILE
 9. for loop :: FOR
+10. array (assignment from array,assignment to array,array element print) :: ARRAY
+11. if 
+12. if else
+13. simple function
+14. recursive function
+15. postfix
+16. global variable : ASSIGNOP ADDOP MULOP RELOP LOGICOP INCOP DECOP
 __. printf
+-----------------

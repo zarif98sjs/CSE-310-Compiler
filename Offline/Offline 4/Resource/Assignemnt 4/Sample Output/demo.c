@@ -1,12 +1,19 @@
+int f(int a){
+    return 2*a;
+    a=9;
+}
 
-void f(int x,int y,int z)
-{
-    z = 12;
+int g(int a, int b){
+    int x;
+    x=f(a)+a+b;
+    return x;
 }
 
 int main(){
-    int a,b,c,i;
-    b=12;
-	c=14;
-    a = b+c;
+    int a,b;
+    a=1;
+    b=2;
+    a=g(a,b);
+    println(a);
+    return 0;
 }

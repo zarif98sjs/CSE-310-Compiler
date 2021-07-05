@@ -1,6 +1,0 @@
-int main(){
-    int a,b,c,i;
-    b = 10;
-	c = 123;
-	a = b+c; 
-}

@@ -1,98 +1,14 @@
 .MODEL SMALL
 
-.STACK 100H   
-
+.STACK 100H
 .DATA
 IS_NEG DB ?
 FOR_PRINT DW ?
-MARKER DW 0DH
-DIV_RES DW ? 
-DIV_REM DW ?
-a dw ?
-b dw ?
-c dw ?
-i dw ?
-t0 dw ?
-t1 dw ?
-t2 dw ?
-t3 dw ?
-t4 dw ?
-t5 dw ?
+CR EQU 0DH
+LF EQU 0AH
+NEWLINE DB CR, LF , '$'
 
 .CODE
-MAIN PROC
-MOV AX, @DATA 
-MOV DS, AX
-
-
-; b=0;
-MOV t0,0
-MOV AX,t0
-MOV b,AX
-; c=1;
-MOV t1,1
-MOV AX,t1
-MOV c,AX
-; for(i=0;i<4;i++){a=3;while(a--){b++;}}
-MOV t2,0
-MOV AX,t2
-MOV i,AX
-L4:
-; i<4;
-
-MOV t3,4
-MOV AX,i
-CMP AX,t3
-jl L0
-MOV t4,0
-JMP L1
-L0:
-MOV t4,1
-L1:
-
-; check for loop condition
-CMP t4,0
-JE L5
-; a=3;
-MOV t5,3
-MOV AX,t5
-MOV a,AX
-; while(a--){b++;}
-L2:
-; a--
-DEC a
-; check while loop condition
-CMP a,0
-JE L3
-; b++;
-INC b
-JMP L2
-L3:
-
-; i++
-INC i
-JMP L4
-L5:
-
-
-; printf(a);
-MOV AX,a
-MOV FOR_PRINT,AX
-CALL OUTPUT
-
-; printf(b);
-MOV AX,b
-MOV FOR_PRINT,AX
-CALL OUTPUT
-
-; printf(c);
-MOV AX,c
-MOV FOR_PRINT,AX
-CALL OUTPUT
-
-MOV AH,4ch 
-INT 21h
-MAIN ENDP
 
 OUTPUT PROC
                
@@ -121,9 +37,6 @@ OUTPUT PROC
         DIV BX ; QUOTIENT : AX  , REMAINDER : DX     
         
         MOV FOR_PRINT , AX
-    
-        MOV DIV_RES , AX
-        MOV DIV_REM , DX 
         
         PUSH DX
         
@@ -164,7 +77,118 @@ OUTPUT PROC
     EXIT_OUTPUT:
     
         ;POP CX 
+
+        LEA DX, NEWLINE
+        MOV AH, 9 
+        INT 21H
     
         RET     
       
 OUTPUT ENDP
+
+fib PROC
+PUSH BP
+MOV BP,SP
+SUB SP,18
+
+MOV AX,[bp+4]
+MOV WORD PTR [bp-2],AX
+; if(n<=1)return n;
+
+MOV WORD PTR [bp-4],1
+MOV AX,[bp-2]
+CMP AX,[bp-4]
+jle L0
+MOV WORD PTR [bp-4],0
+JMP L1
+L0:
+MOV WORD PTR [bp-4],1
+L1:
+
+CMP [bp-4],0
+JE L2
+; return n;
+
+MOV AX,[bp-2]
+JMP L_fib
+
+L2:
+
+; return fib(n-1)+fib(n-2);
+
+MOV AX,[bp-2]
+MOV WORD PTR [bp-8],AX
+MOV WORD PTR [bp-6],1
+MOV AX,[bp-8]
+SUB AX,[bp-6]
+MOV WORD PTR [bp-6],AX
+PUSH [bp-6]
+CALL fib
+ADD SP,2
+MOV WORD PTR [bp-10],AX
+MOV AX,[bp-10]
+MOV WORD PTR [bp-18],AX
+
+MOV AX,[bp-2]
+MOV WORD PTR [bp-14],AX
+MOV WORD PTR [bp-12],2
+MOV AX,[bp-14]
+SUB AX,[bp-12]
+MOV WORD PTR [bp-12],AX
+PUSH [bp-12]
+CALL fib
+ADD SP,2
+MOV WORD PTR [bp-16],AX
+MOV AX,[bp-18]
+ADD AX,[bp-16]
+MOV WORD PTR [bp-10],AX
+MOV AX,[bp-10]
+JMP L_fib
+
+L_fib:
+ADD SP,18
+POP BP
+RET
+fib ENDP
+
+main PROC
+MOV AX, @DATA
+MOV DS, AX
+PUSH BP
+MOV BP,SP
+SUB SP,10
+
+; n=5;
+MOV WORD PTR [bp-4],5
+MOV CX,[bp-4]
+MOV WORD PTR [bp-2],CX
+
+; s=fib(n);
+
+PUSH [bp-2]
+CALL fib
+ADD SP,2
+MOV WORD PTR [bp-8],AX
+MOV CX,[bp-8]
+MOV WORD PTR [bp-6],CX
+
+; printf(s);
+MOV AX,[bp-6]
+MOV FOR_PRINT,AX
+CALL OUTPUT
+; return 0;
+MOV WORD PTR [bp-10],0
+MOV AX,[bp-10]
+JMP L_main
+
+L_main:
+ADD SP,10
+POP BP
+
+;DOS EXIT
+MOV AH,4ch
+INT 21h
+main ENDP
+END MAIN
+
+

@@ -26,9 +26,6 @@ OUTPUT PROC
         DIV BX ; QUOTIENT : AX  , REMAINDER : DX     
         
         MOV FOR_PRINT , AX
-    
-        MOV DIV_RES , AX
-        MOV DIV_REM , DX 
         
         PUSH DX
         
@@ -69,6 +66,10 @@ OUTPUT PROC
     EXIT_OUTPUT:
     
         ;POP CX 
+
+        LEA DX, NEWLINE
+        MOV AH, 9 
+        INT 21H
     
         RET     
       
