@@ -559,16 +559,6 @@ void optimize_code(string code)
     }
 }
 
-vector<string>temp_SP_vector;
-
-bool isATempVariable(string s)
-{
-    for(string x:temp_SP_vector)
-        if(x == s) return true;
-
-    return false;
-}
-
 %}
 
 %error-verbose
@@ -2615,22 +2605,10 @@ logic_expression: rel_expression {
 
                     $$->code += "JE "+tempL1+"\n";
 
-                    if(isATempVariable($1->stk_offset))
-                    {
-                        $$->stk_offset = $1->stk_offset;
-                    }
-                    else if(isATempVariable($3->stk_offset))
-                    {
-                        $$->stk_offset = $3->stk_offset;
-                    }
-                    else
-                    {
-                        string tempVar = newTemp();
+                    string tempVar = newTemp();
 
-                        $$->tempVar = tempVar;
-                        $$->stk_offset = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
-                    }
+                    $$->tempVar = tempVar;
+                    $$->stk_offset = to_string(SP_VAL); // init
 
                     $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",1\n";
                     $$->code += "JMP "+tempL2+"\n";
@@ -2659,22 +2637,10 @@ logic_expression: rel_expression {
 
                     $$->code += "JNE "+tempL1+"\n";
 
-                    if(isATempVariable($1->stk_offset))
-                    {
-                        $$->stk_offset = $1->stk_offset;
-                    }
-                    else if(isATempVariable($3->stk_offset))
-                    {
-                        $$->stk_offset = $3->stk_offset;
-                    }
-                    else
-                    {
-                        string tempVar = newTemp();
+                    string tempVar = newTemp();
 
-                        $$->tempVar = tempVar;
-                        $$->stk_offset = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
-                    }
+                    $$->tempVar = tempVar;
+                    $$->stk_offset = to_string(SP_VAL); // init
 
                     $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",0\n";
                     $$->code += "JMP "+tempL2+"\n";
@@ -2754,25 +2720,12 @@ rel_expression: simple_expression {
                 if($3->stk_offset != "") $$->code += "CMP AX,"+stk_address($3->stk_offset)+"\n";
                 else $$->code += "CMP AX,"+process_global_variable($3->text)+"\n";
 
+                string tempVar = newTemp();
                 string tempL1 = newLabel();
                 string tempL2 = newLabel();
 
-                if(isATempVariable($1->stk_offset))
-                {
-                    $$->stk_offset = $1->stk_offset;
-                }
-                else if(isATempVariable($3->stk_offset))
-                {
-                    $$->stk_offset = $3->stk_offset;
-                }
-                else
-                {
-                    string tempVar = newTemp();
-
-                    $$->tempVar = tempVar;
-                    $$->stk_offset = to_string(SP_VAL);
-                    temp_SP_vector.push_back(to_string(SP_VAL));
-                }
+                $$->tempVar = tempVar;
+                $$->stk_offset = to_string(SP_VAL);
 
                 $$->code += jumpText+" "+tempL1+"\n";
                 $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",0"+"\n";
@@ -2853,7 +2806,6 @@ simple_expression: term {
 
                         string tempVarExtra = newTemp();
                         string tempVarExtra_stk_add = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
                         $$->code += "MOV "+stk_address_typecast(tempVarExtra_stk_add)+",AX\n";
 
                         $$->code += $3->code+"\n";
@@ -2863,22 +2815,10 @@ simple_expression: term {
                         if($3->stk_offset!="") $$->code += "ADD AX,"+stk_address($3->stk_offset)+"\n";
                         else $$->code += "ADD AX,"+process_global_variable($3->text)+"\n";
 
-                        if(isATempVariable($1->stk_offset))
-                        {
-                            $$->stk_offset = $1->stk_offset;
-                        }
-                        else if(isATempVariable($3->stk_offset))
-                        {
-                            $$->stk_offset = $3->stk_offset;
-                        }
-                        else
-                        {
-                            string tempVar = newTemp();
+                        string tempVar = newTemp();
 
-                            $$->tempVar = tempVar;
-                            $$->stk_offset = to_string(SP_VAL);
-                            temp_SP_vector.push_back(to_string(SP_VAL));
-                        }
+                        $$->tempVar = tempVar;
+                        $$->stk_offset = to_string(SP_VAL);
 
                         $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX";
                     }
@@ -2892,7 +2832,6 @@ simple_expression: term {
 
                         string tempVarExtra = newTemp();
                         string tempVarExtra_stk_add = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
                         $$->code += "MOV "+stk_address_typecast(tempVarExtra_stk_add)+",AX\n";
 
                         $$->code += $3->code+"\n";
@@ -2902,22 +2841,10 @@ simple_expression: term {
                         if($3->stk_offset!="") $$->code += "SUB AX,"+stk_address($3->stk_offset)+"\n";
                         else $$->code += "SUB AX,"+process_global_variable($3->text)+"\n";
 
-                        if(isATempVariable($1->stk_offset))
-                        {
-                            $$->stk_offset = $1->stk_offset;
-                        }
-                        else if(isATempVariable($3->stk_offset))
-                        {
-                            $$->stk_offset = $3->stk_offset;
-                        }
-                        else
-                        {
-                            string tempVar = newTemp();
+                        string tempVar = newTemp();
 
-                            $$->tempVar = tempVar;
-                            $$->stk_offset = to_string(SP_VAL);
-                            temp_SP_vector.push_back(to_string(SP_VAL));
-                        }
+                        $$->tempVar = tempVar;
+                        $$->stk_offset = to_string(SP_VAL);
 
                         $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX";
                     }
@@ -2988,7 +2915,6 @@ term:	unary_expression {
 
                         string tempVarExtra = newTemp();
                         string tempVarExtra_stk_add = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
                         $$->code += "MOV "+stk_address_typecast(tempVarExtra_stk_add)+",CX\n";
 
                         $$->code += $3->code+"\n";
@@ -3000,23 +2926,10 @@ term:	unary_expression {
                         if($3->stk_offset!="") $$->code += "IDIV "+stk_address_typecast($3->stk_offset)+"\n";
                         else $$->code += "IDIV "+process_global_variable($3->text)+"\n";
 
-                        if(isATempVariable($1->stk_offset))
-                        {
-                            $$->stk_offset = $1->stk_offset;
-                        }
-                        else if(isATempVariable($3->stk_offset))
-                        {
-                            $$->stk_offset = $3->stk_offset;
-                        }
-                        else
-                        {
-                            string tempVar = newTemp();
+                        string tempVar = newTemp();
 
-                            $$->tempVar = tempVar;
-                            $$->stk_offset = to_string(SP_VAL);
-                            temp_SP_vector.push_back(to_string(SP_VAL));
-                        }
-
+                        $$->tempVar = tempVar;
+                        $$->stk_offset = to_string(SP_VAL);
 
                         $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",DX";
                     }
@@ -3057,7 +2970,6 @@ term:	unary_expression {
 
                     string tempVarExtra = newTemp();
                     string tempVarExtra_stk_add = to_string(SP_VAL);
-                    temp_SP_vector.push_back(to_string(SP_VAL));
                     $$->code += "MOV "+stk_address_typecast(tempVarExtra_stk_add)+",CX\n";
 
                     $$->code += $3->code+"\n";
@@ -3069,23 +2981,10 @@ term:	unary_expression {
                     if($3->stk_offset!="") $$->code += "IMUL "+stk_address_typecast($3->stk_offset)+"\n";
                     else $$->code += "IMUL "+process_global_variable($3->text)+"\n";
 
-                    if(isATempVariable($1->stk_offset))
-                    {
-                        $$->stk_offset = $1->stk_offset;
-                    }
-                    else if(isATempVariable($3->stk_offset))
-                    {
-                        $$->stk_offset = $3->stk_offset;
-                    }
-                    else
-                    {
-                        string tempVar = newTemp();
+                    string tempVar = newTemp();
 
-                        $$->tempVar = tempVar;
-                        $$->stk_offset = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
-                    }
-
+                    $$->tempVar = tempVar;
+                    $$->stk_offset = to_string(SP_VAL);
                     $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX";
                 }
                 else if($2->key == "/")
@@ -3100,7 +2999,6 @@ term:	unary_expression {
 
                     string tempVarExtra = newTemp();
                     string tempVarExtra_stk_add = to_string(SP_VAL);
-                    temp_SP_vector.push_back(to_string(SP_VAL));
                     $$->code += "MOV "+stk_address_typecast(tempVarExtra_stk_add)+",CX\n";
 
                     $$->code += $3->code+"\n";
@@ -3111,23 +3009,11 @@ term:	unary_expression {
 
                     if($3->stk_offset!="") $$->code += "IDIV "+stk_address_typecast($3->stk_offset)+"\n";
                     else $$->code += "IDIV "+process_global_variable($3->text)+"\n";
+                    
+                    string tempVar = newTemp();
 
-                    if(isATempVariable($1->stk_offset))
-                    {
-                        $$->stk_offset = $1->stk_offset;
-                    }
-                    else if(isATempVariable($3->stk_offset))
-                    {
-                        $$->stk_offset = $3->stk_offset;
-                    }
-                    else
-                    {
-                        string tempVar = newTemp();
-
-                        $$->tempVar = tempVar;
-                        $$->stk_offset = to_string(SP_VAL);
-                        temp_SP_vector.push_back(to_string(SP_VAL));
-                    }
+                    $$->tempVar = tempVar;
+                    $$->stk_offset = to_string(SP_VAL);
 
                     $$->code += "MOV "+stk_address_typecast($$->stk_offset)+",AX";
                 }
@@ -3308,7 +3194,6 @@ factor: variable {
                 {
                     string tempVar = newTemp();
                     $$->stk_offset = to_string(SP_VAL);
-                    // temp_SP_vector.push_back(to_string(SP_VAL));
                     $$->code += "\nMOV "+stk_address_typecast($$->stk_offset)+",AX";
                 }
             }
@@ -3355,7 +3240,6 @@ factor: variable {
             
             $$->tempVar = tempVar; // init
             $$->stk_offset = to_string(SP_VAL);
-            temp_SP_vector.push_back(to_string(SP_VAL));
             $$->code = "MOV "+stk_address_typecast($$->stk_offset)+","+$1->key;
 
             erm_s($1);
@@ -3408,7 +3292,6 @@ factor: variable {
             /// as postfix , passing the previous value
             $$->tempVar = newTemp();
             $$->stk_offset = to_string(SP_VAL); // init 
-            temp_SP_vector.push_back(to_string(SP_VAL));
 
             $$->code = $1->code+"\n";
 
@@ -3443,7 +3326,6 @@ factor: variable {
             /// as postfix , passing the previous value
             $$->tempVar = newTemp();
             $$->stk_offset = to_string(SP_VAL); // init 
-            temp_SP_vector.push_back(to_string(SP_VAL));
 
             $$->code = $1->code+"\n";
 
