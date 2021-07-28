@@ -1,1 +1,0 @@
-<INT> <ID, main> <LPAREN, (> <RPAREN, )> <LCURL, {> <INT> <ID, a> <SEMICOLON, ;> <IF> <LPAREN, (> <ID, a> <RELOP, ==> <CONST_INT, 2> <RPAREN, )> <LCURL, {> <INT> <ID, b> <SEMICOLON, ;> <CHAR> <ID, b> <SEMICOLON, ;> <RCURL, }> <RETURN> <CONST_INT, 0> <SEMICOLON, ;> <RCURL, }> 

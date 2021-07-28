@@ -1,3 +1,0 @@
-123abc
-'a
-"another ' unfinished

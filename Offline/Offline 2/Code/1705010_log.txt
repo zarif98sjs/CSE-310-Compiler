@@ -1,8 +1,0 @@
-Error at line no 1: Unrecognized character \
-
-Error at line no 1: Unterminated character 'gh asgf\'
-
-ScopeTable # 1
-
-Total lines: 1
-Total errors: 2

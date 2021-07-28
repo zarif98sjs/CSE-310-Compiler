@@ -1,6 +1,0 @@
-Error at line no 1: Invalid prefix on ID or invalid suffix on Number 12.1ef
-
-ScopeTable # 1
-
-Total lines: 1
-Total errors: 1

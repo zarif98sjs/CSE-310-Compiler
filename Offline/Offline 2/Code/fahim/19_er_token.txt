@@ -1,1 +1,0 @@
-<ID, _____12> <ID, wefrg> <STRING, "A validstring"> 

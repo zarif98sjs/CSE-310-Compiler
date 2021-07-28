@@ -1,8 +1,0 @@
-type_specifier	: INT
-declaration_list : ID 
-x
-var_declaration: type_specifier declaration_list SEMICOLON
-Vector size : 2
-x
-unit : var_declaration
-program: unit
